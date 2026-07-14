@@ -1,0 +1,62 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  quality:
+    name: Typecheck · Lint · Test · Build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install
+        run: npm ci
+
+      - name: Typecheck
+        run: npx tsc --noEmit
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Unit & component tests
+        run: npm test
+
+      - name: Build
+        run: npm run build
+        env:
+          # Public by design (Supabase anon key model); real values come from
+          # Vercel env at deploy time — CI only needs the build to succeed.
+          NEXT_PUBLIC_SITE_URL: https://ozer-website.vercel.app
+
+  lighthouse:
+    name: Lighthouse budget (production)
+    # Measures the LIVE site after a main push — stable runner beats laptops.
+    if: github.event_name == 'push'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Audit production URLs
+        uses: treosh/lighthouse-ci-action@v12
+        with:
+          urls: |
+            https://ozer-website.vercel.app/
+            https://ozer-website.vercel.app/book
+            https://ozer-website.vercel.app/helper
+          uploadArtifacts: true
+          temporaryPublicStorage: true
+          runs: 3
+          configPath: ./lighthouserc.json

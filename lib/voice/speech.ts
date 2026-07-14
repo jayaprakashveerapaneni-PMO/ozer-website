@@ -15,12 +15,21 @@ export interface SpeechRecognitionLike {
   onend: (() => void) | null;
 }
 
-export function getRecognition(): SpeechRecognitionLike | null {
-  if (typeof window === "undefined") return null;
+function recognitionCtor(): (new () => SpeechRecognitionLike) | undefined {
+  if (typeof window === "undefined") return undefined;
   const w = window as unknown as Record<string, unknown>;
-  const Ctor = (w.SpeechRecognition ?? w.webkitSpeechRecognition) as
+  return (w.SpeechRecognition ?? w.webkitSpeechRecognition) as
     | (new () => SpeechRecognitionLike)
     | undefined;
+}
+
+/** True when the browser exposes SpeechRecognition (no instance created). */
+export function isRecognitionSupported(): boolean {
+  return recognitionCtor() !== undefined;
+}
+
+export function getRecognition(): SpeechRecognitionLike | null {
+  const Ctor = recognitionCtor();
   return Ctor ? new Ctor() : null;
 }
 

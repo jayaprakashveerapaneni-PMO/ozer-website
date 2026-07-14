@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { HELPERS, bookingEarnings, type Booking, type Helper } from "@/lib/domain";
 import { getBookingService } from "@/lib/services/booking-service";
 
@@ -18,17 +18,24 @@ export function useHelperPortal() {
   const knownOffers = useRef<Set<string>>(new Set());
   const toastId = useRef(0);
 
-  const refresh = useCallback(async () => {
-    const svc = getBookingService();
-    const [list, balance] = await Promise.all([svc.list(), svc.getWallet(helper.id)]);
-    setBookings(list);
-    setWallet(balance);
-  }, [helper.id]);
-
   useEffect(() => {
+    let cancelled = false;
+    const svc = getBookingService();
+    // setState only after awaits (async) and guarded against unmount —
+    // never synchronously in the effect body.
+    const refresh = async () => {
+      const [list, balance] = await Promise.all([svc.list(), svc.getWallet(helper.id)]);
+      if (cancelled) return;
+      setBookings(list);
+      setWallet(balance);
+    };
     void refresh();
-    return getBookingService().subscribe(() => void refresh());
-  }, [refresh]);
+    const unsubscribe = svc.subscribe(() => void refresh());
+    return () => {
+      cancelled = true;
+      unsubscribe();
+    };
+  }, [helper.id]);
 
   // Offers eligible for this helper (FR-11; certified-only care per FR-37).
   const offers = bookings.filter(

@@ -4,11 +4,12 @@ import RisingParticles from "@/components/layout/RisingParticles";
 import { SITE } from "@/lib/site";
 import "./globals.css";
 
-// Weight 300 is unused across the app (audited); 400 is the body default.
+// Weights audited against actual usage: the display font is only ever used
+// at semibold/bold (headings default to bold via the UA stylesheet).
 const grotesk = Space_Grotesk({
   variable: "--font-grotesk",
   subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
+  weight: ["600", "700"],
   display: "swap",
 });
 

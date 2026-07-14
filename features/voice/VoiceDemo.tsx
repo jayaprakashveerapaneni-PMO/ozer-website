@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState, useSyncExternalStore } from "react";
 import { useRouter } from "next/navigation";
 import { Mic, MicOff, Sparkles, ArrowRight, Volume2 } from "lucide-react";
 import {
@@ -16,6 +16,7 @@ import {
 } from "@/lib/voice/responses";
 import {
   getRecognition,
+  isRecognitionSupported,
   speak,
   type SpeechRecognitionLike,
 } from "@/lib/voice/speech";
@@ -29,14 +30,20 @@ export default function VoiceDemo() {
   const [phase, setPhase] = useState<Phase>("idle");
   const [transcript, setTranscript] = useState("");
   const [intent, setIntent] = useState<ParsedIntent>({ service: null, slot: null });
-  const [supported, setSupported] = useState(true);
   const [micError, setMicError] = useState<string | null>(null);
   const recRef = useRef<SpeechRecognitionLike | null>(null);
   // BCP-47 language subtag for the `lang` attribute on Indic content (te/hi/ta/en).
   const langCode = lang.split("-")[0];
 
+  // Browser capability, read without effects/setState. Server snapshot says
+  // "supported" so SSR shows the mic; unsupported browsers correct on hydrate.
+  const supported = useSyncExternalStore(
+    () => () => {},
+    isRecognitionSupported,
+    () => true
+  );
+
   useEffect(() => {
-    setSupported(getRecognition() !== null);
     return () => {
       recRef.current?.abort();
       if (typeof window !== "undefined" && "speechSynthesis" in window) {
@@ -68,10 +75,7 @@ export default function VoiceDemo() {
     setMicError(null);
     setTranscript("");
     const rec = getRecognition();
-    if (!rec) {
-      setSupported(false);
-      return;
-    }
+    if (!rec) return; // unsupported — `supported` already reflects this
     recRef.current?.abort();
     recRef.current = rec;
     rec.lang = lang;

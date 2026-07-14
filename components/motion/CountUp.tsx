@@ -21,14 +21,16 @@ export default function CountUp({
   useEffect(() => {
     const el = ref.current;
     if (!el) return;
-    if (prefersReducedMotion()) {
-      setValue(end);
-      return;
-    }
+    // All setState happens inside the observer callback (async), never in the
+    // effect body — avoids cascading synchronous re-renders.
     const io = new IntersectionObserver(
       (entries) => {
         if (!entries[0].isIntersecting) return;
         io.disconnect();
+        if (prefersReducedMotion()) {
+          setValue(end);
+          return;
+        }
         const start = performance.now();
         const tick = (now: number) => {
           const p = Math.min((now - start) / duration, 1);

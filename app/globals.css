@@ -398,6 +398,27 @@ button, a, select, [role="button"] {
   box-shadow: 0 20px 48px rgba(30, 27, 46, 0.12);
 }
 
+/* ---------- Rendering-cost controls ----------
+   Below-the-fold home sections skip style/layout/paint until near the
+   viewport (~951 DOM nodes rendered eagerly otherwise). The intrinsic size
+   reserves space so scrollbar/CLS stay stable; anchors (#voice) still work
+   because the browser renders on demand when jumped to. */
+main > :not(:first-child) {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 800px;
+}
+
+/* Mobile: decorative compositing layers (blurred blobs, rising particles)
+   cost real main-thread time on throttled CPUs for near-invisible benefit
+   at small sizes — drop them below md. */
+@media (max-width: 767px) {
+  .blob,
+  .rise-dot,
+  .star {
+    display: none;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
   *, *::before, *::after {

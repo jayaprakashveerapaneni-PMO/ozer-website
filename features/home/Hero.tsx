@@ -43,21 +43,22 @@ export default function Hero() {
             Every helper police-verified — free, within 48 hours
           </Badge>
           <h1 className="text-4xl font-bold leading-[1.05] tracking-tight sm:text-6xl lg:text-7xl">
-            <span className="word-in" style={{ animationDelay: "80ms" }}>Daily</span>{" "}
-            <span className="word-in" style={{ animationDelay: "180ms" }}>help,</span>
+            <span className="word-in">Daily</span>{" "}
+            <span className="word-in" style={{ animationDelay: "80ms" }}>help,</span>
             <br />
-            <span className="word-in" style={{ animationDelay: "300ms" }}>
+            <span className="word-in" style={{ animationDelay: "160ms" }}>
               <WordRotate />
             </span>
           </h1>
-          <p className="word-in mt-6 max-w-xl text-lg leading-relaxed text-muted" style={{ animationDelay: "420ms" }}>
+          {/* LCP element — never animate its opacity (Lighthouse LCP penalty). */}
+          <p className="mt-6 max-w-xl text-lg leading-relaxed text-muted">
             Verified cleaners, cooks, laundry and caregivers across Hyderabad —
             summoned by <span className="font-semibold text-foreground">your voice</span>, in
             Telugu, Hindi, Tamil or English. Even from your Echo, iPhone or
             Google Assistant. Pay only after the job is done.
           </p>
 
-          <div className="word-in mt-9 flex flex-col gap-3 sm:flex-row" style={{ animationDelay: "540ms" }}>
+          <div className="word-in mt-9 flex flex-col gap-3 sm:flex-row" style={{ animationDelay: "240ms" }}>
             <Button href="/#voice" size="lg" className="group">
               <Mic className="h-5 w-5 transition-transform group-hover:scale-125" aria-hidden />
               Try voice booking live
@@ -67,7 +68,7 @@ export default function Hero() {
             </Button>
           </div>
 
-          <dl className="word-in mt-12 grid grid-cols-2 gap-6 sm:grid-cols-4" style={{ animationDelay: "660ms" }}>
+          <dl className="word-in mt-12 grid grid-cols-2 gap-6 sm:grid-cols-4" style={{ animationDelay: "320ms" }}>
             <div>
               <dt className="sr-only">Free police verification</dt>
               <dd className="font-display text-3xl font-bold text-primary text-glow">
