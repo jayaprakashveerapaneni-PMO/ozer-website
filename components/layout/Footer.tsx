@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { ZONES } from "@/lib/data";
+import { ZONES } from "@/lib/domain";
 
 export default function Footer() {
   return (

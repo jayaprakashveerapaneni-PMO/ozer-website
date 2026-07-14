@@ -14,7 +14,7 @@ import {
   MapPin,
   Wallet,
 } from "lucide-react";
-import Spotlight from "@/components/Spotlight";
+import Spotlight from "@/components/motion/Spotlight";
 
 interface Persona {
   id: string;

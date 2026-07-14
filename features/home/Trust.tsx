@@ -1,5 +1,5 @@
 import { ShieldCheck, MapPin, Wallet, KeyRound, RotateCcw, FileCheck } from "lucide-react";
-import Reveal from "@/components/Reveal";
+import Reveal from "@/components/motion/Reveal";
 
 const pillars = [
   {

@@ -4,18 +4,22 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { Mic, MicOff, Sparkles, ArrowRight, Volume2 } from "lucide-react";
 import {
+  parseIntent,
+  type ParsedIntent,
+} from "@/lib/voice/parser";
+import {
   VOICE_LANGS,
   SAMPLE_PHRASES,
-  parseIntent,
   readbackText,
   notUnderstoodText,
+  type VoiceLang,
+} from "@/lib/voice/responses";
+import {
   getRecognition,
   speak,
-  type VoiceLang,
-  type ParsedIntent,
   type SpeechRecognitionLike,
-} from "@/lib/voice";
-import { SERVICES } from "@/lib/data";
+} from "@/lib/voice/speech";
+import { SERVICES } from "@/lib/domain";
 
 type Phase = "idle" | "listening" | "thinking" | "confirm" | "failed";
 

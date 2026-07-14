@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { BadgeCheck, CalendarCheck, Banknote, GraduationCap } from "lucide-react";
-import Reveal from "@/components/Reveal";
+import Reveal from "@/components/motion/Reveal";
 
 const benefits = [
   {

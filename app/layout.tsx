@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { Space_Grotesk, Inter } from "next/font/google";
-import RisingParticles from "@/components/RisingParticles";
+import RisingParticles from "@/components/layout/RisingParticles";
 import "./globals.css";
 
 const grotesk = Space_Grotesk({

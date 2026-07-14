@@ -1,8 +1,8 @@
 import Link from "next/link";
 import { Sparkles, CookingPot, Shirt, HeartHandshake, Check, ArrowRight, Zap } from "lucide-react";
-import { SERVICES, type ServiceId } from "@/lib/data";
-import Reveal from "@/components/Reveal";
-import Spotlight from "@/components/Spotlight";
+import { SERVICES, type ServiceId } from "@/lib/domain";
+import Reveal from "@/components/motion/Reveal";
+import Spotlight from "@/components/motion/Spotlight";
 
 const ICONS: Record<ServiceId, React.ComponentType<{ className?: string }>> = {
   cleaning: Sparkles,

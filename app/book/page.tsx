@@ -1,8 +1,8 @@
 import { Suspense } from "react";
 import type { Metadata } from "next";
-import Navbar from "@/components/Navbar";
-import Footer from "@/components/Footer";
-import BookingWizard from "@/components/BookingWizard";
+import Navbar from "@/components/layout/Navbar";
+import Footer from "@/components/layout/Footer";
+import BookingWizard from "@/features/booking/BookingWizard";
 
 export const metadata: Metadata = {
   title: "Book a service — Ozer",

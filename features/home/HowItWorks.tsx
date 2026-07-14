@@ -1,5 +1,5 @@
 import { Mic, CalendarClock, UserCheck, Wallet } from "lucide-react";
-import Reveal from "@/components/Reveal";
+import Reveal from "@/components/motion/Reveal";
 
 const steps = [
   {

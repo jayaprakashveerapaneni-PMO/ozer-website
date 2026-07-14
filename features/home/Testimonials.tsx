@@ -1,6 +1,6 @@
 import { Star, Quote } from "lucide-react";
-import { TESTIMONIALS } from "@/lib/data";
-import Reveal from "@/components/Reveal";
+import { TESTIMONIALS } from "@/lib/domain";
+import Reveal from "@/components/motion/Reveal";
 
 export default function Testimonials() {
   return (

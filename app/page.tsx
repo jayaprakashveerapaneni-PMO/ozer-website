@@ -1,18 +1,18 @@
-import Navbar from "@/components/Navbar";
-import ScrollProgress from "@/components/ScrollProgress";
-import Marquee from "@/components/Marquee";
-import Hero from "@/components/Hero";
-import Services from "@/components/Services";
-import VoiceDemo from "@/components/VoiceDemo";
-import Assistants from "@/components/Assistants";
-import Personas from "@/components/Personas";
-import HowItWorks from "@/components/HowItWorks";
-import Estimator from "@/components/Estimator";
-import Trust from "@/components/Trust";
-import Helpers from "@/components/Helpers";
-import Testimonials from "@/components/Testimonials";
-import Faq from "@/components/Faq";
-import Footer from "@/components/Footer";
+import Navbar from "@/components/layout/Navbar";
+import ScrollProgress from "@/components/layout/ScrollProgress";
+import Marquee from "@/features/home/Marquee";
+import Hero from "@/features/home/Hero";
+import Services from "@/features/home/Services";
+import VoiceDemo from "@/features/voice/VoiceDemo";
+import Assistants from "@/features/assistants/Assistants";
+import Personas from "@/features/home/Personas";
+import HowItWorks from "@/features/home/HowItWorks";
+import Estimator from "@/features/home/Estimator";
+import Trust from "@/features/home/Trust";
+import Helpers from "@/features/home/Helpers";
+import Testimonials from "@/features/home/Testimonials";
+import Faq from "@/features/home/Faq";
+import Footer from "@/components/layout/Footer";
 
 export default function Home() {
   return (

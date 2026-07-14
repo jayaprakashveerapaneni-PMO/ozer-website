@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { ChevronDown } from "lucide-react";
-import { FAQS } from "@/lib/data";
+import { FAQS } from "@/lib/domain";
 
 export default function Faq() {
   const [open, setOpen] = useState<number | null>(0);

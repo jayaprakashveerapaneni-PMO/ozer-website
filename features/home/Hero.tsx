@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { ShieldCheck, MapPin, Mic, Speaker, Smartphone, CircleDot, ArrowDown } from "lucide-react";
-import WordRotate from "@/components/WordRotate";
-import CountUp from "@/components/CountUp";
+import WordRotate from "@/components/motion/WordRotate";
+import CountUp from "@/components/motion/CountUp";
 
 // deterministic star field (no Math.random — SSR-safe)
 const STARS = [
