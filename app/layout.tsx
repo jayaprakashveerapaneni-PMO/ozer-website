@@ -48,6 +48,9 @@ export default function RootLayout({
       className={`${grotesk.variable} ${inter.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col">
+        <a href="#main-content" className="skip-link">
+          Skip to content
+        </a>
         <RisingParticles />
         {children}
       </body>

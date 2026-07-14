@@ -32,7 +32,7 @@ export default function Helpers() {
       <div className="relative mx-auto max-w-6xl px-4 sm:px-6">
         <div className="grid items-center gap-12 lg:grid-cols-2">
           <Reveal>
-            <p className="mb-4 inline-block rounded-full glass px-4 py-1.5 text-xs font-semibold text-primary-soft">
+            <p className="mb-4 inline-block rounded-full glass px-4 py-1.5 text-xs font-semibold text-primary">
               For helpers · సహాయకుల కోసం · सहायकों के लिए
             </p>
             <h2 className="text-3xl font-bold tracking-tight sm:text-5xl">
@@ -56,7 +56,7 @@ export default function Helpers() {
             {benefits.map((b, i) => (
               <Reveal key={b.title} delay={i * 90}>
                 <div className="glass tilt-card h-full rounded-3xl p-5">
-                  <b.icon className="h-6 w-6 text-primary-soft" aria-hidden />
+                  <b.icon className="h-6 w-6 text-primary" aria-hidden />
                   <h3 className="mt-3 text-sm font-semibold">{b.title}</h3>
                   <p className="mt-1.5 text-sm leading-relaxed text-muted">{b.body}</p>
                 </div>

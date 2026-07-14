@@ -16,7 +16,7 @@ export default function Marquee() {
     <div className="flex shrink-0 items-center gap-10 pr-10" aria-hidden={ariaHidden}>
       {items.map((it) => (
         <span key={it.text} className="flex items-center gap-2.5 text-sm font-semibold text-muted">
-          <it.icon className="h-4 w-4 text-primary-soft" aria-hidden />
+          <it.icon className="h-4 w-4 text-primary" aria-hidden />
           {it.text}
           <span className="ml-6 h-1 w-1 rounded-full bg-primary/50" aria-hidden />
         </span>

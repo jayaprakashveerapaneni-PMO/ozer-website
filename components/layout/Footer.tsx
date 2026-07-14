@@ -17,7 +17,7 @@ export default function Footer() {
               Daily help, delivered. The voice-first home services platform —
               verified helpers, pay after service, money-back promise.
             </p>
-            <p className="mt-4 text-xs text-muted/60">
+            <p className="mt-4 text-xs text-muted">
               Launching next: Bengaluru · Chennai
             </p>
           </div>
@@ -25,21 +25,21 @@ export default function Footer() {
           <nav aria-label="Services">
             <h3 className="text-sm font-semibold">Services</h3>
             <ul className="mt-3 space-y-2 text-sm text-muted">
-              <li><Link href="/book?service=cleaning" className="transition-colors hover:text-primary-soft">House Cleaning</Link></li>
-              <li><Link href="/book?service=cook" className="transition-colors hover:text-primary-soft">Home Cook</Link></li>
-              <li><Link href="/book?service=laundry" className="transition-colors hover:text-primary-soft">Laundry & Ironing</Link></li>
-              <li><Link href="/book?service=care" className="transition-colors hover:text-primary-soft">Child & Elder Care</Link></li>
+              <li><Link href="/book?service=cleaning" className="transition-colors hover:text-primary">House Cleaning</Link></li>
+              <li><Link href="/book?service=cook" className="transition-colors hover:text-primary">Home Cook</Link></li>
+              <li><Link href="/book?service=laundry" className="transition-colors hover:text-primary">Laundry & Ironing</Link></li>
+              <li><Link href="/book?service=care" className="transition-colors hover:text-primary">Child & Elder Care</Link></li>
             </ul>
           </nav>
 
           <nav aria-label="Voice">
             <h3 className="text-sm font-semibold">Voice</h3>
             <ul className="mt-3 space-y-2 text-sm text-muted">
-              <li><Link href="/#voice" className="transition-colors hover:text-primary-soft">Live voice demo</Link></li>
-              <li><Link href="/#assistants" className="transition-colors hover:text-primary-soft">Alexa integration</Link></li>
-              <li><Link href="/#assistants" className="transition-colors hover:text-primary-soft">Siri Shortcuts</Link></li>
-              <li><Link href="/#assistants" className="transition-colors hover:text-primary-soft">Google Assistant</Link></li>
-              <li><Link href="/flow" className="transition-colors hover:text-primary-soft">The build story</Link></li>
+              <li><Link href="/#voice" className="transition-colors hover:text-primary">Live voice demo</Link></li>
+              <li><Link href="/#assistants" className="transition-colors hover:text-primary">Alexa integration</Link></li>
+              <li><Link href="/#assistants" className="transition-colors hover:text-primary">Siri Shortcuts</Link></li>
+              <li><Link href="/#assistants" className="transition-colors hover:text-primary">Google Assistant</Link></li>
+              <li><Link href="/flow" className="transition-colors hover:text-primary">The build story</Link></li>
             </ul>
           </nav>
 
@@ -51,7 +51,7 @@ export default function Footer() {
           </div>
         </div>
 
-        <div className="mt-10 flex flex-col items-start justify-between gap-3 border-t border-line pt-6 text-xs text-muted/60 sm:flex-row">
+        <div className="mt-10 flex flex-col items-start justify-between gap-3 border-t border-line pt-6 text-xs text-muted sm:flex-row">
           <p>© {new Date().getFullYear()} Ozer. All rights reserved.</p>
           <p>Demo site built from the Ozer v1 requirements suite — pricing directional, pending launch.</p>
         </div>

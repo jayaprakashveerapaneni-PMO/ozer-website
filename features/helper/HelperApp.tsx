@@ -22,7 +22,7 @@ export default function HelperApp() {
         {toasts.map((t) => (
           <div key={t.id} className="glass glow-ring animate-fade-up flex items-center gap-3 rounded-2xl p-4">
             <span className="relative flex h-9 w-9 items-center justify-center rounded-full bg-primary/20">
-              <Bell className="h-4 w-4 text-primary-soft" aria-hidden />
+              <Bell className="h-4 w-4 text-primary" aria-hidden />
               <span className="absolute -right-0.5 -top-0.5 h-2.5 w-2.5 rounded-full bg-primary step-live" aria-hidden />
             </span>
             <p className="text-sm font-semibold">{t.text}</p>
@@ -50,7 +50,7 @@ export default function HelperApp() {
                 )}
               </p>
               <p className="flex items-center gap-2 text-sm text-muted">
-                <Star className="h-3.5 w-3.5 fill-primary-soft text-primary-soft" aria-hidden />
+                <Star className="h-3.5 w-3.5 fill-primary-soft text-primary" aria-hidden />
                 {helper.rating} · {helper.jobs + completedJobs.length} jobs ·{" "}
                 {helper.languages.join(", ")}
               </p>

@@ -30,7 +30,7 @@ export default function SegmentedControl<T extends string>({
             className={`rounded-lg px-3 py-1.5 text-sm font-medium transition-colors duration-150 ${
               value === o.value
                 ? "bg-primary text-on-primary"
-                : "text-muted hover:text-primary-soft"
+                : "text-muted hover:text-primary"
             }`}
           >
             {o.label}

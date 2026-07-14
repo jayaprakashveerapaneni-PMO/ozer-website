@@ -9,8 +9,8 @@ const BASE =
 
 const VARIANTS: Record<ButtonVariant, string> = {
   primary: "bg-primary text-on-primary glow-primary hover:scale-105",
-  glass: "glass text-foreground hover:text-primary-soft hover:scale-105",
-  ghost: "text-muted hover:text-primary-soft",
+  glass: "glass text-foreground hover:text-primary hover:scale-105",
+  ghost: "text-muted hover:text-primary",
   success: "bg-success text-white hover:scale-105",
 };
 

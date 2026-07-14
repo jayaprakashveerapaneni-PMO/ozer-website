@@ -32,6 +32,8 @@ export default function VoiceDemo() {
   const [supported, setSupported] = useState(true);
   const [micError, setMicError] = useState<string | null>(null);
   const recRef = useRef<SpeechRecognitionLike | null>(null);
+  // BCP-47 language subtag for the `lang` attribute on Indic content (te/hi/ta/en).
+  const langCode = lang.split("-")[0];
 
   useEffect(() => {
     setSupported(getRecognition() !== null);
@@ -127,7 +129,7 @@ export default function VoiceDemo() {
 
       <div className="relative mx-auto max-w-6xl px-4 sm:px-6">
         <div className="mx-auto max-w-2xl text-center">
-          <p className="mb-4 inline-flex items-center gap-2 rounded-full glass px-4 py-1.5 text-xs font-semibold text-primary-soft">
+          <p className="mb-4 inline-flex items-center gap-2 rounded-full glass px-4 py-1.5 text-xs font-semibold text-primary">
             <Sparkles className="h-3.5 w-3.5" aria-hidden />
             LIVE DEMO — real speech recognition, right in your browser
           </p>
@@ -149,6 +151,7 @@ export default function VoiceDemo() {
                 type="button"
                 role="radio"
                 aria-checked={lang === l.code}
+                aria-label={l.label}
                 onClick={() => { setLang(l.code); reset(); }}
                 className={`rounded-xl px-4 py-2 text-sm font-semibold transition-all duration-200 ${
                   lang === l.code
@@ -156,7 +159,7 @@ export default function VoiceDemo() {
                     : "text-muted hover:text-foreground"
                 }`}
               >
-                {l.native}
+                <span lang={l.code.split("-")[0]}>{l.native}</span>
               </button>
             ))}
           </div>
@@ -211,7 +214,7 @@ export default function VoiceDemo() {
                     <span key={i} className="voice-bar h-8" style={{ animationDelay: `${d}s` }} />
                   ))}
                 </div>
-                <p className="mt-3 font-medium text-foreground">
+                <p className="mt-3 font-medium text-foreground" lang={langCode}>
                   {transcript || "Listening…"}
                 </p>
                 <p className="mt-1 text-xs text-muted">Tap the orb again to stop</p>
@@ -219,7 +222,7 @@ export default function VoiceDemo() {
             )}
 
             {phase === "thinking" && (
-              <div className="flex items-center justify-center gap-2 text-primary-soft">
+              <div className="flex items-center justify-center gap-2 text-primary">
                 <span className="typing-dot" />
                 <span className="typing-dot" />
                 <span className="typing-dot" />
@@ -230,9 +233,9 @@ export default function VoiceDemo() {
             {phase === "confirm" && svcMeta && (
               <div className="animate-fade-up">
                 <p className="text-sm text-muted">You said</p>
-                <p className="mt-1 font-medium">“{transcript}”</p>
+                <p className="mt-1 font-medium" lang={langCode}>“{transcript}”</p>
                 <div className="glow-ring mx-auto mt-4 max-w-md rounded-2xl bg-surface p-4">
-                  <p className="flex items-center justify-center gap-2 text-sm font-semibold text-primary-soft">
+                  <p className="flex items-center justify-center gap-2 text-sm font-semibold text-primary" lang={langCode}>
                     <Volume2 className="h-4 w-4" aria-hidden />
                     {readbackText(lang, intent)}
                   </p>
@@ -268,8 +271,8 @@ export default function VoiceDemo() {
             {phase === "failed" && (
               <div className="animate-fade-up">
                 <p className="text-sm text-muted">You said</p>
-                <p className="mt-1 font-medium">“{transcript}”</p>
-                <p className="mt-3 text-sm text-destructive">{notUnderstoodText(lang)}</p>
+                <p className="mt-1 font-medium" lang={langCode}>“{transcript}”</p>
+                <p className="mt-3 text-sm text-destructive" lang={langCode}>{notUnderstoodText(lang)}</p>
                 <button
                   type="button"
                   onClick={reset}
@@ -292,7 +295,8 @@ export default function VoiceDemo() {
                   key={p}
                   type="button"
                   onClick={() => process(p)}
-                  className="rounded-full glass px-4 py-2 text-sm text-foreground/90 transition-all duration-200 hover:border-primary/50 hover:text-primary-soft"
+                  lang={langCode}
+                  className="rounded-full glass px-4 py-2 text-sm text-foreground/90 transition-all duration-200 hover:border-primary/50 hover:text-primary"
                 >
                   “{p}”
                 </button>

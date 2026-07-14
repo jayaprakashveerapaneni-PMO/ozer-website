@@ -70,26 +70,26 @@ export default function Hero() {
           <dl className="word-in mt-12 grid grid-cols-2 gap-6 sm:grid-cols-4" style={{ animationDelay: "660ms" }}>
             <div>
               <dt className="sr-only">Free police verification</dt>
-              <dd className="font-display text-3xl font-bold text-primary-soft text-glow">
+              <dd className="font-display text-3xl font-bold text-primary text-glow">
                 <CountUp end={48} suffix="h" />
               </dd>
               <dd className="mt-1 text-xs font-medium leading-snug text-muted">Free police verification</dd>
             </div>
             <div>
               <dt className="sr-only">Pay nothing until the job is done</dt>
-              <dd className="font-display text-3xl font-bold text-primary-soft text-glow">₹0</dd>
+              <dd className="font-display text-3xl font-bold text-primary text-glow">₹0</dd>
               <dd className="mt-1 text-xs font-medium leading-snug text-muted">Until the job is done</dd>
             </div>
             <div>
               <dt className="sr-only">Voice languages</dt>
-              <dd className="font-display text-3xl font-bold text-primary-soft text-glow">
+              <dd className="font-display text-3xl font-bold text-primary text-glow">
                 <CountUp end={4} />
               </dd>
               <dd className="mt-1 text-xs font-medium leading-snug text-muted">Voice languages</dd>
             </div>
             <div>
               <dt className="sr-only">Assistant integrations</dt>
-              <dd className="font-display text-3xl font-bold text-primary-soft text-glow">
+              <dd className="font-display text-3xl font-bold text-primary text-glow">
                 <CountUp end={3} />
               </dd>
               <dd className="mt-1 text-xs font-medium leading-snug text-muted">Assistants: Alexa · Siri · Google</dd>
@@ -128,8 +128,8 @@ export default function Hero() {
 
             <div className="glass glow-ring animate-float-slow absolute -bottom-8 -left-10 max-w-[240px] rounded-3xl p-4" style={{ animationDelay: "1.2s" }}>
               <p className="flex items-start gap-2 text-sm font-semibold leading-snug">
-                <Mic className="mt-0.5 h-4 w-4 shrink-0 text-primary-soft" aria-hidden />
-                “ఈ సాయంత్రం క్లీనింగ్ కావాలి”
+                <Mic className="mt-0.5 h-4 w-4 shrink-0 text-primary" aria-hidden />
+                <span lang="te">“ఈ సాయంత్రం క్లీనింగ్ కావాలి”</span>
               </p>
               <p className="mt-1.5 text-xs text-muted">Telugu · booked in one sentence</p>
             </div>
@@ -155,7 +155,7 @@ export default function Hero() {
       </div>
 
       <div className="relative flex justify-center pb-8">
-        <Link href="/#services" aria-label="Scroll to services" className="text-muted transition-colors hover:text-primary-soft">
+        <Link href="/#services" aria-label="Scroll to services" className="text-muted transition-colors hover:text-primary">
           <ArrowDown className="h-5 w-5 animate-bounce" aria-hidden />
         </Link>
       </div>

@@ -30,7 +30,7 @@ export default function ActiveJobCard({
 
   return (
     <div className="glass glow-ring animate-fade-up mt-6 rounded-3xl p-6">
-      <p className="flex items-center gap-2 text-xs font-semibold uppercase tracking-widest text-primary-soft">
+      <p className="flex items-center gap-2 text-xs font-semibold uppercase tracking-widest text-primary">
         <Zap className="h-3.5 w-3.5" aria-hidden /> Active job
       </p>
       <div className="mt-3 flex flex-wrap items-center justify-between gap-3">
@@ -74,7 +74,7 @@ export default function ActiveJobCard({
         {job.status === "en_route" && (
           <div>
             <p className="mb-2 flex items-center gap-2 text-sm font-medium text-muted">
-              <KeyRound className="h-4 w-4 text-primary-soft" aria-hidden />
+              <KeyRound className="h-4 w-4 text-primary" aria-hidden />
               Ask the customer for their 4-digit arrival OTP (shown on their booking screen)
             </p>
             <div className="flex gap-2">

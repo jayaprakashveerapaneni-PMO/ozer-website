@@ -57,7 +57,7 @@ export default function SuccessScreen({
         </div>
         <CheckCircle2 className="mx-auto h-14 w-14 text-success" aria-hidden />
         <h1 className="mt-4 text-2xl font-bold">Booking confirmed</h1>
-        <p className="mt-1 font-display text-lg font-bold text-primary-soft text-glow">
+        <p className="mt-1 font-display text-lg font-bold text-primary text-glow">
           {bookingId}
         </p>
 
@@ -71,7 +71,7 @@ export default function SuccessScreen({
                 {booking.helperName ? (
                   <span className="text-success">{booking.helperName} ✓ accepted</span>
                 ) : (
-                  <span className="inline-flex items-center gap-1.5 text-primary-soft">
+                  <span className="inline-flex items-center gap-1.5 text-primary">
                     <span className="typing-dot" />
                     <span className="typing-dot" />
                     <span className="typing-dot" />
@@ -83,7 +83,7 @@ export default function SuccessScreen({
             <Row label="Area" value={`${booking.zone}, Hyderabad`} />
             <div className="flex justify-between border-t border-line pt-3">
               <span className="text-muted">Estimate (pay after)</span>
-              <span className="font-display font-bold text-primary-soft">
+              <span className="font-display font-bold text-primary">
                 {formatEstimate(booking.estLow, booking.estHigh)}
               </span>
             </div>
@@ -115,7 +115,7 @@ export default function SuccessScreen({
             <p className="text-xs font-semibold uppercase tracking-widest text-muted">
               Your arrival OTP
             </p>
-            <p className="mt-1 font-display text-4xl font-bold tracking-[0.35em] text-primary-soft text-glow">
+            <p className="mt-1 font-display text-4xl font-bold tracking-[0.35em] text-primary text-glow">
               {booking.otp}
             </p>
             <p className="mt-1.5 text-xs text-muted">
@@ -133,7 +133,7 @@ export default function SuccessScreen({
         )}
 
         <p className="mt-6 rounded-2xl bg-surface p-3 text-xs text-muted">
-          <BellRing className="mr-1 inline h-3.5 w-3.5 text-primary-soft" aria-hidden />
+          <BellRing className="mr-1 inline h-3.5 w-3.5 text-primary" aria-hidden />
           This screen updates <strong className="text-foreground/80">live</strong> as the
           helper acts. Open the helper app to accept this job and watch the timeline move.
         </p>
@@ -149,13 +149,13 @@ export default function SuccessScreen({
           <button
             type="button"
             onClick={onReset}
-            className="glass rounded-xl px-5 py-2.5 text-sm font-semibold transition-colors hover:text-primary-soft"
+            className="glass rounded-xl px-5 py-2.5 text-sm font-semibold transition-colors hover:text-primary"
           >
             Book another service
           </button>
           <Link
             href="/"
-            className="glass rounded-xl px-5 py-2.5 text-sm font-semibold transition-colors hover:text-primary-soft"
+            className="glass rounded-xl px-5 py-2.5 text-sm font-semibold transition-colors hover:text-primary"
           >
             Home
           </Link>

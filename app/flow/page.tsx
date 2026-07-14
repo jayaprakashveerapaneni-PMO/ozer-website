@@ -19,7 +19,16 @@ import {
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import Reveal from "@/components/motion/Reveal";
-import { BRAND } from "@/lib/design";
+import { BRAND, BRAND_INK } from "@/lib/design";
+
+// Map each bright flow accent to its AA-safe ink for text / solid surfaces.
+const INK: Record<string, string> = {
+  [BRAND.primary]: BRAND_INK.primary,
+  [BRAND.rose]: BRAND_INK.rose,
+  [BRAND.accent]: BRAND_INK.accent,
+  [BRAND.success]: BRAND_INK.success,
+  [BRAND.violet]: BRAND_INK.violet,
+};
 
 export const metadata: Metadata = {
   title: "The build story — Ozer",
@@ -117,14 +126,14 @@ export default function FlowPage() {
   return (
     <>
       <Navbar />
-      <main className="flex-1">
+      <main id="main-content" className="flex-1">
         <section className="relative overflow-hidden py-16 lg:py-24">
           <div className="blob blob-a left-[-8%] top-[0%] h-96 w-96 bg-orange-400" aria-hidden />
           <div className="blob blob-b right-[-5%] top-[40%] h-80 w-80 bg-cyan-400" aria-hidden />
 
           <div className="relative mx-auto max-w-5xl px-4 sm:px-6">
             <Reveal className="mx-auto max-w-3xl text-center">
-              <p className="mb-4 inline-flex items-center gap-2 rounded-full glass px-4 py-1.5 text-xs font-semibold text-primary-soft">
+              <p className="mb-4 inline-flex items-center gap-2 rounded-full glass px-4 py-1.5 text-xs font-semibold text-primary">
                 <FileText className="h-3.5 w-3.5" aria-hidden />
                 For management & clients — the exact story
               </p>
@@ -143,15 +152,15 @@ export default function FlowPage() {
               {PIPELINE.map((p, i) => (
                 <Reveal key={p.title} delay={i * 100}>
                   <div className="glass tilt-card relative h-full rounded-3xl p-5">
-                    <p.icon className="h-7 w-7 text-primary-soft" aria-hidden />
+                    <p.icon className="h-7 w-7 text-primary" aria-hidden />
                     <h2 className="mt-3 font-semibold">{p.title}</h2>
                     <p className="mt-2 text-sm leading-relaxed text-muted">{p.body}</p>
-                    <p className="mt-3 inline-block rounded-full bg-surface px-2.5 py-1 text-[11px] font-bold text-primary-soft">
+                    <p className="mt-3 inline-block rounded-full bg-surface px-2.5 py-1 text-[11px] font-bold text-primary">
                       {p.tag}
                     </p>
                     {i < 3 && (
                       <ArrowRight
-                        className="absolute -right-4 top-1/2 hidden h-5 w-5 -translate-y-1/2 text-primary-soft/60 md:block animate-pulse-dot"
+                        className="absolute -right-4 top-1/2 hidden h-5 w-5 -translate-y-1/2 text-primary/60 md:block animate-pulse-dot"
                         aria-hidden
                       />
                     )}
@@ -187,7 +196,7 @@ export default function FlowPage() {
                               <li key={s} className="flex items-start gap-2 text-sm text-muted">
                                 <span
                                   className="mt-0.5 flex h-4.5 w-4.5 shrink-0 items-center justify-center rounded-full text-[10px] font-bold"
-                                  style={{ background: `${f.accent}1a`, color: f.accent }}
+                                  style={{ background: `${f.accent}1a`, color: INK[f.accent] }}
                                 >
                                   {j + 1}
                                 </span>
@@ -195,7 +204,7 @@ export default function FlowPage() {
                               </li>
                             ))}
                           </ol>
-                          <p className="mt-2 text-[11px] font-semibold uppercase tracking-widest text-muted/70">
+                          <p className="mt-2 text-[11px] font-semibold uppercase tracking-widest text-muted">
                             Traces: {f.traces}
                           </p>
                         </div>
@@ -203,7 +212,7 @@ export default function FlowPage() {
                       <Link
                         href={f.href}
                         className="btn-shine inline-flex items-center gap-2 rounded-2xl px-5 py-3 text-sm font-bold text-white transition-transform hover:scale-105"
-                        style={{ background: f.accent, boxShadow: `0 8px 24px ${f.accent}44` }}
+                        style={{ background: INK[f.accent], boxShadow: `0 8px 24px ${f.accent}44` }}
                       >
                         {f.linkLabel} <ArrowRight className="h-4 w-4" aria-hidden />
                       </Link>
@@ -221,16 +230,16 @@ export default function FlowPage() {
                 </h2>
                 <div className="mt-8 grid items-center gap-4 md:grid-cols-[1fr_auto_1fr]">
                   <div className="rounded-3xl border border-line bg-white/70 p-5">
-                    <p className="text-xs font-bold uppercase tracking-widest text-primary-soft">Customer window</p>
+                    <p className="text-xs font-bold uppercase tracking-widest text-primary">Customer window</p>
                     <ul className="mt-3 space-y-2 text-sm text-muted">
-                      <li className="flex gap-2"><Zap className="mt-0.5 h-4 w-4 shrink-0 text-primary-soft" aria-hidden /> Books cleaning (tap, wizard or voice)</li>
-                      <li className="flex gap-2"><KeyRound className="mt-0.5 h-4 w-4 shrink-0 text-primary-soft" aria-hidden /> Sees arrival OTP + live status dots</li>
+                      <li className="flex gap-2"><Zap className="mt-0.5 h-4 w-4 shrink-0 text-primary" aria-hidden /> Books cleaning (tap, wizard or voice)</li>
+                      <li className="flex gap-2"><KeyRound className="mt-0.5 h-4 w-4 shrink-0 text-primary" aria-hidden /> Sees arrival OTP + live status dots</li>
                       <li className="flex gap-2"><CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-success" aria-hidden /> Watches: assigned → en route → done</li>
                     </ul>
                   </div>
                   <div className="flex justify-center md:flex-col md:gap-2">
-                    <ArrowRight className="hidden h-6 w-6 text-primary-soft animate-pulse-dot md:block" aria-hidden />
-                    <ArrowDown className="h-6 w-6 text-primary-soft animate-pulse-dot md:hidden" aria-hidden />
+                    <ArrowRight className="hidden h-6 w-6 text-primary animate-pulse-dot md:block" aria-hidden />
+                    <ArrowDown className="h-6 w-6 text-primary animate-pulse-dot md:hidden" aria-hidden />
                     <p className="sr-only">real-time sync</p>
                   </div>
                   <div className="rounded-3xl border border-line bg-white/70 p-5">
@@ -243,8 +252,8 @@ export default function FlowPage() {
                   </div>
                 </div>
                 <p className="mt-6 text-center text-sm text-muted">
-                  Open <Link href="/book" className="font-semibold text-primary-soft underline-offset-2 hover:underline">/book</Link> and{" "}
-                  <Link href="/helper" className="font-semibold text-primary-soft underline-offset-2 hover:underline">/helper</Link> side by side — the sync is instant.
+                  Open <Link href="/book" className="font-semibold text-primary underline-offset-2 hover:underline">/book</Link> and{" "}
+                  <Link href="/helper" className="font-semibold text-primary underline-offset-2 hover:underline">/helper</Link> side by side — the sync is instant.
                 </p>
               </div>
             </Reveal>

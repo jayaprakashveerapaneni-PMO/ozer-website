@@ -18,7 +18,7 @@ export default function OfferList({
   return (
     <div className="mt-6">
       <h2 className="flex items-center gap-2 font-display text-lg font-semibold">
-        <Bell className="h-5 w-5 text-primary-soft" aria-hidden />
+        <Bell className="h-5 w-5 text-primary" aria-hidden />
         Job offers
         {offers.length > 0 && (
           <span className="step-live rounded-full bg-primary px-2.5 py-0.5 font-display text-xs font-bold text-on-primary">

@@ -14,7 +14,7 @@ export default function BookPage() {
   return (
     <>
       <Navbar />
-      <main className="flex-1">
+      <main id="main-content" className="flex-1">
         <Suspense
           fallback={
             <div className="mx-auto max-w-3xl px-4 py-20 text-center text-foreground/50">

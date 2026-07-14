@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { Play, RotateCcw, CheckCircle2, Speaker, Smartphone, CircleDot, BadgeCheck } from "lucide-react";
-import { ASSISTANT_ACCENT, withAlpha } from "@/lib/design";
+import { ASSISTANT_ACCENT, ASSISTANT_ACCENT_INK, withAlpha } from "@/lib/design";
 
 type Turn = { who: "user" | "assistant" | "system"; text: string };
 
@@ -12,6 +12,7 @@ interface Platform {
   device: string;
   icon: React.ComponentType<{ className?: string; style?: React.CSSProperties }>;
   accent: string;
+  ink: string;
   glow: string;
   depth: string;
   langs: string;
@@ -27,6 +28,7 @@ const PLATFORMS: Platform[] = [
     device: "Echo · full voice dialog",
     icon: Speaker,
     accent: ASSISTANT_ACCENT.alexa,
+    ink: ASSISTANT_ACCENT_INK.alexa,
     glow: withAlpha(ASSISTANT_ACCENT.alexa, 0.25),
     depth: "Full conversational booking",
     langs: "English + Hindi",
@@ -44,6 +46,7 @@ const PLATFORMS: Platform[] = [
     device: "iPhone · App Shortcuts",
     icon: Smartphone,
     accent: ASSISTANT_ACCENT.siri,
+    ink: ASSISTANT_ACCENT_INK.siri,
     glow: withAlpha(ASSISTANT_ACCENT.siri, 0.25),
     depth: "Shortcut phrases → in-app booking",
     langs: "English (launch)",
@@ -61,6 +64,7 @@ const PLATFORMS: Platform[] = [
     device: "Android · App Actions",
     icon: CircleDot,
     accent: ASSISTANT_ACCENT.google,
+    ink: ASSISTANT_ACCENT_INK.google,
     glow: withAlpha(ASSISTANT_ACCENT.google, 0.25),
     depth: "Deep-links straight into the app",
     langs: "English + Hindi (launch)",
@@ -115,7 +119,7 @@ function Conversation({ platform }: { platform: Platform }) {
             className={`animate-fade-up flex ${turn.who === "user" ? "justify-end" : "justify-start"}`}
           >
             {turn.who === "system" ? (
-              <p className="mx-auto rounded-full bg-surface px-4 py-1.5 text-center text-xs font-semibold" style={{ color: platform.accent }}>
+              <p className="mx-auto rounded-full bg-surface px-4 py-1.5 text-center text-xs font-semibold" style={{ color: platform.ink }}>
                 {turn.text}
               </p>
             ) : (
@@ -148,8 +152,8 @@ function Conversation({ platform }: { platform: Platform }) {
           <button
             type="button"
             onClick={play}
-            className="inline-flex items-center gap-2 rounded-xl px-5 py-2.5 text-sm font-bold text-on-primary transition-transform hover:scale-105"
-            style={{ background: platform.accent, boxShadow: `0 0 28px ${platform.glow}` }}
+            className="btn-shine inline-flex items-center gap-2 rounded-xl px-5 py-2.5 text-sm font-bold text-white transition-transform hover:scale-105"
+            style={{ background: platform.ink, boxShadow: `0 0 28px ${platform.glow}` }}
           >
             <Play className="h-4 w-4" aria-hidden /> Play conversation
           </button>

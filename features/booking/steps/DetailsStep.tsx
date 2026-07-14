@@ -46,7 +46,7 @@ export default function DetailsStep({
 
         <div className="glow-ring rounded-2xl bg-surface p-4" aria-live="polite">
           <p className="text-sm text-muted">{estimate.label}</p>
-          <p className="font-display text-2xl font-bold text-primary-soft">
+          <p className="font-display text-2xl font-bold text-primary">
             {formatEstimate(estimate.low, estimate.high)}
           </p>
           {estimate.note && <p className="mt-1 text-xs text-muted">{estimate.note}</p>}

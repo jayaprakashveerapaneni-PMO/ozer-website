@@ -26,13 +26,13 @@ export default function Testimonials() {
                       <p className="text-sm font-semibold">{t.name}</p>
                       <p className="text-xs text-muted">{t.role} · {t.area}</p>
                     </div>
-                    <div className="flex items-center gap-0.5" aria-label="5 out of 5 stars">
+                    <div className="flex items-center gap-0.5" role="img" aria-label="5 out of 5 stars">
                       {Array.from({ length: 5 }).map((_, j) => (
-                        <Star key={j} className="h-3.5 w-3.5 fill-primary-soft text-primary-soft" aria-hidden />
+                        <Star key={j} className="h-3.5 w-3.5 fill-primary-soft text-primary" aria-hidden />
                       ))}
                     </div>
                   </div>
-                  <p className="mt-2 inline-block rounded-full bg-surface px-2.5 py-0.5 text-xs font-medium text-primary-soft">
+                  <p className="mt-2 inline-block rounded-full bg-surface px-2.5 py-0.5 text-xs font-medium text-primary">
                     {t.service}
                   </p>
                 </figcaption>

@@ -30,7 +30,7 @@ export default function Navbar() {
           <span className="font-display text-xl font-semibold tracking-tight">
             Ozer
           </span>
-          <span className="ml-1 hidden rounded-full glass px-2 py-0.5 text-xs font-medium text-primary-soft sm:inline">
+          <span className="ml-1 hidden rounded-full glass px-2 py-0.5 text-xs font-medium text-primary sm:inline">
             Hyderabad
           </span>
         </Link>
@@ -40,7 +40,7 @@ export default function Navbar() {
             <Link
               key={l.href}
               href={l.href}
-              className="text-sm font-medium text-muted transition-colors duration-200 hover:text-primary-soft"
+              className="text-sm font-medium text-muted transition-colors duration-200 hover:text-primary"
             >
               {l.label}
             </Link>

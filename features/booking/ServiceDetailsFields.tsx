@@ -148,7 +148,7 @@ export default function ServiceDetailsFields({
             />
           )}
           <p className="rounded-2xl bg-surface p-3 text-xs text-muted">
-            <GraduationCap className="mr-1 inline h-3.5 w-3.5 text-primary-soft" aria-hidden />
+            <GraduationCap className="mr-1 inline h-3.5 w-3.5 text-primary" aria-hidden />
             Only certified, first-aid-trained carers can take care bookings.
             Service window is 6 AM – 10 PM.
           </p>

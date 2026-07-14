@@ -104,7 +104,7 @@ export default function BookingWizard() {
   return (
     <div className="mx-auto max-w-3xl px-4 py-10 sm:px-6">
       {viaVoice && step === 1 && (
-        <p className="animate-fade-up mb-6 flex items-center gap-2 rounded-2xl glass px-4 py-3 text-sm font-medium text-primary-soft">
+        <p className="animate-fade-up mb-6 flex items-center gap-2 rounded-2xl glass px-4 py-3 text-sm font-medium text-primary">
           <Mic className="h-4 w-4 shrink-0" aria-hidden />
           Filled in by voice — review the details, everything stays in your control.
           {initialSlot && (
@@ -125,7 +125,7 @@ export default function BookingWizard() {
                 }`}
                 aria-hidden
               />
-              <span className={`text-xs ${i === step ? "font-bold text-primary-soft" : "text-muted"}`}>
+              <span className={`text-xs ${i === step ? "font-bold text-primary" : "text-muted"}`}>
                 {s}
               </span>
             </li>
@@ -169,7 +169,7 @@ export default function BookingWizard() {
           <button
             type="button"
             onClick={() => setStep(step - 1)}
-            className="glass inline-flex items-center gap-1 rounded-xl px-4 py-2.5 text-sm font-semibold transition-colors hover:text-primary-soft"
+            className="glass inline-flex items-center gap-1 rounded-xl px-4 py-2.5 text-sm font-semibold transition-colors hover:text-primary"
           >
             <ChevronLeft className="h-4 w-4" aria-hidden /> Back
           </button>

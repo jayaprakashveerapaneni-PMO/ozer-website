@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { Sparkles, CookingPot, Shirt, HeartHandshake, Check, ArrowRight, Zap } from "lucide-react";
 import { SERVICES, type ServiceId } from "@/lib/domain";
-import { SERVICE_ACCENT, withAlpha } from "@/lib/design";
+import { SERVICE_ACCENT, SERVICE_ACCENT_INK, withAlpha } from "@/lib/design";
 import Reveal from "@/components/motion/Reveal";
 import Spotlight from "@/components/motion/Spotlight";
 
@@ -29,7 +29,8 @@ export default function Services() {
         <div className="mt-12 grid gap-6 sm:grid-cols-2">
           {SERVICES.map((s, i) => {
             const Icon = ICONS[s.id];
-            const accent = SERVICE_ACCENT[s.id];
+            const accent = SERVICE_ACCENT[s.id]; // bright: decorative fills only
+            const ink = SERVICE_ACCENT_INK[s.id]; // AA-safe: text + solid button
             return (
               <Reveal key={s.id} delay={i * 80}>
                 <Spotlight color={withAlpha(accent, 0.19)} className="h-full rounded-3xl">
@@ -57,7 +58,7 @@ export default function Services() {
                     </div>
                     <h3 className="mt-4 text-xl font-semibold">{s.name}</h3>
                     <p className="mt-1 text-sm text-muted">{s.tagline}</p>
-                    <p className="mt-3 font-display text-lg font-bold" style={{ color: accent }}>
+                    <p className="mt-3 font-display text-lg font-bold" style={{ color: ink }}>
                       {s.pricing}
                     </p>
                     <ul className="mt-4 space-y-2">
@@ -73,8 +74,8 @@ export default function Services() {
                       className="btn-shine mt-5 inline-flex w-full items-center justify-center gap-2 rounded-2xl border-2 px-5 py-3.5 text-sm font-bold transition-all duration-200 group-hover:scale-[1.02]"
                       style={{
                         color: "white",
-                        background: accent,
-                        borderColor: accent,
+                        background: ink,
+                        borderColor: ink,
                         boxShadow: `0 0 24px ${withAlpha(accent, 0.27)}`,
                       }}
                     >
@@ -86,7 +87,7 @@ export default function Services() {
                     href={`/book?service=${s.id}&instant=1`}
                     aria-label={`Instant book ${s.name} — ASAP`}
                     className="btn-shine absolute right-4 top-16 z-10 inline-flex items-center gap-1.5 rounded-full border bg-white/90 px-3.5 py-1.5 text-xs font-bold shadow-md backdrop-blur transition-all duration-200 hover:scale-110"
-                    style={{ color: accent, borderColor: withAlpha(accent, 0.4) }}
+                    style={{ color: ink, borderColor: withAlpha(accent, 0.4) }}
                   >
                     <Zap className="h-3.5 w-3.5" aria-hidden /> Instant — ASAP
                   </Link>

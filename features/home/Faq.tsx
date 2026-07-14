@@ -21,7 +21,7 @@ export default function Faq() {
               <div key={f.q}>
                 <button
                   type="button"
-                  className="flex w-full items-center justify-between gap-4 px-6 py-5 text-left transition-colors hover:text-primary-soft"
+                  className="flex w-full items-center justify-between gap-4 px-6 py-5 text-left transition-colors hover:text-primary"
                   aria-expanded={isOpen}
                   aria-controls={`faq-panel-${i}`}
                   id={`faq-button-${i}`}
@@ -29,7 +29,7 @@ export default function Faq() {
                 >
                   <span className="font-semibold">{f.q}</span>
                   <ChevronDown
-                    className={`h-5 w-5 shrink-0 text-primary-soft transition-transform duration-200 ${isOpen ? "rotate-180" : ""}`}
+                    className={`h-5 w-5 shrink-0 text-primary transition-transform duration-200 ${isOpen ? "rotate-180" : ""}`}
                     aria-hidden
                   />
                 </button>

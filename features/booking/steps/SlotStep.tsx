@@ -33,7 +33,7 @@ export default function SlotStep({
                   : "border-line glass hover:border-primary/40"
               }`}
             >
-              <Icon className={`h-6 w-6 ${selected ? "text-primary-soft" : "text-muted"}`} aria-hidden />
+              <Icon className={`h-6 w-6 ${selected ? "text-primary" : "text-muted"}`} aria-hidden />
               <span>
                 <span className="block font-semibold">{s.label}</span>
                 <span className="block text-sm text-muted">{s.sub}</span>

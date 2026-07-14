@@ -30,7 +30,7 @@ export default function HelperStep({
           </p>
           <button
             type="button"
-            className="mt-4 rounded-xl border border-primary px-4 py-2 text-sm font-semibold text-primary-soft"
+            className="mt-4 rounded-xl border border-primary px-4 py-2 text-sm font-semibold text-primary"
           >
             <BellRing className="mr-1.5 inline h-4 w-4" aria-hidden /> Notify me
           </button>
@@ -69,7 +69,7 @@ export default function HelperStep({
                     </span>
                     <span className="mt-0.5 flex items-center gap-2 text-sm text-muted">
                       <span className="flex items-center gap-0.5">
-                        <Star className="h-3.5 w-3.5 fill-primary-soft text-primary-soft" aria-hidden />{" "}
+                        <Star className="h-3.5 w-3.5 fill-primary-soft text-primary" aria-hidden />{" "}
                         {h.rating}
                       </span>
                       · {h.jobs} jobs

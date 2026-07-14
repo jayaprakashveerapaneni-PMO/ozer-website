@@ -15,7 +15,7 @@ import {
   Wallet,
 } from "lucide-react";
 import Spotlight from "@/components/motion/Spotlight";
-import { PERSONA_ACCENT } from "@/lib/design";
+import { PERSONA_ACCENT, PERSONA_ACCENT_INK } from "@/lib/design";
 
 interface Persona {
   id: string;
@@ -191,7 +191,7 @@ export default function Personas() {
                   <p className="mt-3 text-sm leading-relaxed text-foreground/80">“{per.quote}”</p>
                   <span
                     className="mt-4 inline-flex items-center gap-1 rounded-xl border px-3.5 py-2 text-xs font-bold transition-all duration-200 hover:gap-2"
-                    style={{ color: per.accent, borderColor: `${per.accent}55`, background: `${per.accent}11` }}
+                    style={{ color: PERSONA_ACCENT_INK[i], borderColor: `${per.accent}55`, background: `${per.accent}11` }}
                   >
                     {per.cta.label} <ArrowRight className="h-3.5 w-3.5" aria-hidden />
                   </span>

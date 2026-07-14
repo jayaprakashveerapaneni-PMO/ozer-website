@@ -29,7 +29,7 @@ export default function ServiceStep({
                   : "border-line glass hover:border-primary/40"
               }`}
             >
-              <Icon className={`h-7 w-7 ${selected ? "text-primary-soft" : "text-muted"}`} aria-hidden />
+              <Icon className={`h-7 w-7 ${selected ? "text-primary" : "text-muted"}`} aria-hidden />
               <p className="mt-2 font-semibold">{s.name}</p>
               <p className="mt-0.5 text-sm text-muted">{s.pricing}</p>
             </button>

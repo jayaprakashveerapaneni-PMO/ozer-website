@@ -13,7 +13,7 @@ export default function HelperPage() {
   return (
     <>
       <Navbar />
-      <main className="flex-1">
+      <main id="main-content" className="flex-1">
         <HelperApp />
       </main>
       <Footer />

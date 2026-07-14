@@ -39,16 +39,18 @@ export default function HowItWorks() {
 
         <ol className="mt-12 grid gap-6 md:grid-cols-2 lg:grid-cols-4">
           {steps.map((s, i) => (
-            <Reveal key={s.title} delay={i * 90}>
-              <li className="glass tilt-card relative h-full rounded-3xl p-6">
-                <span className="absolute -top-3 left-6 rounded-full bg-primary px-2.5 py-0.5 font-display text-xs font-bold text-on-primary glow-primary">
-                  {i + 1}
-                </span>
-                <s.icon className="h-7 w-7 text-primary-soft" aria-hidden />
-                <h3 className="mt-3 font-semibold">{s.title}</h3>
-                <p className="mt-2 text-sm leading-relaxed text-muted">{s.body}</p>
-              </li>
-            </Reveal>
+            <li key={s.title} className="relative">
+              <Reveal delay={i * 90} className="h-full">
+                <div className="glass tilt-card relative h-full rounded-3xl p-6">
+                  <span className="absolute -top-3 left-6 rounded-full bg-primary px-2.5 py-0.5 font-display text-xs font-bold text-on-primary glow-primary">
+                    {i + 1}
+                  </span>
+                  <s.icon className="h-7 w-7 text-primary" aria-hidden />
+                  <h3 className="mt-3 font-semibold">{s.title}</h3>
+                  <p className="mt-2 text-sm leading-relaxed text-muted">{s.body}</p>
+                </div>
+              </Reveal>
+            </li>
           ))}
         </ol>
       </div>

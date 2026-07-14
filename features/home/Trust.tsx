@@ -53,7 +53,7 @@ export default function Trust() {
           {pillars.map((p, i) => (
             <Reveal key={p.title} delay={(i % 3) * 90}>
               <Card interactive className="h-full">
-                <p.icon className="h-7 w-7 text-primary-soft" aria-hidden />
+                <p.icon className="h-7 w-7 text-primary" aria-hidden />
                 <h3 className="mt-3 font-semibold">{p.title}</h3>
                 <p className="mt-2 text-sm leading-relaxed text-muted">{p.body}</p>
               </Card>

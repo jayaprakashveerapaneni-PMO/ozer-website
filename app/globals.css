@@ -9,15 +9,17 @@
 :root {
   --background: #fffaf5;
   --foreground: #1e1b2e;
-  --primary: #ea580c;
-  --primary-soft: #f97316;
+  /* Interactive/text colors are AA-safe on the light bg (see contrast.test.ts).
+     --primary-soft stays bright for DECORATIVE use only (glows, large display). */
+  --primary: #c2410c;
+  --primary-soft: #ea580c;
   --on-primary: #ffffff;
-  --accent: #0891b2;
-  --violet: #7c3aed;
+  --accent: #0e7490;
+  --violet: #6d28d9;
   --surface: rgba(30, 27, 46, 0.05);
   --line: rgba(30, 27, 46, 0.1);
   --muted: #6b6880;
-  --success: #059669;
+  --success: #047857;
   --destructive: #dc2626;
 
   /* Elevation scale */
@@ -93,8 +95,26 @@ button, a, select, [role="button"] {
 }
 
 :focus-visible {
-  outline: 2px solid #ea580c;
+  outline: 2px solid var(--primary);
   outline-offset: 2px;
+}
+
+/* Skip-to-content link — visible only on keyboard focus. */
+.skip-link {
+  position: fixed;
+  top: 0.5rem;
+  left: 0.5rem;
+  z-index: 100;
+  transform: translateY(-150%);
+  transition: transform var(--duration-base) var(--ease-standard);
+  background: var(--primary);
+  color: var(--on-primary);
+  padding: 0.5rem 1rem;
+  border-radius: 0.75rem;
+  font-weight: 700;
+}
+.skip-link:focus-visible {
+  transform: translateY(0);
 }
 
 ::selection {
@@ -134,8 +154,9 @@ button, a, select, [role="button"] {
   text-shadow: 0 2px 20px rgba(234, 88, 12, 0.3);
 }
 
+/* Gradient stops chosen so each meets AA for large text (≥3:1) on the light bg. */
 .gradient-text {
-  background: linear-gradient(100deg, #ea580c 0%, #f97316 35%, #0891b2 100%);
+  background: linear-gradient(100deg, #c2410c 0%, #ea580c 40%, #0e7490 100%);
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;

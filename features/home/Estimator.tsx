@@ -19,7 +19,7 @@ export default function Estimator() {
         <div className="grid gap-10 lg:grid-cols-[1fr_1fr] lg:items-start">
           <div>
             <h2 className="flex items-center gap-3 text-3xl font-bold tracking-tight sm:text-5xl">
-              <Calculator className="h-9 w-9 text-primary-soft" aria-hidden />
+              <Calculator className="h-9 w-9 text-primary" aria-hidden />
               <span>
                 Know your price <span className="gradient-text">before you book</span>
               </span>
@@ -64,7 +64,7 @@ export default function Estimator() {
 
             <div className="glow-ring mt-6 rounded-2xl bg-surface p-4" aria-live="polite">
               <p className="text-sm font-medium text-muted">{estimate.label}</p>
-              <p className="mt-1 font-display text-3xl font-bold text-primary-soft text-glow">
+              <p className="mt-1 font-display text-3xl font-bold text-primary text-glow">
                 {formatEstimate(estimate.low, estimate.high)}
               </p>
               {estimate.note && <p className="mt-1 text-xs text-muted">{estimate.note}</p>}

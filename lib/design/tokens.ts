@@ -29,11 +29,16 @@ export function withAlpha(hex: string, alpha: number): string {
 }
 
 /**
- * Tier 2 — core brand colors for JS/inline-style consumers. These MIRROR the
- * semantic custom properties in globals.css (:root); keep the two in sync.
- * (JS cannot read CSS custom properties at module-eval / SSR time, so a static
- * mirror is unavoidable without a token-codegen build step.)
+ * Two-value accent system (like Material's "container" / "on-container"):
+ *   • *_ACCENT  — bright, for DECORATIVE fills only: translucent tints, blobs,
+ *                 glows, borders. Contrast does not apply to these.
+ *   • *_INK     — darker, WCAG-AA on the light background, for TEXT and SOLID
+ *                 interactive surfaces (a solid button bg with white text).
+ * The bright values fail AA as text (measured: 1.7–2.6:1); the ink values pass
+ * (4.9–6.9:1) and white-on-ink also passes. Enforced by contrast.test.ts.
  */
+
+/** Tier 2 — core brand colors (bright). MIRRORS globals.css :root; keep synced. */
 export const BRAND = {
   primary: "#ea580c",
   accent: "#0891b2",
@@ -42,7 +47,16 @@ export const BRAND = {
   rose: "#f472b6",
 } as const;
 
-/** Tier 2 — per-service accent (Services grid, Personas, booking accents). */
+/** Tier 2 — AA-safe brand colors for text and solid button backgrounds. */
+export const BRAND_INK = {
+  primary: "#c2410c",
+  accent: "#0e7490",
+  violet: "#6d28d9",
+  success: "#047857",
+  rose: "#be185d",
+} as const;
+
+/** Tier 2 — per-service accent (bright; decorative fills only). */
 export const SERVICE_ACCENT: Record<ServiceId, string> = {
   cleaning: PALETTE.saffron,
   cook: PALETTE.rose,
@@ -50,21 +64,44 @@ export const SERVICE_ACCENT: Record<ServiceId, string> = {
   care: PALETTE.violet,
 };
 
+/** Tier 2 — AA-safe per-service accent for text and solid buttons. */
+export const SERVICE_ACCENT_INK: Record<ServiceId, string> = {
+  cleaning: BRAND_INK.primary,
+  cook: BRAND_INK.rose,
+  laundry: BRAND_INK.accent,
+  care: BRAND_INK.violet,
+};
+
 export type AssistantId = "alexa" | "siri" | "google";
 
-/** Tier 2 — voice-assistant brand accents. */
+/** Tier 2 — voice-assistant brand accents (bright; decorative). */
 export const ASSISTANT_ACCENT: Record<AssistantId, string> = {
   alexa: PALETTE.sky,
   siri: PALETTE.violet,
   google: PALETTE.emerald,
 };
 
-/** Tier 2 — persona accent ordering (Divya, Anjali, Rao garu, Meena). */
+/** Tier 2 — AA-safe assistant accents for text on the light background. */
+export const ASSISTANT_ACCENT_INK: Record<AssistantId, string> = {
+  alexa: "#0369a1",
+  siri: BRAND_INK.violet,
+  google: BRAND_INK.success,
+};
+
+/** Tier 2 — persona accent ordering (Divya, Anjali, Rao garu, Meena; bright). */
 export const PERSONA_ACCENT = [
   PALETTE.saffron,
   PALETTE.violet,
   PALETTE.cyan,
   PALETTE.emerald,
+] as const;
+
+/** Tier 2 — AA-safe persona accents for text on the light background. */
+export const PERSONA_ACCENT_INK = [
+  BRAND_INK.primary,
+  BRAND_INK.violet,
+  BRAND_INK.accent,
+  BRAND_INK.success,
 ] as const;
 
 /** Tier 3 — confetti burst palette for the booking success screen. */

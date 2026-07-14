@@ -32,7 +32,7 @@ export default function ConfirmStep({
         </div>
         <div className="flex justify-between border-t border-line pt-3">
           <span className="text-muted">Estimate — pay after service</span>
-          <span className="font-display text-lg font-bold text-primary-soft">
+          <span className="font-display text-lg font-bold text-primary">
             {formatEstimate(estimate.low, estimate.high)}
           </span>
         </div>
