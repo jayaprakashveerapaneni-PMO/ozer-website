@@ -1,0 +1,31 @@
+import { Suspense } from "react";
+import type { Metadata } from "next";
+import Navbar from "@/components/Navbar";
+import Footer from "@/components/Footer";
+import BookingWizard from "@/components/BookingWizard";
+
+export const metadata: Metadata = {
+  title: "Book a service — Ozer",
+  description:
+    "Book verified house cleaning, home cook, laundry or care in Hyderabad. Estimate first, pay after service.",
+};
+
+export default function BookPage() {
+  return (
+    <>
+      <Navbar />
+      <main className="flex-1">
+        <Suspense
+          fallback={
+            <div className="mx-auto max-w-3xl px-4 py-20 text-center text-foreground/50">
+              Loading booking…
+            </div>
+          }
+        >
+          <BookingWizard />
+        </Suspense>
+      </main>
+      <Footer />
+    </>
+  );
+}
