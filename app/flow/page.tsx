@@ -42,8 +42,8 @@ const PIPELINE = [
   {
     icon: Hammer,
     title: "3 · Build",
-    body: "Next.js 16 + Tailwind v4, fully static. Live voice recognition (Web Speech API, 4 languages), a real-time booking store syncing customer and helper screens, and animated everything.",
-    tag: "Next.js 16 · zero backend deps",
+    body: "Next.js 16 + Tailwind v4. Live voice recognition (Web Speech API, 4 languages) and a real-time booking backend on Supabase Postgres — customer and helper screens sync across devices via Realtime websockets.",
+    tag: "Next.js 16 · Supabase Realtime",
   },
   {
     icon: BadgeCheck,
@@ -103,7 +103,7 @@ const FLOWS = [
 
 const VERIFIED = [
   { check: "Booking created & persisted, live 'finding helper' state", result: "✓ pass" },
-  { check: "Offer appears in helper app instantly (cross-tab, real-time)", result: "✓ pass" },
+  { check: "Offer appears in helper app instantly (cross-device via Supabase Realtime)", result: "✓ pass" },
   { check: "Accept → assigned; customer screen updates without refresh", result: "✓ pass" },
   { check: "Wrong OTP rejected — job start blocked, trust flag messaging", result: "✓ pass" },
   { check: "Correct OTP → arrived → in progress → completed", result: "✓ pass" },
