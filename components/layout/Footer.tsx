@@ -23,7 +23,7 @@ export default function Footer() {
           </div>
 
           <nav aria-label="Services">
-            <h3 className="text-sm font-semibold">Services</h3>
+            <p className="text-sm font-semibold">Services</p>
             <ul className="mt-3 space-y-2 text-sm text-muted">
               <li><Link href="/book?service=cleaning" className="transition-colors hover:text-primary">House Cleaning</Link></li>
               <li><Link href="/book?service=cook" className="transition-colors hover:text-primary">Home Cook</Link></li>
@@ -33,7 +33,7 @@ export default function Footer() {
           </nav>
 
           <nav aria-label="Voice">
-            <h3 className="text-sm font-semibold">Voice</h3>
+            <p className="text-sm font-semibold">Voice</p>
             <ul className="mt-3 space-y-2 text-sm text-muted">
               <li><Link href="/#voice" className="transition-colors hover:text-primary">Live voice demo</Link></li>
               <li><Link href="/#assistants" className="transition-colors hover:text-primary">Alexa integration</Link></li>
@@ -44,7 +44,7 @@ export default function Footer() {
           </nav>
 
           <div>
-            <h3 className="text-sm font-semibold">Serving Hyderabad</h3>
+            <p className="text-sm font-semibold">Serving Hyderabad</p>
             <p className="mt-3 text-sm leading-relaxed text-muted">
               {ZONES.join(" · ")}
             </p>

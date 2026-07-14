@@ -36,7 +36,7 @@ export default function HelperApp() {
           <div className="flex items-center gap-3">
             <span
               className="flex h-14 w-14 items-center justify-center rounded-full font-display text-base font-bold text-white"
-              style={{ background: `hsl(${helper.hue} 70% 45%)` }}
+              style={{ background: `hsl(${helper.hue} 65% 30%)` }}
               aria-hidden
             >
               {helper.initials}

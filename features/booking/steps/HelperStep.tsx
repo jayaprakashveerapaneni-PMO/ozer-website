@@ -54,7 +54,7 @@ export default function HelperStep({
                 <div className="flex items-center gap-3">
                   <span
                     className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full font-display text-sm font-bold text-white"
-                    style={{ background: `hsl(${h.hue} 70% 45%)` }}
+                    style={{ background: `hsl(${h.hue} 65% 30%)` }}
                     aria-hidden
                   >
                     {h.initials}
