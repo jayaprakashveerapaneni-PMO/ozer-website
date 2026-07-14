@@ -3,6 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { Menu, X, Mic } from "lucide-react";
+import { Button } from "@/components/ui";
 
 const links = [
   { href: "/#services", label: "Services" },
@@ -44,13 +45,10 @@ export default function Navbar() {
               {l.label}
             </Link>
           ))}
-          <Link
-            href="/book"
-            className="inline-flex items-center gap-1.5 rounded-xl bg-primary px-4 py-2 text-sm font-bold text-on-primary glow-primary transition-transform duration-200 hover:scale-105"
-          >
+          <Button href="/book" size="sm">
             <Mic className="h-4 w-4" aria-hidden />
             Book now
-          </Link>
+          </Button>
         </div>
 
         <button
@@ -76,13 +74,9 @@ export default function Navbar() {
               {l.label}
             </Link>
           ))}
-          <Link
-            href="/book"
-            className="mt-3 block rounded-xl bg-primary px-4 py-3 text-center text-sm font-bold text-on-primary"
-            onClick={() => setOpen(false)}
-          >
+          <Button href="/book" fullWidth className="mt-3" onClick={() => setOpen(false)}>
             Book now
-          </Link>
+          </Button>
         </div>
       )}
     </header>

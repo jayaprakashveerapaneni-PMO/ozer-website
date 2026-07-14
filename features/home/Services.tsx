@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { Sparkles, CookingPot, Shirt, HeartHandshake, Check, ArrowRight, Zap } from "lucide-react";
 import { SERVICES, type ServiceId } from "@/lib/domain";
+import { SERVICE_ACCENT, withAlpha } from "@/lib/design";
 import Reveal from "@/components/motion/Reveal";
 import Spotlight from "@/components/motion/Spotlight";
 
@@ -9,13 +10,6 @@ const ICONS: Record<ServiceId, React.ComponentType<{ className?: string }>> = {
   cook: CookingPot,
   laundry: Shirt,
   care: HeartHandshake,
-};
-
-const ACCENTS: Record<ServiceId, string> = {
-  cleaning: "#fb923c",
-  cook: "#f472b6",
-  laundry: "#22d3ee",
-  care: "#a78bfa",
 };
 
 export default function Services() {
@@ -35,10 +29,10 @@ export default function Services() {
         <div className="mt-12 grid gap-6 sm:grid-cols-2">
           {SERVICES.map((s, i) => {
             const Icon = ICONS[s.id];
-            const accent = ACCENTS[s.id];
+            const accent = SERVICE_ACCENT[s.id];
             return (
               <Reveal key={s.id} delay={i * 80}>
-                <Spotlight color={`${accent}30`} className="h-full rounded-3xl">
+                <Spotlight color={withAlpha(accent, 0.19)} className="h-full rounded-3xl">
                   {/* whole card is one link — clickable anywhere */}
                   <Link
                     href={`/book?service=${s.id}`}
@@ -53,7 +47,7 @@ export default function Services() {
                     <div className="flex items-start justify-between gap-4">
                       <span
                         className="flex h-12 w-12 items-center justify-center rounded-2xl transition-transform duration-300 group-hover:scale-110 group-hover:rotate-6"
-                        style={{ background: `${accent}22`, color: accent }}
+                        style={{ background: withAlpha(accent, 0.13), color: accent }}
                       >
                         <Icon className="h-6 w-6" aria-hidden />
                       </span>
@@ -78,10 +72,10 @@ export default function Services() {
                     <span
                       className="btn-shine mt-5 inline-flex w-full items-center justify-center gap-2 rounded-2xl border-2 px-5 py-3.5 text-sm font-bold transition-all duration-200 group-hover:scale-[1.02]"
                       style={{
-                        color: "#ffffff",
+                        color: "white",
                         background: accent,
                         borderColor: accent,
-                        boxShadow: `0 0 24px ${accent}44`,
+                        boxShadow: `0 0 24px ${withAlpha(accent, 0.27)}`,
                       }}
                     >
                       Book {s.name} <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" aria-hidden />
@@ -92,7 +86,7 @@ export default function Services() {
                     href={`/book?service=${s.id}&instant=1`}
                     aria-label={`Instant book ${s.name} — ASAP`}
                     className="btn-shine absolute right-4 top-16 z-10 inline-flex items-center gap-1.5 rounded-full border bg-white/90 px-3.5 py-1.5 text-xs font-bold shadow-md backdrop-blur transition-all duration-200 hover:scale-110"
-                    style={{ color: accent, borderColor: `${accent}66` }}
+                    style={{ color: accent, borderColor: withAlpha(accent, 0.4) }}
                   >
                     <Zap className="h-3.5 w-3.5" aria-hidden /> Instant — ASAP
                   </Link>

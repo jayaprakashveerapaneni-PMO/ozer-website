@@ -1,23 +1,70 @@
 @import "tailwindcss";
 
+/*
+ * Semantic color tokens. Light is the committed default. A dark scheme is
+ * available by setting <html data-theme="dark"> — the token block below
+ * remaps the same semantic names, so no component needs to change. We do NOT
+ * auto-switch on prefers-color-scheme, deliberately: the brand is light-first.
+ */
 :root {
   --background: #fffaf5;
   --foreground: #1e1b2e;
+  --primary: #ea580c;
+  --primary-soft: #f97316;
+  --on-primary: #ffffff;
+  --accent: #0891b2;
+  --violet: #7c3aed;
+  --surface: rgba(30, 27, 46, 0.05);
+  --line: rgba(30, 27, 46, 0.1);
+  --muted: #6b6880;
+  --success: #059669;
+  --destructive: #dc2626;
+
+  /* Elevation scale */
+  --elevation-1: 0 4px 16px rgba(30, 27, 46, 0.06);
+  --elevation-2: 0 8px 32px rgba(30, 27, 46, 0.08);
+  --elevation-3: 0 20px 48px rgba(30, 27, 46, 0.12);
+
+  /* Motion — mirrors lib/design/tokens.ts */
+  --ease-emphasized: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-standard: cubic-bezier(0.4, 0, 0.2, 1);
+  --duration-fast: 150ms;
+  --duration-base: 250ms;
+  --duration-slow: 400ms;
+  --duration-reveal: 600ms;
+}
+
+:root[data-theme="dark"] {
+  --background: #0a0a0f;
+  --foreground: #ededf2;
+  --primary: #f97316;
+  --primary-soft: #fb923c;
+  --on-primary: #0a0a0c;
+  --accent: #22d3ee;
+  --violet: #a78bfa;
+  --surface: rgba(255, 255, 255, 0.05);
+  --line: rgba(255, 255, 255, 0.1);
+  --muted: #9a97ad;
+  --success: #34d399;
+  --destructive: #f87171;
+  --elevation-1: 0 4px 16px rgba(0, 0, 0, 0.4);
+  --elevation-2: 0 8px 32px rgba(0, 0, 0, 0.5);
+  --elevation-3: 0 20px 48px rgba(0, 0, 0, 0.6);
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --color-primary: #ea580c;
-  --color-primary-soft: #f97316;
-  --color-on-primary: #ffffff;
-  --color-accent: #0891b2;
-  --color-violet: #7c3aed;
-  --color-surface: rgba(30, 27, 46, 0.05);
-  --color-line: rgba(30, 27, 46, 0.1);
-  --color-muted: #6b6880;
-  --color-success: #059669;
-  --color-destructive: #dc2626;
+  --color-primary: var(--primary);
+  --color-primary-soft: var(--primary-soft);
+  --color-on-primary: var(--on-primary);
+  --color-accent: var(--accent);
+  --color-violet: var(--violet);
+  --color-surface: var(--surface);
+  --color-line: var(--line);
+  --color-muted: var(--muted);
+  --color-success: var(--success);
+  --color-destructive: var(--destructive);
   --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
   --font-display: var(--font-grotesk), ui-sans-serif, system-ui, sans-serif;
 }
@@ -52,6 +99,13 @@ button, a, select, [role="button"] {
 
 ::selection {
   background: rgba(249, 115, 22, 0.25);
+}
+
+/* Persona device-mockup screen — a deliberately dark "phone" surface. */
+.device-frame {
+  --device-frame-top: #0c0c12;
+  --device-frame-bottom: #050506;
+  background: linear-gradient(to bottom, var(--device-frame-top), var(--device-frame-bottom));
 }
 
 /* ---------- Light glass & glow ---------- */
@@ -149,13 +203,13 @@ button, a, select, [role="button"] {
   from { opacity: 0; transform: translateY(20px); }
   to { opacity: 1; transform: translateY(0); }
 }
-.animate-fade-up { animation: fade-up 0.6s cubic-bezier(0.16, 1, 0.3, 1) both; }
+.animate-fade-up { animation: fade-up 0.6s var(--ease-emphasized) both; }
 
 .reveal {
   opacity: 0;
   transform: translateY(24px);
-  transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1),
-    transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: opacity 0.6s var(--ease-emphasized),
+    transform 0.6s var(--ease-emphasized);
 }
 .reveal.in-view { opacity: 1; transform: translateY(0); }
 
@@ -252,13 +306,13 @@ button, a, select, [role="button"] {
   from { opacity: 0; transform: translateY(24px) rotate(2deg); filter: blur(4px); }
   to { opacity: 1; transform: translateY(0) rotate(0); filter: blur(0); }
 }
-.word-in { display: inline-block; animation: word-in 0.7s cubic-bezier(0.16, 1, 0.3, 1) both; }
+.word-in { display: inline-block; animation: word-in 0.7s var(--ease-emphasized) both; }
 
 @keyframes word-swap-in {
   from { opacity: 0; transform: translateY(60%); filter: blur(6px); }
   to { opacity: 1; transform: translateY(0); filter: blur(0); }
 }
-.word-swap { animation: word-swap-in 0.5s cubic-bezier(0.16, 1, 0.3, 1) both; }
+.word-swap { animation: word-swap-in 0.5s var(--ease-emphasized) both; }
 
 @keyframes twinkle {
   0%, 100% { opacity: 0.15; transform: scale(0.8); }
@@ -305,7 +359,7 @@ button, a, select, [role="button"] {
 .step-live { animation: step-light 1.8s ease-out infinite; }
 
 .tilt-card {
-  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1),
+  transition: transform 0.25s var(--ease-emphasized),
     box-shadow 0.25s ease, border-color 0.25s ease;
 }
 .tilt-card:hover {

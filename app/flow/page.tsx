@@ -19,6 +19,7 @@ import {
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import Reveal from "@/components/motion/Reveal";
+import { BRAND } from "@/lib/design";
 
 export const metadata: Metadata = {
   title: "The build story — Ozer",
@@ -56,7 +57,7 @@ const PIPELINE = [
 const FLOWS = [
   {
     icon: Zap,
-    accent: "#ea580c",
+    accent: BRAND.primary,
     title: "Instant booking (1 tap)",
     steps: ["Tap ⚡ Instant on any service card", "ASAP booking auto-created with defaults", "Live status screen — helper offer goes out"],
     traces: "FR-7, FR-9, FR-11",
@@ -65,7 +66,7 @@ const FLOWS = [
   },
   {
     icon: Users,
-    accent: "#f472b6",
+    accent: BRAND.rose,
     title: "Guided booking (≤ 5 screens)",
     steps: ["Pick service → details with live estimate", "Slot: ASAP or up to 14 days", "Choose verified helper → confirm", "Confetti + live status + arrival OTP"],
     traces: "FR-5..FR-9, FR-16, FR-37",
@@ -74,7 +75,7 @@ const FLOWS = [
   },
   {
     icon: Mic,
-    accent: "#0891b2",
+    accent: BRAND.accent,
     title: "Voice booking (Te/Hi/Ta/En)",
     steps: ["Tap the orb, speak your request", "Intent + slot parsed, read back in your language", "You confirm — wizard pre-filled, never auto-booked"],
     traces: "FR-26..FR-30, AI-7",
@@ -83,7 +84,7 @@ const FLOWS = [
   },
   {
     icon: Bell,
-    accent: "#059669",
+    accent: BRAND.success,
     title: "Helper flow (the other side)",
     steps: ["Offer lands with toast notification — instantly", "Accept → start journey → customer sees live status", "OTP handshake at the door (wrong OTP = blocked)", "Complete → wallet credited, earnings listed"],
     traces: "FR-11, FR-12, FR-14, FR-16, FR-20, FR-44, FR-46",
@@ -92,7 +93,7 @@ const FLOWS = [
   },
   {
     icon: Globe,
-    accent: "#7c3aed",
+    accent: BRAND.violet,
     title: "Voice assistants (industry first)",
     steps: ["Alexa: full dialog booking (En + Hi)", "Siri: shortcut phrases → pre-filled app flow", "Google: App Actions deep-link into booking", "Playable conversation demos for each"],
     traces: "FR-54..FR-60 (EP-14 addendum)",

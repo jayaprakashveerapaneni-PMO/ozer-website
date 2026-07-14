@@ -1,5 +1,6 @@
 import { ShieldCheck, MapPin, Wallet, KeyRound, RotateCcw, FileCheck } from "lucide-react";
 import Reveal from "@/components/motion/Reveal";
+import { Section, Container, Card } from "@/components/ui";
 
 const pillars = [
   {
@@ -36,8 +37,8 @@ const pillars = [
 
 export default function Trust() {
   return (
-    <section id="trust" className="scroll-mt-16 py-20 lg:py-28">
-      <div className="mx-auto max-w-6xl px-4 sm:px-6">
+    <Section id="trust">
+      <Container>
         <Reveal className="max-w-2xl">
           <h2 className="text-3xl font-bold tracking-tight sm:text-5xl">
             Trust isn&apos;t a feature. <span className="gradient-text">It&apos;s the product.</span>
@@ -51,15 +52,15 @@ export default function Trust() {
         <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {pillars.map((p, i) => (
             <Reveal key={p.title} delay={(i % 3) * 90}>
-              <div className="glass tilt-card h-full rounded-3xl p-6">
+              <Card interactive className="h-full">
                 <p.icon className="h-7 w-7 text-primary-soft" aria-hidden />
                 <h3 className="mt-3 font-semibold">{p.title}</h3>
                 <p className="mt-2 text-sm leading-relaxed text-muted">{p.body}</p>
-              </div>
+              </Card>
             </Reveal>
           ))}
         </div>
-      </div>
-    </section>
+      </Container>
+    </Section>
   );
 }

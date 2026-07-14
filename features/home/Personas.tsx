@@ -15,6 +15,7 @@ import {
   Wallet,
 } from "lucide-react";
 import Spotlight from "@/components/motion/Spotlight";
+import { PERSONA_ACCENT } from "@/lib/design";
 
 interface Persona {
   id: string;
@@ -33,7 +34,7 @@ const PERSONAS: Persona[] = [
     name: "Divya, 32",
     who: "IT professional · Madhapur · books on her commute",
     icon: Briefcase,
-    accent: "#fb923c",
+    accent: PERSONA_ACCENT[0],
     quote: "I book the cook before my cab reaches the office. Same cook, every day, zero renegotiation.",
     cta: { label: "Book like Divya", href: "/book?service=cook" },
     screen: (
@@ -63,7 +64,7 @@ const PERSONAS: Persona[] = [
     name: "Anjali, 40",
     who: "Caring for her father-in-law · Kondapur",
     icon: HeartHandshake,
-    accent: "#a78bfa",
+    accent: PERSONA_ACCENT[1],
     quote: "The check-in photos while I'm at work are everything. Certified carers, proof I can see.",
     cta: { label: "Book care like Anjali", href: "/book?service=care" },
     screen: (
@@ -88,7 +89,7 @@ const PERSONAS: Persona[] = [
     name: "Rao garu, 68",
     who: "Retired · Kukatpally · voice is his interface",
     icon: Mic,
-    accent: "#22d3ee",
+    accent: PERSONA_ACCENT[2],
     quote: "నేను తెలుగులో మాట్లాడతాను — యాప్ నా మాట వింటుంది. No menus, no English, no typing.",
     cta: { label: "Try voice like Rao garu", href: "/#voice" },
     screen: (
@@ -120,7 +121,7 @@ const PERSONAS: Persona[] = [
     name: "Meena, 35",
     who: "Cleaning professional · earns on her hours",
     icon: Sparkles,
-    accent: "#34d399",
+    accent: PERSONA_ACCENT[3],
     quote: "Jobs come to my phone in Telugu, I pick the ones near home, and money lands the same day.",
     cta: { label: "See Meena's helper app", href: "/helper" },
     screen: (
@@ -203,7 +204,7 @@ export default function Personas() {
           <div className="mx-auto w-full max-w-[300px]">
             <div
               key={p.id}
-              className="word-swap animate-float-slow rounded-[2.4rem] border-4 border-white/10 bg-gradient-to-b from-[#0c0c12] to-[#050506] p-4 shadow-2xl"
+              className="device-frame word-swap animate-float-slow rounded-[2.4rem] border-4 border-white/10 p-4 shadow-2xl"
               style={{ boxShadow: `0 24px 80px ${p.accent}22` }}
             >
               <div className="mx-auto mb-3 h-1.5 w-16 rounded-full bg-white/15" aria-hidden />

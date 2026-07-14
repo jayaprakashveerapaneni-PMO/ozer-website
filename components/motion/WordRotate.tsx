@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { prefersReducedMotion } from "@/lib/motion";
 
 const WORDS = ["delivered.", "verified.", "tracked.", "in Telugu.", "on demand."];
 
@@ -9,7 +10,7 @@ export default function WordRotate() {
   const [i, setI] = useState(0);
 
   useEffect(() => {
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    if (prefersReducedMotion()) return;
     const id = setInterval(() => setI((v) => (v + 1) % WORDS.length), 2600);
     return () => clearInterval(id);
   }, []);

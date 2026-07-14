@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { Play, RotateCcw, CheckCircle2, Speaker, Smartphone, CircleDot, BadgeCheck } from "lucide-react";
+import { ASSISTANT_ACCENT, withAlpha } from "@/lib/design";
 
 type Turn = { who: "user" | "assistant" | "system"; text: string };
 
@@ -25,8 +26,8 @@ const PLATFORMS: Platform[] = [
     name: "Amazon Alexa",
     device: "Echo · full voice dialog",
     icon: Speaker,
-    accent: "#38bdf8",
-    glow: "rgba(56, 189, 248, 0.25)",
+    accent: ASSISTANT_ACCENT.alexa,
+    glow: withAlpha(ASSISTANT_ACCENT.alexa, 0.25),
     depth: "Full conversational booking",
     langs: "English + Hindi",
     script: [
@@ -42,8 +43,8 @@ const PLATFORMS: Platform[] = [
     name: "Apple Siri",
     device: "iPhone · App Shortcuts",
     icon: Smartphone,
-    accent: "#a78bfa",
-    glow: "rgba(167, 139, 250, 0.25)",
+    accent: ASSISTANT_ACCENT.siri,
+    glow: withAlpha(ASSISTANT_ACCENT.siri, 0.25),
     depth: "Shortcut phrases → in-app booking",
     langs: "English (launch)",
     script: [
@@ -59,8 +60,8 @@ const PLATFORMS: Platform[] = [
     name: "Google Assistant",
     device: "Android · App Actions",
     icon: CircleDot,
-    accent: "#34d399",
-    glow: "rgba(52, 211, 153, 0.25)",
+    accent: ASSISTANT_ACCENT.google,
+    glow: withAlpha(ASSISTANT_ACCENT.google, 0.25),
     depth: "Deep-links straight into the app",
     langs: "English + Hindi (launch)",
     script: [

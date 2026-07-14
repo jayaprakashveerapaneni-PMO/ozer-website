@@ -1,6 +1,6 @@
-import Link from "next/link";
 import { BadgeCheck, CalendarCheck, Banknote, GraduationCap } from "lucide-react";
 import Reveal from "@/components/motion/Reveal";
+import { Button } from "@/components/ui";
 
 const benefits = [
   {
@@ -43,12 +43,9 @@ export default function Helpers() {
               worker. Get matched to jobs near you that fit your skills and
               your hours — with no agency fees, ever.
             </p>
-            <Link
-              href="/helper"
-              className="btn-shine mt-7 inline-flex items-center justify-center rounded-2xl bg-primary px-7 py-4 text-base font-bold text-on-primary glow-primary transition-transform duration-200 hover:scale-[1.03]"
-            >
+            <Button href="/helper" size="lg" className="mt-7">
               Open the helper app →
-            </Link>
+            </Button>
             <p className="mt-3 text-xs text-muted">
               Live job offers, OTP arrival verification, daily payouts — try it
               as Meena, Lakshmi, Fatima or Radha.

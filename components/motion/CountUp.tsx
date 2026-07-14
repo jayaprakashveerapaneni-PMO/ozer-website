@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { prefersReducedMotion } from "@/lib/motion";
 
 /** Animated count-up that starts when scrolled into view. */
 export default function CountUp({
@@ -20,7 +21,7 @@ export default function CountUp({
   useEffect(() => {
     const el = ref.current;
     if (!el) return;
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    if (prefersReducedMotion()) {
       setValue(end);
       return;
     }
