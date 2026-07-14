@@ -31,9 +31,10 @@ const INK: Record<string, string> = {
 };
 
 export const metadata: Metadata = {
-  title: "The build story — Ozer",
+  title: "The build story",
   description:
     "How Ozer went from a 131-page requirements suite to a working voice-first home services product: design intelligence, functional flows, and end-to-end verification.",
+  alternates: { canonical: "/flow" },
 };
 
 const PIPELINE = [

@@ -5,9 +5,10 @@ import Footer from "@/components/layout/Footer";
 import BookingWizard from "@/features/booking/BookingWizard";
 
 export const metadata: Metadata = {
-  title: "Book a service — Ozer",
+  title: "Book a service",
   description:
     "Book verified house cleaning, home cook, laundry or care in Hyderabad. Estimate first, pay after service.",
+  alternates: { canonical: "/book" },
 };
 
 export default function BookPage() {

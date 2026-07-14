@@ -13,10 +13,12 @@ import Helpers from "@/features/home/Helpers";
 import Testimonials from "@/features/home/Testimonials";
 import Faq from "@/features/home/Faq";
 import Footer from "@/components/layout/Footer";
+import StructuredData from "@/components/layout/StructuredData";
 
 export default function Home() {
   return (
     <>
+      <StructuredData />
       <ScrollProgress />
       <Navbar />
       <main id="main-content" className="flex-1">

@@ -4,9 +4,10 @@ import Footer from "@/components/layout/Footer";
 import HelperApp from "@/features/helper/HelperApp";
 
 export const metadata: Metadata = {
-  title: "Helper app — Ozer",
+  title: "Helper app",
   description:
     "The Ozer helper portal: job offers near you, OTP arrival verification, daily payouts. Free verification, your hours, your area.",
+  alternates: { canonical: "/helper" },
 };
 
 export default function HelperPage() {

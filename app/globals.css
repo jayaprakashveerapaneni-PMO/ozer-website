@@ -76,14 +76,24 @@ html {
 }
 
 body {
+  color: var(--foreground);
+  font-family: var(--font-sans);
+}
+
+/* Ambient background on its own fixed compositor layer — avoids the
+   scroll-repaint jank that `background-attachment: fixed` causes on mobile. */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  transform: translateZ(0);
   background:
     radial-gradient(80% 55% at 15% -5%, rgba(249, 115, 22, 0.1) 0%, transparent 60%),
     radial-gradient(65% 45% at 90% 0%, rgba(8, 145, 178, 0.07) 0%, transparent 55%),
     radial-gradient(70% 50% at 50% 110%, rgba(124, 58, 237, 0.06) 0%, transparent 60%),
     linear-gradient(180deg, #fffdf9 0%, #fff7ef 45%, #fdf3ff 100%);
-  background-attachment: fixed;
-  color: var(--foreground);
-  font-family: var(--font-sans);
 }
 
 h1, h2, h3, h4, h5, h6 {

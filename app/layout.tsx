@@ -1,24 +1,32 @@
 import type { Metadata } from "next";
 import { Space_Grotesk, Inter } from "next/font/google";
 import RisingParticles from "@/components/layout/RisingParticles";
+import { SITE } from "@/lib/site";
 import "./globals.css";
 
+// Weight 300 is unused across the app (audited); 400 is the body default.
 const grotesk = Space_Grotesk({
   variable: "--font-grotesk",
   subsets: ["latin"],
-  weight: ["300", "400", "500", "600", "700"],
+  weight: ["400", "500", "600", "700"],
+  display: "swap",
 });
 
 const inter = Inter({
   variable: "--font-inter",
   subsets: ["latin"],
-  weight: ["300", "400", "500", "600", "700"],
+  weight: ["400", "500", "600", "700"],
+  display: "swap",
 });
 
 export const metadata: Metadata = {
-  title: "Ozer — Daily Help, Delivered | Voice-first Home Services",
-  description:
-    "Book police-verified house cleaners, home cooks, laundry and child & elder care in Hyderabad — by voice, in Telugu, Hindi, Tamil or English. Works with Alexa, Siri & Google Assistant. Pay after service.",
+  metadataBase: new URL(SITE.url),
+  title: {
+    default: SITE.title,
+    template: "%s | Ozer",
+  },
+  description: SITE.description,
+  applicationName: SITE.name,
   keywords: [
     "home services Hyderabad",
     "voice booking",
@@ -29,11 +37,26 @@ export const metadata: Metadata = {
     "elder care",
     "verified maid",
   ],
+  alternates: { canonical: "/" },
   openGraph: {
     title: "Ozer — Daily Help, Delivered",
     description:
       "The voice-first home services platform. Speak Telugu, Hindi, Tamil or English — verified help arrives. Works with Alexa, Siri & Google Assistant.",
+    url: SITE.url,
+    siteName: SITE.name,
+    locale: SITE.locale,
     type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Ozer — Daily Help, Delivered",
+    description:
+      "Voice-first verified home services in Hyderabad. Works with Alexa, Siri & Google Assistant. Pay after service.",
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: { index: true, follow: true, "max-image-preview": "large" },
   },
 };
 
