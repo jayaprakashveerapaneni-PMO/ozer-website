@@ -3,7 +3,7 @@ import { ShieldCheck, MapPin, Mic, Speaker, Smartphone, CircleDot, ArrowDown } f
 import WordRotate from "@/components/motion/WordRotate";
 import CountUp from "@/components/motion/CountUp";
 import { Button, Badge } from "@/components/ui";
-import CrystalField from "@/components/layout/CrystalField";
+import FlowRibbons from "@/components/layout/FlowRibbons";
 import { ASSISTANT_ACCENT } from "@/lib/design";
 
 // deterministic star field (no Math.random — SSR-safe)
@@ -25,9 +25,9 @@ const STARS = [
 export default function Hero() {
   return (
     <section className="relative overflow-hidden">
-      {/* flowing crystals replace the blur-blob layer: crossing prisms,
-          transform-only animation (no per-frame blur rasterization) */}
-      <CrystalField id="hero" />
+      {/* flowing light-strings: bezier strands with traveling comets of
+          light, swaying so they weave — dashoffset+transform only (GPU) */}
+      <FlowRibbons />
       {STARS.map((st, i) => (
         <span
           key={i}

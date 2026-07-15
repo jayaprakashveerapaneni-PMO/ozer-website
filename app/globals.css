@@ -200,22 +200,33 @@ button, a, select, [role="button"] {
 .blob-a { animation: drift-a 16s ease-in-out infinite; }
 .blob-b { animation: drift-b 20s ease-in-out infinite; }
 
-/* ---------- Flowing crystals — slow crossing prism drifts ---------- */
-@keyframes crystal-drift-a {
-  0%, 100% { transform: translate(0, 0) rotate(0deg); }
-  50% { transform: translate(140px, 90px) rotate(10deg); }
+/* ---------- Flowing light-strings (FlowRibbons) ----------
+   Comets of light travel each strand via stroke-dashoffset (every animated
+   path shares one 2200-unit dash period, so one keyframe loops them all);
+   whole strands sway on transform so they weave over each other. */
+@keyframes ribbon-flow {
+  to { stroke-dashoffset: -2200px; }
 }
-@keyframes crystal-drift-b {
-  0%, 100% { transform: translate(0, 0) rotate(0deg); }
-  50% { transform: translate(-170px, 60px) rotate(-12deg); }
+.ribbon-flow {
+  stroke-dashoffset: 0;
+  animation: ribbon-flow linear infinite;
 }
-@keyframes crystal-drift-c {
-  0%, 100% { transform: translate(0, 0) rotate(0deg); }
-  50% { transform: translate(90px, -120px) rotate(16deg); }
+
+@keyframes ribbon-sway-a {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(26px); }
 }
-.crystal-a { animation: crystal-drift-a 34s ease-in-out infinite; will-change: transform; }
-.crystal-b { animation: crystal-drift-b 42s ease-in-out infinite; will-change: transform; }
-.crystal-c { animation: crystal-drift-c 38s ease-in-out infinite; will-change: transform; }
+@keyframes ribbon-sway-b {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-32px); }
+}
+@keyframes ribbon-sway-c {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(18px); }
+}
+.sway-a { animation: ribbon-sway-a ease-in-out infinite; }
+.sway-b { animation: ribbon-sway-b ease-in-out infinite; }
+.sway-c { animation: ribbon-sway-c ease-in-out infinite; }
 
 /* ---------- Flowing up & down (the futuristic drift) ---------- */
 @keyframes float-y {
