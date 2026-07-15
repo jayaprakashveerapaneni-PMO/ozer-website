@@ -3,6 +3,7 @@ import { ShieldCheck, MapPin, Mic, Speaker, Smartphone, CircleDot, ArrowDown } f
 import WordRotate from "@/components/motion/WordRotate";
 import CountUp from "@/components/motion/CountUp";
 import { Button, Badge } from "@/components/ui";
+import CrystalField from "@/components/layout/CrystalField";
 import { ASSISTANT_ACCENT } from "@/lib/design";
 
 // deterministic star field (no Math.random — SSR-safe)
@@ -24,9 +25,9 @@ const STARS = [
 export default function Hero() {
   return (
     <section className="relative overflow-hidden">
-      <div className="blob blob-a left-[-8%] top-[5%] h-[28rem] w-[28rem] bg-orange-500" aria-hidden />
-      <div className="blob blob-b right-[-6%] top-[30%] h-96 w-96 bg-cyan-400" aria-hidden />
-      <div className="blob blob-a bottom-[-10%] left-[35%] h-80 w-80 bg-violet-500" aria-hidden />
+      {/* flowing crystals replace the blur-blob layer: crossing prisms,
+          transform-only animation (no per-frame blur rasterization) */}
+      <CrystalField id="hero" />
       {STARS.map((st, i) => (
         <span
           key={i}

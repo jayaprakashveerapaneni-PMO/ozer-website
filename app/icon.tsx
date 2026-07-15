@@ -1,6 +1,6 @@
 import { ImageResponse } from "next/og";
 
-// Branded favicon — the saffron "O" mark, generated at build time.
+// Favicon mirroring the gem-cut "O" mark (components/layout/Logo.tsx).
 export const size = { width: 32, height: 32 };
 export const contentType = "image/png";
 
@@ -14,14 +14,18 @@ export default function Icon() {
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
-          background: "linear-gradient(135deg, #fb923c, #c2410c)",
-          color: "#ffffff",
-          fontSize: 22,
-          fontWeight: 700,
-          borderRadius: 7,
+          background: "linear-gradient(135deg, #fb923c 0%, #f43f5e 52%, #8b5cf6 100%)",
+          borderRadius: 8,
         }}
       >
-        O
+        <div
+          style={{
+            width: 15,
+            height: 15,
+            borderRadius: 9999,
+            border: "3.5px solid #ffffff",
+          }}
+        />
       </div>
     ),
     size

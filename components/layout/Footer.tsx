@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { ZONES } from "@/lib/domain";
+import Logo from "@/components/layout/Logo";
 
 export default function Footer() {
   return (
@@ -7,12 +8,7 @@ export default function Footer() {
       <div className="mx-auto max-w-6xl px-4 py-14 sm:px-6">
         <div className="grid gap-10 md:grid-cols-[1.5fr_1fr_1fr_1fr]">
           <div>
-            <div className="flex items-center gap-2">
-              <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-orange-400 to-orange-600 font-display text-lg font-bold text-white glow-primary">
-                O
-              </span>
-              <span className="font-display text-xl font-semibold">Ozer</span>
-            </div>
+            <Logo />
             <p className="mt-3 max-w-xs text-sm text-muted">
               Daily help, delivered. The voice-first home services platform —
               verified helpers, pay after service, money-back promise.

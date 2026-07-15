@@ -7,8 +7,8 @@
  * auto-switch on prefers-color-scheme, deliberately: the brand is light-first.
  */
 :root {
-  --background: #fffaf5;
-  --foreground: #1e1b2e;
+  --background: #fbfbfd;
+  --foreground: #1d1d1f;
   /* Interactive/text colors are AA-safe on the light bg (see contrast.test.ts).
      --primary-soft stays bright for DECORATIVE use only (glows, large display). */
   --primary: #c2410c;
@@ -16,16 +16,16 @@
   --on-primary: #ffffff;
   --accent: #0e7490;
   --violet: #6d28d9;
-  --surface: rgba(30, 27, 46, 0.05);
-  --line: rgba(30, 27, 46, 0.1);
-  --muted: #6b6880;
+  --surface: rgba(29, 29, 31, 0.04);
+  --line: rgba(29, 29, 31, 0.09);
+  --muted: #6e6e73;
   --success: #047857;
   --destructive: #dc2626;
 
   /* Elevation scale */
-  --elevation-1: 0 4px 16px rgba(30, 27, 46, 0.06);
-  --elevation-2: 0 8px 32px rgba(30, 27, 46, 0.08);
-  --elevation-3: 0 20px 48px rgba(30, 27, 46, 0.12);
+  --elevation-1: 0 4px 16px rgba(29, 29, 31, 0.05);
+  --elevation-2: 0 8px 32px rgba(29, 29, 31, 0.07);
+  --elevation-3: 0 20px 48px rgba(29, 29, 31, 0.1);
 
   /* Motion — mirrors lib/design/tokens.ts */
   --ease-emphasized: cubic-bezier(0.16, 1, 0.3, 1);
@@ -89,11 +89,12 @@ body::before {
   z-index: -1;
   pointer-events: none;
   transform: translateZ(0);
+  /* Cool crystalline wash — near-white with faint prismatic tints. */
   background:
-    radial-gradient(80% 55% at 15% -5%, rgba(249, 115, 22, 0.1) 0%, transparent 60%),
-    radial-gradient(65% 45% at 90% 0%, rgba(8, 145, 178, 0.07) 0%, transparent 55%),
-    radial-gradient(70% 50% at 50% 110%, rgba(124, 58, 237, 0.06) 0%, transparent 60%),
-    linear-gradient(180deg, #fffdf9 0%, #fff7ef 45%, #fdf3ff 100%);
+    radial-gradient(75% 55% at 12% -5%, rgba(253, 186, 116, 0.09) 0%, transparent 58%),
+    radial-gradient(65% 45% at 92% 2%, rgba(103, 232, 249, 0.09) 0%, transparent 55%),
+    radial-gradient(70% 50% at 55% 112%, rgba(196, 181, 253, 0.09) 0%, transparent 60%),
+    linear-gradient(180deg, #ffffff 0%, #fbfbfd 50%, #f7f7fc 100%);
 }
 
 h1, h2, h3, h4, h5, h6 {
@@ -198,6 +199,23 @@ button, a, select, [role="button"] {
 }
 .blob-a { animation: drift-a 16s ease-in-out infinite; }
 .blob-b { animation: drift-b 20s ease-in-out infinite; }
+
+/* ---------- Flowing crystals — slow crossing prism drifts ---------- */
+@keyframes crystal-drift-a {
+  0%, 100% { transform: translate(0, 0) rotate(0deg); }
+  50% { transform: translate(140px, 90px) rotate(10deg); }
+}
+@keyframes crystal-drift-b {
+  0%, 100% { transform: translate(0, 0) rotate(0deg); }
+  50% { transform: translate(-170px, 60px) rotate(-12deg); }
+}
+@keyframes crystal-drift-c {
+  0%, 100% { transform: translate(0, 0) rotate(0deg); }
+  50% { transform: translate(90px, -120px) rotate(16deg); }
+}
+.crystal-a { animation: crystal-drift-a 34s ease-in-out infinite; will-change: transform; }
+.crystal-b { animation: crystal-drift-b 42s ease-in-out infinite; will-change: transform; }
+.crystal-c { animation: crystal-drift-c 38s ease-in-out infinite; will-change: transform; }
 
 /* ---------- Flowing up & down (the futuristic drift) ---------- */
 @keyframes float-y {

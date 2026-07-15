@@ -4,6 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { Menu, X, Mic } from "lucide-react";
 import { Button } from "@/components/ui";
+import Logo from "@/components/layout/Logo";
 
 const links = [
   { href: "/#services", label: "Services" },
@@ -24,12 +25,7 @@ export default function Navbar() {
         aria-label="Main"
       >
         <Link href="/" className="group flex items-center gap-2">
-          <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-orange-400 to-orange-600 font-display text-lg font-bold text-white glow-primary transition-transform duration-200 group-hover:scale-110">
-            O
-          </span>
-          <span className="font-display text-xl font-semibold tracking-tight">
-            Ozer
-          </span>
+          <Logo />
           <span className="ml-1 hidden rounded-full glass px-2 py-0.5 text-xs font-medium text-primary sm:inline">
             Hyderabad
           </span>
