@@ -200,6 +200,26 @@ button, a, select, [role="button"] {
 .blob-a { animation: drift-a 16s ease-in-out infinite; }
 .blob-b { animation: drift-b 20s ease-in-out infinite; }
 
+/* ---------- Silk wave (SilkWave) ----------
+   Bands loop horizontally (2x-wide tile translating -50%) and breathe
+   vertically, so the layered gradients shimmer like flowing silk. */
+@keyframes silk-drift {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+.silk-drift {
+  animation: silk-drift linear infinite;
+}
+
+@keyframes silk-breathe {
+  0%, 100% { transform: translateY(0) scaleY(1); }
+  50% { transform: translateY(-24px) scaleY(1.12); }
+}
+.silk-breathe {
+  transform-origin: center;
+  animation: silk-breathe ease-in-out infinite;
+}
+
 /* ---------- Flowing light-strings (FlowRibbons) ----------
    Comets of light travel each strand via stroke-dashoffset (every animated
    path shares one 2200-unit dash period, so one keyframe loops them all);

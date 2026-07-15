@@ -3,156 +3,128 @@ import { ShieldCheck, MapPin, Mic, Speaker, Smartphone, CircleDot, ArrowDown } f
 import WordRotate from "@/components/motion/WordRotate";
 import CountUp from "@/components/motion/CountUp";
 import { Button, Badge } from "@/components/ui";
+import SilkWave from "@/components/layout/SilkWave";
 import FlowRibbons from "@/components/layout/FlowRibbons";
 import { ASSISTANT_ACCENT } from "@/lib/design";
 
-// deterministic star field (no Math.random — SSR-safe)
-const STARS = [
-  { top: "12%", left: "8%", s: 2, d: 0 },
-  { top: "22%", left: "28%", s: 1.5, d: 1.2 },
-  { top: "8%", left: "55%", s: 2.5, d: 0.6 },
-  { top: "30%", left: "72%", s: 1.5, d: 2.1 },
-  { top: "15%", left: "88%", s: 2, d: 1.6 },
-  { top: "55%", left: "12%", s: 1.5, d: 0.9 },
-  { top: "65%", left: "40%", s: 2, d: 2.4 },
-  { top: "48%", left: "62%", s: 1.5, d: 0.3 },
-  { top: "70%", left: "85%", s: 2.5, d: 1.8 },
-  { top: "82%", left: "22%", s: 1.5, d: 2.8 },
-  { top: "40%", left: "94%", s: 1.5, d: 1.1 },
-  { top: "88%", left: "60%", s: 2, d: 0.5 },
+// Centered, cinematic hero: headline over a flowing silk wave, with the
+// product cards floating at the sides for depth (Lumina-style composition).
+
+const STATS = [
+  { end: 48, suffix: "h", label: "Free police verification" },
+  { end: 0, prefix: "₹", label: "Until the job is done" },
+  { end: 4, label: "Voice languages" },
+  { end: 3, label: "Assistants: Alexa · Siri · Google" },
 ];
 
 export default function Hero() {
   return (
     <section className="relative overflow-hidden">
-      {/* flowing light-strings: bezier strands with traveling comets of
-          light, swaying so they weave — dashoffset+transform only (GPU) */}
-      <FlowRibbons />
-      {STARS.map((st, i) => (
-        <span
-          key={i}
-          className="star"
-          style={{ top: st.top, left: st.left, width: st.s, height: st.s, animationDelay: `${st.d}s` }}
-          aria-hidden
-        />
-      ))}
+      {/* the spectacle: layered silk wave with light-strings above it */}
+      <SilkWave />
+      <div className="opacity-60">
+        <FlowRibbons />
+      </div>
 
-      <div className="relative mx-auto grid max-w-6xl gap-12 px-4 pb-20 pt-16 sm:px-6 lg:grid-cols-[1.1fr_0.9fr] lg:pb-28 lg:pt-24">
-        <div>
-          <Badge variant="glass" className="word-in mb-5">
-            <ShieldCheck className="h-3.5 w-3.5" aria-hidden />
-            Every helper police-verified — free, within 48 hours
-          </Badge>
-          <h1 className="text-4xl font-bold leading-[1.05] tracking-tight sm:text-6xl lg:text-7xl">
-            <span className="word-in">Daily</span>{" "}
-            <span className="word-in" style={{ animationDelay: "80ms" }}>help,</span>
-            <br />
-            <span className="word-in" style={{ animationDelay: "160ms" }}>
-              <WordRotate />
-            </span>
-          </h1>
-          {/* LCP element — never animate its opacity (Lighthouse LCP penalty). */}
-          <p className="mt-6 max-w-xl text-lg leading-relaxed text-muted">
-            Verified cleaners, cooks, laundry and caregivers across Hyderabad —
-            summoned by <span className="font-semibold text-foreground">your voice</span>, in
-            Telugu, Hindi, Tamil or English. Even from your Echo, iPhone or
-            Google Assistant. Pay only after the job is done.
-          </p>
+      <div className="relative mx-auto max-w-6xl px-4 pb-24 pt-20 text-center sm:px-6 lg:pb-32 lg:pt-28">
+        <Badge variant="glass" className="animate-fade-up mb-6">
+          <ShieldCheck className="h-3.5 w-3.5" aria-hidden />
+          Every helper police-verified — free, within 48 hours
+        </Badge>
 
-          <div className="word-in mt-9 flex flex-col gap-3 sm:flex-row" style={{ animationDelay: "240ms" }}>
-            <Button href="/#voice" size="lg" className="group">
-              <Mic className="h-5 w-5 transition-transform group-hover:scale-125" aria-hidden />
-              Try voice booking live
-            </Button>
-            <Button href="/book" variant="glass" size="lg">
-              Book with taps instead
-            </Button>
-          </div>
+        <h1 className="mx-auto max-w-4xl text-5xl font-bold leading-[1.04] tracking-tight sm:text-6xl lg:text-7xl">
+          <span className="word-in">Daily help that</span>
+          <br />
+          <span className="word-in" style={{ animationDelay: "120ms" }}>
+            flows — <WordRotate />
+          </span>
+        </h1>
 
-          <dl className="word-in mt-12 grid grid-cols-2 gap-6 sm:grid-cols-4" style={{ animationDelay: "320ms" }}>
-            <div>
-              <dt className="sr-only">Free police verification</dt>
-              <dd className="font-display text-3xl font-bold text-primary text-glow">
-                <CountUp end={48} suffix="h" />
-              </dd>
-              <dd className="mt-1 text-xs font-medium leading-snug text-muted">Free police verification</dd>
-            </div>
-            <div>
-              <dt className="sr-only">Pay nothing until the job is done</dt>
-              <dd className="font-display text-3xl font-bold text-primary text-glow">₹0</dd>
-              <dd className="mt-1 text-xs font-medium leading-snug text-muted">Until the job is done</dd>
-            </div>
-            <div>
-              <dt className="sr-only">Voice languages</dt>
-              <dd className="font-display text-3xl font-bold text-primary text-glow">
-                <CountUp end={4} />
-              </dd>
-              <dd className="mt-1 text-xs font-medium leading-snug text-muted">Voice languages</dd>
-            </div>
-            <div>
-              <dt className="sr-only">Assistant integrations</dt>
-              <dd className="font-display text-3xl font-bold text-primary text-glow">
-                <CountUp end={3} />
-              </dd>
-              <dd className="mt-1 text-xs font-medium leading-snug text-muted">Assistants: Alexa · Siri · Google</dd>
-            </div>
-          </dl>
+        {/* LCP element — never animate its opacity (Lighthouse LCP penalty). */}
+        <p className="mx-auto mt-7 max-w-2xl text-lg leading-relaxed text-muted">
+          Verified cleaners, cooks, laundry and caregivers across Hyderabad —
+          summoned by <span className="font-semibold text-foreground">your voice</span>, in
+          Telugu, Hindi, Tamil or English. Even from your Echo, iPhone or Google
+          Assistant. Pay only after the job is done.
+        </p>
+
+        <div className="animate-fade-up mt-10 flex flex-col items-center justify-center gap-3 sm:flex-row" style={{ animationDelay: "240ms" }}>
+          <Button href="/#voice" size="lg" className="group">
+            <Mic className="h-5 w-5 transition-transform group-hover:scale-125" aria-hidden />
+            Try voice booking live
+          </Button>
+          <Button href="/book" variant="glass" size="lg">
+            Book with taps instead
+          </Button>
         </div>
 
-        {/* Right: floating glass stack */}
-        <div className="animate-fade-up relative hidden lg:block" style={{ animationDelay: "250ms" }}>
-          <div className="relative mx-auto max-w-sm">
-            <div className="glass tilt-card animate-float rounded-3xl p-5">
-              <div className="flex items-center gap-3">
-                <span className="flex h-12 w-12 items-center justify-center rounded-full bg-gradient-to-br from-orange-400 to-orange-600 font-display text-sm font-bold text-white">
-                  MK
-                </span>
-                <div>
-                  <p className="flex items-center gap-1.5 font-semibold">
-                    Meena K.
-                    <ShieldCheck className="h-4 w-4 text-success" aria-label="Verified" />
-                  </p>
-                  <p className="text-sm text-muted">House Cleaning · ★ 4.9 · 412 jobs</p>
-                </div>
-              </div>
-              <div className="mt-4 rounded-2xl bg-surface p-3">
-                <p className="flex items-center gap-2 text-sm font-medium">
-                  <span className="h-2 w-2 rounded-full bg-success animate-pulse-dot" aria-hidden />
-                  En route — arriving soon
+        <dl className="animate-fade-up mx-auto mt-16 grid max-w-3xl grid-cols-2 gap-8 sm:grid-cols-4" style={{ animationDelay: "340ms" }}>
+          {STATS.map((s) => (
+            <div key={s.label}>
+              <dt className="sr-only">{s.label}</dt>
+              <dd className="font-display text-3xl font-bold text-primary text-glow">
+                {s.prefix}
+                <CountUp end={s.end} suffix={s.suffix ?? ""} />
+              </dd>
+              <dd className="mt-1 text-xs font-medium leading-snug text-muted">{s.label}</dd>
+            </div>
+          ))}
+        </dl>
+
+        {/* floating depth cards — flanking the centered composition */}
+        <div className="animate-float absolute left-2 top-40 hidden w-64 text-left xl:block" aria-hidden>
+          <div className="glass tilt-card rounded-3xl p-4">
+            <div className="flex items-center gap-3">
+              <span className="flex h-10 w-10 items-center justify-center rounded-full bg-gradient-to-br from-orange-400 to-orange-600 font-display text-xs font-bold text-white">
+                MK
+              </span>
+              <div>
+                <p className="flex items-center gap-1.5 text-sm font-semibold">
+                  Meena K.
+                  <ShieldCheck className="h-3.5 w-3.5 text-success" />
                 </p>
-                <div className="mt-2 flex items-center gap-2 text-xs text-muted">
-                  <MapPin className="h-3.5 w-3.5" aria-hidden />
-                  Live tracking · shareable with family
-                </div>
-                <div className="shimmer-line mt-3 h-1.5 rounded-full bg-black/10" aria-hidden />
+                <p className="text-xs text-muted">★ 4.9 · 412 jobs</p>
               </div>
             </div>
-
-            <div className="glass glow-ring animate-float-slow absolute -bottom-8 -left-10 max-w-[240px] rounded-3xl p-4" style={{ animationDelay: "1.2s" }}>
-              <p className="flex items-start gap-2 text-sm font-semibold leading-snug">
-                <Mic className="mt-0.5 h-4 w-4 shrink-0 text-primary" aria-hidden />
-                <span lang="te">“ఈ సాయంత్రం క్లీనింగ్ కావాలి”</span>
+            <div className="mt-3 rounded-2xl bg-surface p-2.5">
+              <p className="flex items-center gap-2 text-xs font-medium">
+                <span className="h-2 w-2 rounded-full bg-success animate-pulse-dot" />
+                En route — arriving soon
               </p>
-              <p className="mt-1.5 text-xs text-muted">Telugu · booked in one sentence</p>
-            </div>
-
-            <div className="absolute -right-6 -top-8 flex flex-col gap-2">
-              {[
-                { icon: Speaker, label: "Alexa", color: ASSISTANT_ACCENT.alexa, delay: "0s" },
-                { icon: Smartphone, label: "Siri", color: ASSISTANT_ACCENT.siri, delay: "0.8s" },
-                { icon: CircleDot, label: "Google", color: ASSISTANT_ACCENT.google, delay: "1.6s" },
-              ].map((a) => (
-                <span
-                  key={a.label}
-                  className="glass tilt-card animate-float inline-flex items-center gap-2 rounded-full px-3.5 py-2 text-xs font-bold"
-                  style={{ color: a.color, animationDelay: a.delay }}
-                >
-                  <a.icon className="h-3.5 w-3.5" aria-hidden />
-                  {a.label}
-                </span>
-              ))}
+              <div className="mt-1.5 flex items-center gap-1.5 text-[11px] text-muted">
+                <MapPin className="h-3 w-3" />
+                Live tracking · shareable
+              </div>
+              <div className="shimmer-line mt-2 h-1 rounded-full bg-black/10" />
             </div>
           </div>
+        </div>
+
+        <div className="animate-float-slow absolute bottom-44 left-10 hidden max-w-[230px] text-left xl:block" style={{ animationDelay: "1.2s" }} aria-hidden>
+          <div className="glass glow-ring rounded-3xl p-4">
+            <p className="flex items-start gap-2 text-sm font-semibold leading-snug">
+              <Mic className="mt-0.5 h-4 w-4 shrink-0 text-primary" />
+              <span lang="te">“ఈ సాయంత్రం క్లీనింగ్ కావాలి”</span>
+            </p>
+            <p className="mt-1.5 text-xs text-muted">Telugu · booked in one sentence</p>
+          </div>
+        </div>
+
+        <div className="absolute right-4 top-44 hidden flex-col gap-2 xl:flex" aria-hidden>
+          {[
+            { icon: Speaker, label: "Alexa", color: ASSISTANT_ACCENT.alexa, delay: "0s" },
+            { icon: Smartphone, label: "Siri", color: ASSISTANT_ACCENT.siri, delay: "0.8s" },
+            { icon: CircleDot, label: "Google", color: ASSISTANT_ACCENT.google, delay: "1.6s" },
+          ].map((a) => (
+            <span
+              key={a.label}
+              className="glass tilt-card animate-float inline-flex items-center gap-2 rounded-full px-3.5 py-2 text-xs font-bold"
+              style={{ color: a.color, animationDelay: a.delay }}
+            >
+              <a.icon className="h-3.5 w-3.5" />
+              {a.label}
+            </span>
+          ))}
         </div>
       </div>
 
