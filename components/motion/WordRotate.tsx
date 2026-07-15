@@ -3,7 +3,9 @@
 import { useEffect, useState } from "react";
 import { prefersReducedMotion } from "@/lib/motion";
 
-const WORDS = ["delivered.", "verified.", "tracked.", "in Telugu.", "on demand."];
+// Completes the hero sentence: "Daily Help That Flows With ___".
+// Words stay short so the headline never reflows between rotations.
+const WORDS = ["You.", "Telugu.", "Trust.", "Ease."];
 
 /** Cycles hero words with a blur-slide swap. */
 export default function WordRotate() {
@@ -16,7 +18,7 @@ export default function WordRotate() {
   }, []);
 
   return (
-    <span key={i} className="word-swap gradient-text text-glow inline-block">
+    <span key={i} className="word-swap inline-block text-primary">
       {WORDS[i]}
     </span>
   );

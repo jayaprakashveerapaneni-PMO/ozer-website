@@ -3,22 +3,23 @@ import { contrastRatio, meetsAA } from "./contrast";
 import { BRAND_INK, SERVICE_ACCENT_INK } from "./tokens";
 
 // The light background and semantic text colors, mirroring globals.css :root.
-const BG_LIGHT = "#fbfbfd";
+const BG_LIGHT = "#f4efe7";
 const WHITE = "#ffffff";
 const TEXT_TOKENS: Record<string, string> = {
-  foreground: "#1d1d1f",
-  muted: "#6e6e73",
+  foreground: "#26221c",
+  muted: "#6b6559",
   primary: "#c2410c",
   accent: "#0e7490",
   success: "#047857",
   violet: "#6d28d9",
-  destructive: "#dc2626",
+  destructive: "#b91c1c",
 };
 
 describe("WCAG AA contrast enforcement", () => {
   it("contrastRatio is symmetric and correct for known pairs", () => {
     expect(contrastRatio("#000000", "#ffffff")).toBeCloseTo(21, 0);
-    expect(contrastRatio(WHITE, BG_LIGHT)).toBeLessThan(1.1);
+    // The ivory base sits close to white (sanity: it's a light theme).
+    expect(contrastRatio(WHITE, BG_LIGHT)).toBeLessThan(1.3);
   });
 
   it("every semantic text token meets AA (4.5:1) on the light background", () => {

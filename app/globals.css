@@ -7,20 +7,21 @@
  * auto-switch on prefers-color-scheme, deliberately: the brand is light-first.
  */
 :root {
-  --background: #fbfbfd;
-  --foreground: #1d1d1f;
-  /* Interactive/text colors are AA-safe on the light bg (see contrast.test.ts).
-     --primary-soft stays bright for DECORATIVE use only (glows, large display). */
+  /* Warm ivory canvas (LuminaAI-reference palette). Every text token is
+     AA-verified on this base — see contrast.test.ts. */
+  --background: #f4efe7;
+  --foreground: #26221c;
+  /* --primary-soft stays bright for DECORATIVE use only (glows, large display). */
   --primary: #c2410c;
   --primary-soft: #ea580c;
   --on-primary: #ffffff;
   --accent: #0e7490;
   --violet: #6d28d9;
-  --surface: rgba(29, 29, 31, 0.04);
-  --line: rgba(29, 29, 31, 0.09);
-  --muted: #6e6e73;
+  --surface: rgba(38, 34, 28, 0.05);
+  --line: rgba(38, 34, 28, 0.1);
+  --muted: #6b6559;
   --success: #047857;
-  --destructive: #dc2626;
+  --destructive: #b91c1c;
 
   /* Elevation scale */
   --elevation-1: 0 4px 16px rgba(29, 29, 31, 0.05);
@@ -69,6 +70,7 @@
   --color-destructive: var(--destructive);
   --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
   --font-display: var(--font-grotesk), ui-sans-serif, system-ui, sans-serif;
+  --font-serif: var(--font-instrument), ui-serif, Georgia, serif;
 }
 
 html {
@@ -89,12 +91,12 @@ body::before {
   z-index: -1;
   pointer-events: none;
   transform: translateZ(0);
-  /* Cool crystalline wash — near-white with faint prismatic tints. */
+  /* Warm ivory wash with a faint cool breath at the top-left (reference:
+     silk-lit studio backdrop). */
   background:
-    radial-gradient(75% 55% at 12% -5%, rgba(253, 186, 116, 0.09) 0%, transparent 58%),
-    radial-gradient(65% 45% at 92% 2%, rgba(103, 232, 249, 0.09) 0%, transparent 55%),
-    radial-gradient(70% 50% at 55% 112%, rgba(196, 181, 253, 0.09) 0%, transparent 60%),
-    linear-gradient(180deg, #ffffff 0%, #fbfbfd 50%, #f7f7fc 100%);
+    radial-gradient(70% 50% at 20% 0%, rgba(178, 180, 196, 0.14) 0%, transparent 55%),
+    radial-gradient(70% 55% at 85% 8%, rgba(253, 224, 178, 0.2) 0%, transparent 58%),
+    linear-gradient(180deg, #f7f3ec 0%, #f4efe7 55%, #f1e9dd 100%);
 }
 
 h1, h2, h3, h4, h5, h6 {

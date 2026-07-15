@@ -41,7 +41,7 @@ export default function Navbar() {
               {l.label}
             </Link>
           ))}
-          <Button href="/book" size="sm">
+          <Button href="/book" variant="pill" size="sm">
             <Mic className="h-4 w-4" aria-hidden />
             Book now
           </Button>

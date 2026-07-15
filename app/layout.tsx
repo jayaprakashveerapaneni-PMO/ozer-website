@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Space_Grotesk, Inter } from "next/font/google";
+import { Space_Grotesk, Inter, Instrument_Serif } from "next/font/google";
 import RisingParticles from "@/components/layout/RisingParticles";
 import { SITE } from "@/lib/site";
 import "./globals.css";
@@ -17,6 +17,15 @@ const inter = Inter({
   variable: "--font-inter",
   subsets: ["latin"],
   weight: ["400", "500", "600", "700"],
+  display: "swap",
+});
+
+// Elegant display serif for the hero headline only (reference aesthetic).
+const serif = Instrument_Serif({
+  variable: "--font-instrument",
+  subsets: ["latin"],
+  weight: "400",
+  style: ["normal", "italic"],
   display: "swap",
 });
 
@@ -69,7 +78,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${grotesk.variable} ${inter.variable} h-full antialiased`}
+      className={`${grotesk.variable} ${inter.variable} ${serif.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col">
         <a href="#main-content" className="skip-link">

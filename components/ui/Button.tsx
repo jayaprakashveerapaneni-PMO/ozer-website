@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { cn } from "@/lib/cn";
 
-export type ButtonVariant = "primary" | "glass" | "ghost" | "success";
+export type ButtonVariant = "primary" | "glass" | "ghost" | "success" | "pill";
 export type ButtonSize = "sm" | "md" | "lg";
 
 const BASE =
@@ -12,6 +12,8 @@ const VARIANTS: Record<ButtonVariant, string> = {
   glass: "glass text-foreground hover:text-primary hover:scale-105",
   ghost: "text-muted hover:text-primary",
   success: "bg-success text-white hover:scale-105",
+  /* Dark editorial pill (reference aesthetic) — overrides size radius. */
+  pill: "!rounded-full bg-foreground text-background shadow-lg hover:scale-105",
 };
 
 // Radius tracks size: large CTAs read as pills-ish (2xl), controls as xl.
