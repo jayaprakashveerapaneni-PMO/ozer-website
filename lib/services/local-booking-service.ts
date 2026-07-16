@@ -74,6 +74,9 @@ export class LocalBookingService implements BookingService {
       declinedBy: [],
       createdAt: now,
       updatedAt: now,
+      amountPaid: input.amountPaid ?? null,
+      paymentId: input.paymentId ?? null,
+      paymentMethod: input.paymentMethod ?? null,
     };
     this.write([...this.read(), booking]);
     return booking;

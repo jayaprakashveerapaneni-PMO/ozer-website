@@ -3,7 +3,13 @@
 // instantly via a Realtime channel. Schema: supabase/migrations/001_init.sql.
 
 import { createClient, type SupabaseClient } from "@supabase/supabase-js";
-import type { Booking, BookingStatus, NewBooking, ServiceId } from "@/lib/domain/types";
+import type {
+  Booking,
+  BookingStatus,
+  NewBooking,
+  PaymentMethod,
+  ServiceId,
+} from "@/lib/domain/types";
 import {
   generateBookingId,
   generateOtp,
@@ -30,6 +36,9 @@ interface BookingRow {
   created_at: number;
   updated_at: number;
   via: "voice" | "app";
+  amount_paid?: number | null;
+  payment_id?: string | null;
+  payment_method?: PaymentMethod | null;
 }
 
 function toBooking(r: BookingRow): Booking {
@@ -52,6 +61,9 @@ function toBooking(r: BookingRow): Booking {
     createdAt: r.created_at,
     updatedAt: r.updated_at,
     via: r.via,
+    amountPaid: r.amount_paid ?? null,
+    paymentId: r.payment_id ?? null,
+    paymentMethod: r.payment_method ?? null,
   };
 }
 
@@ -130,9 +142,21 @@ export class SupabaseBookingService implements BookingService {
       created_at: now,
       updated_at: now,
       via: input.via,
+      amount_paid: input.amountPaid ?? null,
+      payment_id: input.paymentId ?? null,
+      payment_method: input.paymentMethod ?? null,
     };
     const { error } = await this.client.from("bookings").insert(row);
-    if (error) throw new Error(`bookings.create failed: ${error.message}`);
+    if (error && /column|schema cache/i.test(error.message)) {
+      // Payment columns not migrated yet (002_payments.sql) — degrade
+      // gracefully so bookings never fail, but make the drift loud.
+      console.warn(`bookings.create: retrying without payment columns — apply supabase/migrations/002_payments.sql (${error.message})`);
+      const { amount_paid: _a, payment_id: _p, payment_method: _m, ...legacy } = row;
+      const retry = await this.client.from("bookings").insert(legacy);
+      if (retry.error) throw new Error(`bookings.create failed: ${retry.error.message}`);
+    } else if (error) {
+      throw new Error(`bookings.create failed: ${error.message}`);
+    }
     return toBooking(row);
   }
 

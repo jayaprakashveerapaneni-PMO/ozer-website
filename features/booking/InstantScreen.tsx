@@ -18,7 +18,7 @@ export default function InstantScreen({ serviceName }: { serviceName: string }) 
         Instant booking <span className="gradient-text">{serviceName}</span>
       </h1>
       <p className="mt-2 text-muted">
-        ASAP slot · {ZONES[0]}, Hyderabad · offering to verified helpers…
+        ASAP slot · {ZONES[0]}, Hyderabad · complete payment to send it to verified helpers
       </p>
     </div>
   );

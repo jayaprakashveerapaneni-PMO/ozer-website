@@ -1,6 +1,6 @@
 "use client";
 
-import { formatEstimate, type Estimate, type Helper } from "@/lib/domain";
+import { bookingQuote, formatEstimate, type Estimate, type Helper } from "@/lib/domain";
 import type { SlotOption } from "../booking.constants";
 
 export default function ConfirmStep({
@@ -18,28 +18,29 @@ export default function ConfirmStep({
   helper: Helper | null;
   zone: string;
 }) {
+  const quote = bookingQuote(estimate.low, estimate.high);
   return (
     <div className="animate-fade-up">
-      <h1 className="text-2xl font-bold">Review & confirm</h1>
+      <h1 className="text-2xl font-bold">Review & pay</h1>
       <div className="glass mt-6 space-y-3 rounded-3xl p-6 text-sm">
         <Row label="Service" value={`${serviceName} — ${estimate.label}`} />
         <Row label="Slot" value={slot?.id === "custom" ? customDate || "—" : slot?.label ?? "—"} />
         <Row label="Helper" value={helper ? `${helper.name} · ★ ${helper.rating}` : "—"} />
         <Row label="Area" value={`${zone}, Hyderabad`} />
         <div className="flex justify-between">
-          <span className="text-muted">First-booking promo</span>
-          <span className="font-semibold text-success">− ₹50 applied at checkout</span>
+          <span className="text-muted">Standard rate band</span>
+          <span className="font-semibold">{formatEstimate(estimate.low, estimate.high)}</span>
         </div>
         <div className="flex justify-between border-t border-line pt-3">
-          <span className="text-muted">Estimate — pay after service</span>
+          <span className="text-muted">To pay now — fixed price</span>
           <span className="font-display text-lg font-bold text-primary">
-            {formatEstimate(estimate.low, estimate.high)}
+            ₹{quote.toLocaleString("en-IN")}
           </span>
         </div>
       </div>
       <p className="mt-4 rounded-2xl bg-surface p-3 text-xs text-muted">
-        Free cancellation until a helper is assigned; a small fee applies once they&apos;re
-        en route. Final bill = estimate + only add-ons you approve.
+        Pay securely to place the booking. 100% instant refund if no helper can be
+        assigned — and the money-back promise covers the job itself.
       </p>
     </div>
   );

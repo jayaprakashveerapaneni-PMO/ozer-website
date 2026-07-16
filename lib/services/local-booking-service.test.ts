@@ -42,6 +42,20 @@ describe("LocalBookingService", () => {
     expect(a.id).not.toBe(b.id);
   });
 
+  it("persists upfront payment fields and defaults them to null for legacy input", async () => {
+    const paid = await svc.create(
+      newBooking({ amountPaid: 200, paymentId: "PAY-TEST1", paymentMethod: "upi" })
+    );
+    expect(paid.amountPaid).toBe(200);
+    expect(paid.paymentId).toBe("PAY-TEST1");
+    expect(paid.paymentMethod).toBe("upi");
+
+    const legacy = await svc.create(newBooking());
+    expect(legacy.amountPaid).toBeNull();
+    expect(legacy.paymentId).toBeNull();
+    expect(legacy.paymentMethod).toBeNull();
+  });
+
   it("lists newest first", async () => {
     const a = await svc.create(newBooking());
     vi.useFakeTimers();

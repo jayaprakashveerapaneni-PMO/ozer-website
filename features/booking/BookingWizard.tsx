@@ -1,16 +1,18 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { ChevronLeft } from "lucide-react";
 import {
   SERVICES,
   ZONES,
+  bookingQuote,
   estimate as estimateFor,
   type Helper,
   type ServiceId,
 } from "@/lib/domain";
 import { getBookingService } from "@/lib/services/booking-service";
+import type { PaymentRecord } from "@/lib/services/payment-service";
 import { SLOT_PRESETS, WIZARD_STEPS, type SlotOption } from "./booking.constants";
 import { DEFAULT_DETAILS, useServiceDetails } from "./useServiceDetails";
 import ServiceStep from "./steps/ServiceStep";
@@ -20,14 +22,16 @@ import HelperStep from "./steps/HelperStep";
 import ConfirmStep from "./steps/ConfirmStep";
 import SuccessScreen from "./SuccessScreen";
 import InstantScreen from "./InstantScreen";
+import PaymentSheet from "./PaymentSheet";
 
-/** Orchestrates the ≤5-screen booking flow (FR-9) and the instant path. */
+/** Orchestrates the ≤5-screen booking flow (FR-9) and the instant path.
+ *  Payment-first: the booking row is only created AFTER payment succeeds. */
 export default function BookingWizard() {
   const params = useSearchParams();
   const initial = params.get("service") as ServiceId | null;
   const validInitial = SERVICES.some((s) => s.id === initial) ? initial : null;
   const initialSlot = SLOT_PRESETS.find((s) => s.id === params.get("slot")) ?? null;
-  const instant = params.get("instant") === "1";
+  const [instant, setInstant] = useState(params.get("instant") === "1");
 
   const [step, setStep] = useState(validInitial ? 1 : 0);
   const [service, setService] = useState<ServiceId>(validInitial ?? "cleaning");
@@ -37,11 +41,13 @@ export default function BookingWizard() {
   const [customDate, setCustomDate] = useState("");
   const [helper, setHelper] = useState<Helper | null>(null);
   const [placing, setPlacing] = useState(false);
+  const [paying, setPaying] = useState(false);
   const [bookingId, setBookingId] = useState<string | null>(null);
 
   const svcMeta = SERVICES.find((s) => s.id === service)!;
+  const quote = bookingQuote(estimate.low, estimate.high);
 
-  const placeBooking = async () => {
+  const placeBooking = async (payment: PaymentRecord) => {
     setPlacing(true);
     const b = await getBookingService().create({
       service,
@@ -51,50 +57,67 @@ export default function BookingWizard() {
       estHigh: estimate.high,
       slotLabel: slot?.id === "custom" ? customDate : slot?.label ?? "ASAP",
       zone,
-      customerName: "You (demo customer)",
+      customerName: "You (customer)",
       preferredHelperId: helper?.id ?? null,
       via: "app",
+      amountPaid: payment.amount,
+      paymentId: payment.paymentId,
+      paymentMethod: payment.method,
     });
     setBookingId(b.id);
     setPlacing(false);
+    setPaying(false);
   };
 
-  // ⚡ Instant path: create an ASAP booking with defaults, land on live status.
-  const instantFired = useRef(false);
-  useEffect(() => {
-    if (!instant || !validInitial || instantFired.current) return;
-    instantFired.current = true;
+  // ⚡ Instant path: ASAP defaults, but payment still comes first.
+  const instantEst = validInitial
+    ? estimateFor({ service: validInitial, ...DEFAULT_DETAILS })
+    : null;
+
+  const placeInstantBooking = async (payment: PaymentRecord) => {
+    if (!validInitial || !instantEst) return;
     const svc = SERVICES.find((s) => s.id === validInitial)!;
-    const est = estimateFor({ service: validInitial, ...DEFAULT_DETAILS });
-    const t = setTimeout(() => {
-      void getBookingService()
-        .create({
-          service: validInitial,
-          serviceName: svc.name,
-          detailLabel: est.label,
-          estLow: est.low,
-          estHigh: est.high,
-          slotLabel: "ASAP",
-          zone: ZONES[0],
-          customerName: "You (instant customer)",
-          preferredHelperId: null,
-          via: "app",
-        })
-        .then((b) => setBookingId(b.id));
-    }, 700);
-    return () => clearTimeout(t);
-  }, [instant, validInitial]);
+    const b = await getBookingService().create({
+      service: validInitial,
+      serviceName: svc.name,
+      detailLabel: instantEst.label,
+      estLow: instantEst.low,
+      estHigh: instantEst.high,
+      slotLabel: "ASAP",
+      zone: ZONES[0],
+      customerName: "You (instant customer)",
+      preferredHelperId: null,
+      via: "app",
+      amountPaid: payment.amount,
+      paymentId: payment.paymentId,
+      paymentMethod: payment.method,
+    });
+    setBookingId(b.id);
+  };
 
   const reset = () => {
     setBookingId(null);
     setStep(0);
     setSlot(null);
     setHelper(null);
+    setInstant(false);
   };
 
   if (bookingId) return <SuccessScreen bookingId={bookingId} onReset={reset} />;
 
-  if (instant && validInitial) return <InstantScreen serviceName={svcMeta.name} />;
+  if (instant && validInitial && instantEst) {
+    return (
+      <>
+        <InstantScreen serviceName={svcMeta.name} />
+        <PaymentSheet
+          amount={bookingQuote(instantEst.low, instantEst.high)}
+          description={`${svcMeta.name} · ASAP · ${ZONES[0]}`}
+          onPaid={(rec) => void placeInstantBooking(rec)}
+          onClose={() => setInstant(false)}
+        />
+      </>
+    );
+  }
 
   const continueDisabled =
     (step === 2 && (!slot || (slot.id === "custom" && !customDate))) ||
@@ -176,14 +199,23 @@ export default function BookingWizard() {
         ) : (
           <button
             type="button"
-            onClick={() => void placeBooking()}
+            onClick={() => setPaying(true)}
             disabled={placing}
             className="rounded-xl bg-primary px-6 py-2.5 text-sm font-bold text-on-primary glow-primary transition-transform duration-200 hover:scale-105 disabled:opacity-60"
           >
-            {placing ? "Placing booking…" : "Confirm booking"}
+            {placing ? "Placing booking…" : `Pay ₹${quote.toLocaleString("en-IN")} & book`}
           </button>
         )}
       </div>
+
+      {paying && (
+        <PaymentSheet
+          amount={quote}
+          description={`${svcMeta.name} · ${slot?.id === "custom" ? customDate : slot?.label ?? "ASAP"} · ${zone}`}
+          onPaid={(rec) => void placeBooking(rec)}
+          onClose={() => setPaying(false)}
+        />
+      )}
     </div>
   );
 }

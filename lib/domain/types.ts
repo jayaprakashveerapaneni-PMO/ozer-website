@@ -26,6 +26,8 @@ export interface Helper {
   hue: number;
 }
 
+export type PaymentMethod = "upi" | "card" | "netbanking";
+
 export type BookingStatus =
   | "pending_offer" // FR-11: offered to eligible helpers
   | "assigned" // FR-12: helper accepted
@@ -53,6 +55,11 @@ export interface Booking {
   createdAt: number;
   updatedAt: number;
   via: "voice" | "app";
+  /** Payment-first (TR-20): captured BEFORE the booking is created. Null only
+   *  on legacy rows created before upfront payment shipped. */
+  amountPaid: number | null;
+  paymentId: string | null;
+  paymentMethod: PaymentMethod | null;
 }
 
 /** Fields the caller provides; the service fills in the rest. */
@@ -66,7 +73,14 @@ export type NewBooking = Omit<
   | "declinedBy"
   | "createdAt"
   | "updatedAt"
->;
+  | "amountPaid"
+  | "paymentId"
+  | "paymentMethod"
+> & {
+  amountPaid?: number | null;
+  paymentId?: string | null;
+  paymentMethod?: PaymentMethod | null;
+};
 
 export const STATUS_STEPS: { key: BookingStatus; label: string }[] = [
   { key: "pending_offer", label: "Finding helper" },
@@ -81,9 +95,16 @@ export function statusIndex(s: BookingStatus): number {
   return STATUS_STEPS.findIndex((x) => x.key === s);
 }
 
-/** Helper payout for a completed booking — midpoint of the estimate band. */
-export function bookingEarnings(b: Pick<Booking, "estLow" | "estHigh">): number {
-  return Math.round((b.estLow + b.estHigh) / 2);
+/** Fixed price charged upfront at booking — midpoint of the estimate band. */
+export function bookingQuote(estLow: number, estHigh: number): number {
+  return Math.round((estLow + estHigh) / 2);
+}
+
+/** Helper payout for a completed booking — what the customer paid upfront. */
+export function bookingEarnings(
+  b: Pick<Booking, "estLow" | "estHigh"> & { amountPaid?: number | null }
+): number {
+  return b.amountPaid ?? bookingQuote(b.estLow, b.estHigh);
 }
 
 /** Format an estimate band for display, e.g. "₹150 – ₹240" or "₹400". */

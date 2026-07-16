@@ -82,11 +82,18 @@ export default function SuccessScreen({
             </div>
             <Row label="Area" value={`${booking.zone}, Hyderabad`} />
             <div className="flex justify-between border-t border-line pt-3">
-              <span className="text-muted">Estimate (pay after)</span>
-              <span className="font-display font-bold text-primary">
-                {formatEstimate(booking.estLow, booking.estHigh)}
+              <span className="text-muted">
+                {booking.amountPaid != null ? "Paid securely" : "Estimate"}
+              </span>
+              <span className="font-display font-bold text-success">
+                {booking.amountPaid != null
+                  ? `₹${booking.amountPaid.toLocaleString("en-IN")} ✓`
+                  : formatEstimate(booking.estLow, booking.estHigh)}
               </span>
             </div>
+            {booking.paymentId && (
+              <p className="text-right text-xs text-muted">Payment ref: {booking.paymentId}</p>
+            )}
           </div>
         )}
 
@@ -127,8 +134,8 @@ export default function SuccessScreen({
 
         {booking?.status === "completed" && (
           <p className="animate-fade-up mt-6 rounded-2xl bg-success/10 p-4 text-sm font-semibold text-success">
-            Job completed! Pay via UPI/card now — and rate {booking.helperName} to save
-            them as a favourite.
+            Job completed! Your payment was settled at booking — rate{" "}
+            {booking.helperName} to save them as a favourite.
           </p>
         )}
 

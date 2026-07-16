@@ -12,7 +12,7 @@ export const SERVICE_ICONS: Record<
   care: HeartHandshake,
 };
 
-export const WIZARD_STEPS = ["Service", "Details", "Slot", "Helper", "Confirm"] as const;
+export const WIZARD_STEPS = ["Service", "Details", "Slot", "Helper", "Review & pay"] as const;
 
 export interface SlotOption {
   id: string;
