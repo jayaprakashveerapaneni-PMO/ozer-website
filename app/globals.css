@@ -222,6 +222,23 @@ button, a, select, [role="button"] {
   animation: silk-breathe ease-in-out infinite;
 }
 
+/* Silk dividers: exact intrinsic size so content-visibility never guesses
+   (the global 800px fallback would cause a scroll jump on first render). */
+.silk-divider { contain-intrinsic-size: auto 120px; }
+
+/* Hero dune parallax — the wave field sinks gently as you scroll past.
+   Scroll-driven (feels attached to the page); progressive enhancement. */
+@supports (animation-timeline: scroll()) {
+  @keyframes silk-parallax {
+    to { transform: translateY(52px); }
+  }
+  .silk-parallax {
+    animation: silk-parallax linear both;
+    animation-timeline: scroll();
+    animation-range: 0 100vh;
+  }
+}
+
 /* ---------- Flowing light-strings (FlowRibbons) ----------
    Comets of light travel each strand via stroke-dashoffset (every animated
    path shares one 2200-unit dash period, so one keyframe loops them all);
@@ -287,11 +304,12 @@ button, a, select, [role="button"] {
 }
 .animate-fade-up { animation: fade-up 0.6s var(--ease-emphasized) both; }
 
+/* Longer, softer glide — sections flow up into view like the dunes. */
 .reveal {
   opacity: 0;
-  transform: translateY(24px);
-  transition: opacity 0.6s var(--ease-emphasized),
-    transform 0.6s var(--ease-emphasized);
+  transform: translateY(36px);
+  transition: opacity 0.9s var(--ease-emphasized),
+    transform 0.9s var(--ease-emphasized);
 }
 .reveal.in-view { opacity: 1; transform: translateY(0); }
 
@@ -328,14 +346,18 @@ button, a, select, [role="button"] {
 .typing-dot:nth-child(2) { animation-delay: 0.15s; }
 .typing-dot:nth-child(3) { animation-delay: 0.3s; }
 
-/* Booking-highlights walkthrough: fills over one auto-advance cycle. */
+/* Booking-highlights walkthrough: fills over one auto-advance cycle.
+   scaleX (not width) so the fill never causes layout shift. */
 @keyframes highlight-fill {
-  from { width: 0; }
-  to { width: 100%; }
+  from { transform: scaleX(0); }
+  to { transform: scaleX(1); }
 }
-.highlight-progress { animation: highlight-fill 3.4s linear forwards; }
+.highlight-progress {
+  transform-origin: left;
+  animation: highlight-fill 3.4s linear forwards;
+}
 @media (prefers-reduced-motion: reduce) {
-  .highlight-progress { animation: none; width: 100%; }
+  .highlight-progress { animation: none; transform: scaleX(1); }
 }
 
 @keyframes shimmer {
@@ -476,4 +498,5 @@ main > :not(:first-child) {
     transition-duration: 0.01ms !important;
   }
   .reveal { opacity: 1; transform: none; }
+  .silk-parallax { animation: none; }
 }

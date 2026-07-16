@@ -135,6 +135,16 @@ strip on the wave). Viewed the actual frames via the user's Chrome (claude-in-ch
   icon.tsx favicon matches. opengraph-image.tsx exists (older palette — could refresh).
 - Other sections still use the previous light-glass style with token colors (consistent
   but not yet dune-themed) — possible next design task if user asks.
+- **Motion system ("glides and flows", user request)**: SilkDivider — flowing
+  golden dune bands (2 drifting/breathing ridge layers, amber crest md+ only,
+  `.silk-divider` pins contain-intrinsic-size to 120px) placed before
+  Highlights / Estimator (flipped) / Testimonials. Hero SilkWave has a
+  scroll-driven parallax (`.silk-parallax`, @supports animation-timeline,
+  disabled under reduced motion). `.reveal` glide is 36px/0.9s. ALL page
+  motion is transform/opacity-only — CI enforces CLS ≤ 0.05 and run #2 FAILED
+  on 0.18 CLS from the Highlights phone-swap; fixed by a fixed 200px screen
+  stage + scaleX progress bar. Measure CLS via PerformanceObserver
+  (layout-shift, buffered) in the browser pane before shipping motion.
 - Homepage flow (2026-07-16 evening): Hero → Marquee → Services → Highlights
   (auto-playing 4-step booking walkthrough, 3.4s cycle, pauses on hover/interaction,
   `.highlight-progress` keyframe, reduced-motion safe) → Personas (Rao garu is now

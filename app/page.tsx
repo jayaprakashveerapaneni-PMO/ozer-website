@@ -13,6 +13,7 @@ import Testimonials from "@/features/home/Testimonials";
 import Faq from "@/features/home/Faq";
 import Footer from "@/components/layout/Footer";
 import StructuredData from "@/components/layout/StructuredData";
+import SilkDivider from "@/components/layout/SilkDivider";
 
 export default function Home() {
   return (
@@ -24,12 +25,15 @@ export default function Home() {
         <Hero />
         <Marquee />
         <Services />
+        <SilkDivider />
         <Highlights />
         <Personas />
         <HowItWorks />
+        <SilkDivider flip />
         <Estimator />
         <Trust />
         <Helpers />
+        <SilkDivider />
         <Testimonials />
         <Faq />
       </main>

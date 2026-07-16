@@ -137,13 +137,12 @@ export default function Highlights() {
           onMouseLeave={() => setPaused(false)}
         >
           {/* step rail */}
-          <div className="grid gap-3" role="tablist" aria-label="Booking steps">
+          <div className="grid gap-3" aria-label="Booking steps">
             {STEPS.map((s, i) => (
               <Reveal key={s.title} delay={i * 80}>
                 <button
                   type="button"
-                  role="tab"
-                  aria-selected={active === i}
+                  aria-pressed={active === i}
                   onClick={() => { setActive(i); setPaused(true); }}
                   onFocus={() => setPaused(true)}
                   className={`group flex w-full items-start gap-4 rounded-3xl border p-5 text-left transition-all duration-300 ${
@@ -162,9 +161,9 @@ export default function Highlights() {
                       <span className="text-xs text-muted">0{i + 1}</span> {s.title}
                     </span>
                     <span className="mt-1 block text-sm leading-relaxed text-muted">{s.body}</span>
-                    {/* per-step progress track */}
+                    {/* per-step progress track (scaleX only — zero layout shift) */}
                     <span className="mt-3 block h-1 overflow-hidden rounded-full bg-black/10" aria-hidden>
-                      <span className={active === i ? "highlight-progress block h-full rounded-full bg-primary" : "block h-full w-0"} />
+                      <span className={`block h-full w-full rounded-full bg-primary ${active === i ? "highlight-progress" : "scale-x-0"}`} />
                     </span>
                   </span>
                 </button>
@@ -180,7 +179,8 @@ export default function Highlights() {
                 <span>OZER · STEP {active + 1} OF 4</span>
                 <span className="text-orange-300">●</span>
               </p>
-              {step.screen}
+              {/* fixed-height stage so step swaps never shift layout (CLS) */}
+              <div className="h-[200px] overflow-hidden">{step.screen}</div>
               <Link
                 href="/book"
                 className="btn-shine mt-4 block rounded-2xl bg-orange-500 py-2.5 text-center text-xs font-bold text-black transition-transform hover:scale-[1.03]"

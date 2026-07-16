@@ -56,7 +56,7 @@ const RIDGES: Ridge[] = [
 
 export default function SilkWave() {
   return (
-    <div className="pointer-events-none absolute inset-x-0 bottom-0 h-[52%] overflow-hidden" aria-hidden>
+    <div className="silk-parallax pointer-events-none absolute inset-x-0 bottom-0 h-[52%] overflow-hidden" aria-hidden>
       {/* glowing amber core behind the crest (reference: lit silk fold) */}
       <div
         className="silk-breathe absolute left-[18%] bottom-[8%] h-[240px] w-[46%] rounded-full"
