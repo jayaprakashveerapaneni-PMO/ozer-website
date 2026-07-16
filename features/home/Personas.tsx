@@ -5,7 +5,7 @@ import Link from "next/link";
 import {
   Briefcase,
   HeartHandshake,
-  Mic,
+  Users,
   Sparkles,
   ShieldCheck,
   Bell,
@@ -13,6 +13,7 @@ import {
   Camera,
   MapPin,
   Wallet,
+  KeyRound,
 } from "lucide-react";
 import Spotlight from "@/components/motion/Spotlight";
 import { PERSONA_ACCENT, PERSONA_ACCENT_INK } from "@/lib/design";
@@ -87,30 +88,30 @@ const PERSONAS: Persona[] = [
   {
     id: "rao",
     name: "Rao garu, 68",
-    who: "Retired · Kukatpally · voice is his interface",
-    icon: Mic,
+    who: "Retired · Kukatpally · his daughter books for him",
+    icon: Users,
     accent: PERSONA_ACCENT[2],
-    quote: "నేను తెలుగులో మాట్లాడతాను — యాప్ నా మాట వింటుంది. No menus, no English, no typing.",
-    cta: { label: "Try voice like Rao garu", href: "/#voice" },
+    quote: "మా అమ్మాయి బెంగళూరు నుండి బుక్ చేస్తుంది. I just open the door — the OTP tells me it's the right person.",
+    cta: { label: "Book for your parents", href: "/book?service=care" },
     screen: (
       <div className="space-y-3">
-        <div className="rounded-2xl bg-white/8 p-3 text-center">
-          <span className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-gradient-to-br from-orange-400 to-orange-600 animate-breathe">
-            <Mic className="h-5 w-5 text-white" aria-hidden />
-          </span>
-          <p className="mt-2 text-[11px] font-semibold text-white">“రేపు ఉదయం ఇల్లు శుభ్రం కావాలి”</p>
-          <div className="mt-1 flex h-4 items-end justify-center gap-0.5">
-            {[0, 0.2, 0.1, 0.3, 0.05].map((d, i) => (
-              <span key={i} className="voice-bar h-4" style={{ animationDelay: `${d}s`, width: 3 }} />
-            ))}
-          </div>
+        <div className="rounded-2xl bg-white/8 p-3">
+          <p className="text-[10px] font-bold uppercase tracking-widest text-cyan-300">Booked by family</p>
+          <p className="mt-1.5 text-[11px] font-semibold text-white">House Cleaning · tomorrow 9 AM</p>
+          <p className="text-[10px] text-white/50">Swathi (daughter, Bengaluru) · paid online ✓</p>
+          <p className="mt-2 flex items-center gap-1.5 text-[11px] text-white">
+            <MapPin className="h-3 w-3 text-emerald-400" aria-hidden /> Lakshmi is en route · tracking shared
+          </p>
         </div>
         <div className="rounded-2xl bg-white/8 p-3">
-          <p className="text-[10px] font-bold uppercase tracking-widest text-cyan-300">చదివి వినిపిస్తుంది</p>
-          <p className="mt-1 text-[11px] text-white">సరే! ఇంటి శుభ్రత, రేపు ఉదయం. కొనసాగించాలా?</p>
+          <p className="flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-widest text-cyan-300">
+            <KeyRound className="h-3 w-3" aria-hidden /> At the door
+          </p>
+          <p className="mt-1 text-[11px] text-white">Helper says the OTP, Rao garu matches it. No app needed on his side.</p>
           <div className="mt-2 flex gap-1.5">
-            <span className="flex-1 rounded-lg bg-cyan-400 py-1 text-center text-[10px] font-bold text-black">అవును ✓</span>
-            <span className="flex-1 rounded-lg bg-white/10 py-1 text-center text-[10px] text-white">మార్చు</span>
+            {["4", "8", "2", "6"].map((d, i) => (
+              <span key={i} className="flex-1 rounded-lg bg-cyan-400 py-1 text-center text-[11px] font-bold text-black">{d}</span>
+            ))}
           </div>
         </div>
       </div>
@@ -122,7 +123,7 @@ const PERSONAS: Persona[] = [
     who: "Cleaning professional · earns on her hours",
     icon: Sparkles,
     accent: PERSONA_ACCENT[3],
-    quote: "Jobs come to my phone in Telugu, I pick the ones near home, and money lands the same day.",
+    quote: "Jobs come straight to my phone, I pick the ones near home, and money lands the same day.",
     cta: { label: "See Meena's helper app", href: "/helper" },
     screen: (
       <div className="space-y-3">

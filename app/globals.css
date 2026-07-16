@@ -328,16 +328,14 @@ button, a, select, [role="button"] {
 .typing-dot:nth-child(2) { animation-delay: 0.15s; }
 .typing-dot:nth-child(3) { animation-delay: 0.3s; }
 
-@keyframes bar-bounce {
-  0%, 100% { transform: scaleY(0.3); }
-  50% { transform: scaleY(1); }
+/* Booking-highlights walkthrough: fills over one auto-advance cycle. */
+@keyframes highlight-fill {
+  from { width: 0; }
+  to { width: 100%; }
 }
-.voice-bar {
-  width: 4px;
-  border-radius: 9999px;
-  background: linear-gradient(180deg, #f97316, #ea580c);
-  transform-origin: bottom;
-  animation: bar-bounce 0.9s ease-in-out infinite;
+.highlight-progress { animation: highlight-fill 3.4s linear forwards; }
+@media (prefers-reduced-motion: reduce) {
+  .highlight-progress { animation: none; width: 100%; }
 }
 
 @keyframes shimmer {
@@ -452,7 +450,7 @@ button, a, select, [role="button"] {
 /* ---------- Rendering-cost controls ----------
    Below-the-fold home sections skip style/layout/paint until near the
    viewport (~951 DOM nodes rendered eagerly otherwise). The intrinsic size
-   reserves space so scrollbar/CLS stay stable; anchors (#voice) still work
+   reserves space so scrollbar/CLS stay stable; anchors (#highlights) still work
    because the browser renders on demand when jumped to. */
 main > :not(:first-child) {
   content-visibility: auto;

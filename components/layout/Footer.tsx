@@ -10,8 +10,8 @@ export default function Footer() {
           <div>
             <Logo />
             <p className="mt-3 max-w-xs text-sm text-muted">
-              Daily help, delivered. The voice-first home services platform —
-              verified helpers, pay after service, money-back promise.
+              Daily help, delivered. Verified helpers, upfront prices,
+              protected payments and a money-back promise on every job.
             </p>
             <p className="mt-4 text-xs text-muted">
               Launching next: Bengaluru · Chennai
@@ -28,14 +28,14 @@ export default function Footer() {
             </ul>
           </nav>
 
-          <nav aria-label="Voice">
-            <p className="text-sm font-semibold">Voice</p>
+          <nav aria-label="Explore">
+            <p className="text-sm font-semibold">Explore</p>
             <ul className="mt-3 space-y-2 text-sm text-muted">
-              <li><Link href="/#voice" className="transition-colors hover:text-primary">Live voice demo</Link></li>
-              <li><Link href="/#assistants" className="transition-colors hover:text-primary">Alexa integration</Link></li>
-              <li><Link href="/#assistants" className="transition-colors hover:text-primary">Siri Shortcuts</Link></li>
-              <li><Link href="/#assistants" className="transition-colors hover:text-primary">Google Assistant</Link></li>
-              <li><Link href="/flow" className="transition-colors hover:text-primary">The build story</Link></li>
+              <li><Link href="/#highlights" className="transition-colors hover:text-primary">How booking works</Link></li>
+              <li><Link href="/#pricing" className="transition-colors hover:text-primary">Instant price estimate</Link></li>
+              <li><Link href="/#trust" className="transition-colors hover:text-primary">Trust & safety</Link></li>
+              <li><Link href="/#faq" className="transition-colors hover:text-primary">FAQ</Link></li>
+              <li><Link href="/helper" className="transition-colors hover:text-primary">Helper app</Link></li>
             </ul>
           </nav>
 
@@ -49,7 +49,7 @@ export default function Footer() {
 
         <div className="mt-10 flex flex-col items-start justify-between gap-3 border-t border-line pt-6 text-xs text-muted sm:flex-row">
           <p>© {new Date().getFullYear()} Ozer. All rights reserved.</p>
-          <p>Demo site built from the Ozer v1 requirements suite — pricing directional, pending launch.</p>
+          <p>Prices shown are standard Hyderabad rates, confirmed before you pay.</p>
         </div>
       </div>
     </footer>

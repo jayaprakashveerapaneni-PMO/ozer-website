@@ -51,14 +51,7 @@ export default function OfferList({
             <div key={o.id} className="glass glow-ring animate-fade-up rounded-3xl p-5">
               <div className="flex flex-wrap items-center justify-between gap-3">
                 <div>
-                  <p className="flex items-center gap-2 font-display text-lg font-semibold">
-                    {o.serviceName}
-                    {o.via === "voice" && (
-                      <span className="rounded-full bg-accent/15 px-2 py-0.5 text-[10px] font-bold text-accent">
-                        VOICE BOOKING
-                      </span>
-                    )}
-                  </p>
+                  <p className="font-display text-lg font-semibold">{o.serviceName}</p>
                   <p className="mt-0.5 text-sm text-muted">
                     {o.detailLabel} · {o.slotLabel}
                   </p>

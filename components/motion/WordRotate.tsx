@@ -5,7 +5,7 @@ import { prefersReducedMotion } from "@/lib/motion";
 
 // Completes the hero sentence: "Daily Help That Flows With ___".
 // Words stay short so the headline never reflows between rotations.
-const WORDS = ["You.", "Telugu.", "Trust.", "Ease."];
+const WORDS = ["You.", "Trust.", "Ease.", "Care."];
 
 /** Cycles hero words with a blur-slide swap. */
 export default function WordRotate() {

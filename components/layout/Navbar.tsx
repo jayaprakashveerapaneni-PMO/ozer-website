@@ -2,17 +2,16 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { Menu, X, Mic } from "lucide-react";
+import { Menu, X } from "lucide-react";
 import { Button } from "@/components/ui";
 import Logo from "@/components/layout/Logo";
 
 const links = [
   { href: "/#services", label: "Services" },
-  { href: "/#voice", label: "Voice demo" },
-  { href: "/#assistants", label: "Alexa · Siri · Google" },
+  { href: "/#highlights", label: "How booking works" },
+  { href: "/#pricing", label: "Pricing" },
   { href: "/#personas", label: "Who it's for" },
   { href: "/helper", label: "Helper app" },
-  { href: "/flow", label: "Build story" },
 ];
 
 export default function Navbar() {
@@ -42,7 +41,6 @@ export default function Navbar() {
             </Link>
           ))}
           <Button href="/book" variant="pill" size="sm">
-            <Mic className="h-4 w-4" aria-hidden />
             Book now
           </Button>
         </div>

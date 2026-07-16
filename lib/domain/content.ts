@@ -7,7 +7,7 @@ export const TESTIMONIALS = [
     area: "Madhapur",
     role: "IT professional, mother of two",
     quote:
-      "My cook arrives on time every single day, and I paid only after the first meal was done. The verification badge is what convinced my husband.",
+      "My cook arrives on time every single day, and the price was fixed before I paid — no renegotiation at the door. The verification badge is what convinced my husband.",
     service: "Home Cook",
   },
   {
@@ -35,11 +35,11 @@ export const FAQS = [
   },
   {
     q: "When do I pay?",
-    a: "After the job is done, to your satisfaction. Pay via UPI, card or netbanking once you confirm completion. If something isn't right, raise it within 48 hours — you choose a full refund or a replacement helper under our money-back promise.",
+    a: "At booking, securely — UPI, card or netbanking. The price is fixed and shown before you pay, and your money stays protected: if something isn't right, raise it within 48 hours and choose a full refund or a replacement helper under our money-back promise.",
   },
   {
-    q: "Can I book in Telugu, Hindi or Tamil?",
-    a: "Yes. The Ozer app supports voice booking in Telugu, Hindi, Tamil and English — speak your request, review the read-back summary in your language, and confirm. Nothing is ever booked on voice alone; you always confirm before it's placed.",
+    q: "Is the price really fixed?",
+    a: "Yes. The estimator shows the standard rate for your exact job — size, hours, add-ons — and the amount you approve at payment is the amount you pay. No renegotiation at the door, no cash asks, ever.",
   },
   {
     q: "How do I know who is arriving?",

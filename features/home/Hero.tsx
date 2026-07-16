@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { ShieldCheck, Mic, ArrowRight } from "lucide-react";
+import { ShieldCheck, CalendarCheck, ArrowRight } from "lucide-react";
 import WordRotate from "@/components/motion/WordRotate";
 import { Button, Badge } from "@/components/ui";
 import SilkWave from "@/components/layout/SilkWave";
@@ -34,20 +34,20 @@ export default function Hero() {
         {/* LCP element — never animate its opacity (Lighthouse LCP penalty). */}
         <p className="mx-auto mt-6 max-w-xl text-base leading-relaxed text-muted sm:text-lg">
           Verified cleaners, cooks, laundry and caregivers across Hyderabad —
-          summoned by your voice in Telugu, Hindi, Tamil or English.
-          Pay only after the job is done.
+          booked in about two minutes, priced upfront, and protected by a
+          money-back promise on every job.
         </p>
 
         <div className="animate-fade-up mt-9 flex flex-col items-center justify-center gap-5 sm:flex-row" style={{ animationDelay: "240ms" }}>
-          <Button href="/#voice" variant="pill" size="lg" className="group">
-            <Mic className="h-5 w-5 transition-transform group-hover:scale-125" aria-hidden />
-            Start booking with voice
+          <Button href="/book" variant="pill" size="lg" className="group">
+            <CalendarCheck className="h-5 w-5 transition-transform group-hover:scale-125" aria-hidden />
+            Book a service
           </Button>
           <Link
-            href="/book"
+            href="/#services"
             className="group inline-flex items-center gap-1.5 text-sm font-semibold text-foreground/80 transition-colors hover:text-primary"
           >
-            Explore booking
+            Explore services
             <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" aria-hidden />
           </Link>
         </div>

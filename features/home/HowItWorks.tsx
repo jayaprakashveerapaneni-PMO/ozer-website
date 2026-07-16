@@ -1,11 +1,11 @@
-import { Mic, CalendarClock, UserCheck, Wallet } from "lucide-react";
+import { ListChecks, CalendarClock, UserCheck, CreditCard } from "lucide-react";
 import Reveal from "@/components/motion/Reveal";
 
 const steps = [
   {
-    icon: Mic,
-    title: "Say it or tap it",
-    body: "Speak in your language — or tap through. See the full price before you even sign in.",
+    icon: ListChecks,
+    title: "Pick your service",
+    body: "Cleaning, cook, laundry or care. See the full price before you even sign in.",
   },
   {
     icon: CalendarClock,
@@ -13,14 +13,14 @@ const steps = [
     body: "ASAP or up to 14 days ahead. Choose from verified helpers near you — photo, rating and badge shown.",
   },
   {
+    icon: CreditCard,
+    title: "Pay securely upfront",
+    body: "UPI, card or netbanking at booking. Every rupee is protected by the money-back promise.",
+  },
+  {
     icon: UserCheck,
     title: "Track & verify arrival",
     body: "Watch your helper live from en route, share tracking with family, OTP handshake at the door.",
-  },
-  {
-    icon: Wallet,
-    title: "Pay after, protected",
-    body: "UPI or card only when the job is done. Not satisfied? Full refund or replacement — your choice.",
   },
 ];
 

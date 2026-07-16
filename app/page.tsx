@@ -3,8 +3,7 @@ import ScrollProgress from "@/components/layout/ScrollProgress";
 import Marquee from "@/features/home/Marquee";
 import Hero from "@/features/home/Hero";
 import Services from "@/features/home/Services";
-import VoiceDemo from "@/features/voice/VoiceDemo";
-import Assistants from "@/features/assistants/Assistants";
+import Highlights from "@/features/home/Highlights";
 import Personas from "@/features/home/Personas";
 import HowItWorks from "@/features/home/HowItWorks";
 import Estimator from "@/features/home/Estimator";
@@ -25,8 +24,7 @@ export default function Home() {
         <Hero />
         <Marquee />
         <Services />
-        <VoiceDemo />
-        <Assistants />
+        <Highlights />
         <Personas />
         <HowItWorks />
         <Estimator />

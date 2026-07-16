@@ -4,7 +4,7 @@ import { SITE } from "@/lib/site";
 // Social share card (1200×630), generated at build time — no static asset.
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
-export const alt = "Ozer — Daily Help, Delivered. Voice-first verified home services in Hyderabad.";
+export const alt = "Ozer — Daily Help, Delivered. Verified home services in Hyderabad.";
 
 export default function OpengraphImage() {
   return new ImageResponse(
@@ -48,12 +48,12 @@ export default function OpengraphImage() {
             <span style={{ color: "#c2410c" }}>delivered.</span>
           </div>
           <div style={{ fontSize: 30, color: "#4b4860", maxWidth: 900, lineHeight: 1.35 }}>
-            {`Voice-first, verified home services in ${SITE.city} — book by voice in Telugu, Hindi, Tamil or English. Works with Alexa, Siri & Google.`}
+            {`Police-verified cleaners, cooks, laundry & care in ${SITE.city} — booked in about two minutes, priced upfront, paid securely.`}
           </div>
         </div>
 
         <div style={{ display: "flex", gap: 16 }}>
-          {["Police-verified", "Pay after service", "Money-back promise"].map((t) => (
+          {["Police-verified", "Upfront pricing", "Money-back promise"].map((t) => (
             <div
               key={t}
               style={{

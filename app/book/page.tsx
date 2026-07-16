@@ -7,7 +7,7 @@ import BookingWizard from "@/features/booking/BookingWizard";
 export const metadata: Metadata = {
   title: "Book a service",
   description:
-    "Book verified house cleaning, home cook, laundry or care in Hyderabad. Estimate first, pay after service.",
+    "Book verified house cleaning, home cook, laundry or care in Hyderabad. Transparent pricing, secure payment.",
   alternates: { canonical: "/book" },
 };
 

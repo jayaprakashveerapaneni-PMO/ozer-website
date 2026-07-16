@@ -6,8 +6,7 @@ import type { NextConfig } from "next";
  *   hydration scripts and React inline styles without a nonce on statically
  *   prerendered pages. (A nonce-based CSP needs a middleware/dynamic render.)
  * - connect-src allows Supabase REST + Realtime (wss) — the booking backend.
- * - Microphone is granted to same-origin so the in-app voice demo works;
- *   camera/geolocation are denied.
+ * - Microphone/camera/geolocation are all denied — nothing on the site uses them.
  */
 // React's dev server uses eval() for debugging (never in production builds),
 // so 'unsafe-eval' is added in development only — production stays strict.
@@ -35,7 +34,7 @@ const securityHeaders = [
   { key: "X-Content-Type-Options", value: "nosniff" },
   { key: "X-Frame-Options", value: "DENY" },
   { key: "Referrer-Policy", value: "strict-origin-when-cross-origin" },
-  { key: "Permissions-Policy", value: "microphone=(self), camera=(), geolocation=(), browsing-topics=()" },
+  { key: "Permissions-Policy", value: "microphone=(), camera=(), geolocation=(), browsing-topics=()" },
 ];
 
 const nextConfig: NextConfig = {

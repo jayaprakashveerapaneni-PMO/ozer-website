@@ -39,8 +39,7 @@ export const metadata: Metadata = {
   applicationName: SITE.name,
   keywords: [
     "home services Hyderabad",
-    "voice booking",
-    "Alexa home services",
+    "book maid online Hyderabad",
     "house cleaning",
     "home cook",
     "laundry service",
@@ -51,7 +50,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Ozer — Daily Help, Delivered",
     description:
-      "The voice-first home services platform. Speak Telugu, Hindi, Tamil or English — verified help arrives. Works with Alexa, Siri & Google Assistant.",
+      "Police-verified cleaners, cooks, laundry and caregivers in Hyderabad — booked in about two minutes with upfront pricing and secure payment.",
     url: SITE.url,
     siteName: SITE.name,
     locale: SITE.locale,
@@ -61,7 +60,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Ozer — Daily Help, Delivered",
     description:
-      "Voice-first verified home services in Hyderabad. Works with Alexa, Siri & Google Assistant. Pay after service.",
+      "Verified home services in Hyderabad. Upfront pricing, secure payment, money-back promise.",
   },
   robots: {
     index: true,

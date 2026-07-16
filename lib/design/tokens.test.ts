@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { SERVICES } from "@/lib/domain";
-import { SERVICE_ACCENT, ASSISTANT_ACCENT, CONFETTI_COLORS, withAlpha } from "./tokens";
+import { SERVICE_ACCENT, CONFETTI_COLORS, withAlpha } from "./tokens";
 
 describe("design tokens", () => {
   it("withAlpha appends a correct 2-digit hex alpha", () => {
@@ -18,10 +18,6 @@ describe("design tokens", () => {
     for (const s of SERVICES) {
       expect(SERVICE_ACCENT[s.id]).toMatch(/^#[0-9a-f]{6}$/i);
     }
-  });
-
-  it("all three assistants have brand accents", () => {
-    expect(Object.keys(ASSISTANT_ACCENT).sort()).toEqual(["alexa", "google", "siri"]);
   });
 
   it("confetti palette is non-empty and valid hex", () => {

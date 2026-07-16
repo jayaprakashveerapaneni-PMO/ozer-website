@@ -20,8 +20,8 @@ const pillars = [
   },
   {
     icon: Wallet,
-    title: "Pay after service",
-    body: "UPI, cards or netbanking — only after you confirm the job is done. Your money never moves before your satisfaction does.",
+    title: "Payments, protected",
+    body: "Pay securely at booking — UPI, cards or netbanking. Your money stays covered by the money-back promise until the job is done right.",
   },
   {
     icon: RotateCcw,

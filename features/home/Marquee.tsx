@@ -1,14 +1,14 @@
-import { ShieldCheck, Mic, Wallet, MapPin, Star, Zap, Languages, BadgeCheck } from "lucide-react";
+import { ShieldCheck, Timer, Wallet, MapPin, Star, Zap, KeyRound, BadgeCheck } from "lucide-react";
 
 const items = [
   { icon: ShieldCheck, text: "Police-verified helpers" },
-  { icon: Mic, text: "Voice booking · తెలుగు · हिंदी · தமிழ் · English" },
-  { icon: Wallet, text: "Pay after service" },
+  { icon: Timer, text: "Booked in about 2 minutes" },
+  { icon: Wallet, text: "Secure payment at booking" },
   { icon: Zap, text: "ASAP or 14 days ahead" },
   { icon: MapPin, text: "Live tracking, shareable" },
-  { icon: BadgeCheck, text: "Works with Alexa · Siri · Google" },
+  { icon: KeyRound, text: "OTP arrival handshake" },
   { icon: Star, text: "Money-back promise" },
-  { icon: Languages, text: "Helper app with voice guidance" },
+  { icon: BadgeCheck, text: "Transparent upfront pricing" },
 ];
 
 export default function Marquee() {

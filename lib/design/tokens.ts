@@ -2,7 +2,7 @@
 // inline styles need (CSS-only tokens live in globals.css @theme). Three tiers:
 //
 //   1. PALETTE     — raw primitive colors (never referenced directly by UI)
-//   2. semantic    — SERVICE_ACCENT / ASSISTANT_ACCENT / PERSONA_ACCENT etc.
+//   2. semantic    — SERVICE_ACCENT / PERSONA_ACCENT etc.
 //   3. component   — CONFETTI_COLORS and friends
 //
 // UI code imports the semantic/component tokens, never the palette. This is
@@ -17,7 +17,6 @@ const PALETTE = {
   cyan: "#22d3ee",
   violet: "#a78bfa",
   emerald: "#34d399",
-  sky: "#38bdf8",
 } as const;
 
 /** Append an alpha channel to a 6-digit hex, e.g. withAlpha("#fb923c", 0.2). */
@@ -70,22 +69,6 @@ export const SERVICE_ACCENT_INK: Record<ServiceId, string> = {
   cook: BRAND_INK.rose,
   laundry: BRAND_INK.accent,
   care: BRAND_INK.violet,
-};
-
-export type AssistantId = "alexa" | "siri" | "google";
-
-/** Tier 2 — voice-assistant brand accents (bright; decorative). */
-export const ASSISTANT_ACCENT: Record<AssistantId, string> = {
-  alexa: PALETTE.sky,
-  siri: PALETTE.violet,
-  google: PALETTE.emerald,
-};
-
-/** Tier 2 — AA-safe assistant accents for text on the light background. */
-export const ASSISTANT_ACCENT_INK: Record<AssistantId, string> = {
-  alexa: "#0369a1",
-  siri: BRAND_INK.violet,
-  google: BRAND_INK.success,
 };
 
 /** Tier 2 — persona accent ordering (Divya, Anjali, Rao garu, Meena; bright). */

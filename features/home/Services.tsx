@@ -18,7 +18,7 @@ export default function Services() {
       <div className="mx-auto max-w-6xl px-4 sm:px-6">
         <Reveal className="max-w-2xl">
           <h2 className="text-3xl font-bold tracking-tight sm:text-5xl">
-            Four services. <span className="gradient-text">One tap — or one sentence.</span>
+            Four services. <span className="gradient-text">One transparent price.</span>
           </h2>
           <p className="mt-4 text-lg text-muted">
             Every card is clickable — tap anywhere on it to start booking.

@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { useSearchParams } from "next/navigation";
-import { ChevronLeft, Mic } from "lucide-react";
+import { ChevronLeft } from "lucide-react";
 import {
   SERVICES,
   ZONES,
@@ -27,7 +27,6 @@ export default function BookingWizard() {
   const initial = params.get("service") as ServiceId | null;
   const validInitial = SERVICES.some((s) => s.id === initial) ? initial : null;
   const initialSlot = SLOT_PRESETS.find((s) => s.id === params.get("slot")) ?? null;
-  const viaVoice = params.get("via") === "voice";
   const instant = params.get("instant") === "1";
 
   const [step, setStep] = useState(validInitial ? 1 : 0);
@@ -54,7 +53,7 @@ export default function BookingWizard() {
       zone,
       customerName: "You (demo customer)",
       preferredHelperId: helper?.id ?? null,
-      via: viaVoice ? "voice" : "app",
+      via: "app",
     });
     setBookingId(b.id);
     setPlacing(false);
@@ -103,18 +102,6 @@ export default function BookingWizard() {
 
   return (
     <div className="mx-auto max-w-3xl px-4 py-10 sm:px-6">
-      {viaVoice && step === 1 && (
-        <p className="animate-fade-up mb-6 flex items-center gap-2 rounded-2xl glass px-4 py-3 text-sm font-medium text-primary">
-          <Mic className="h-4 w-4 shrink-0" aria-hidden />
-          Filled in by voice — review the details, everything stays in your control.
-          {initialSlot && (
-            <span className="ml-auto rounded-full bg-primary/15 px-3 py-0.5 text-xs font-bold">
-              {initialSlot.label}
-            </span>
-          )}
-        </p>
-      )}
-
       <nav aria-label="Booking progress">
         <ol className="flex items-center gap-2">
           {WIZARD_STEPS.map((s, i) => (
