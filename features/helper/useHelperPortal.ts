@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { bookingEarnings, type Booking, type Helper } from "@/lib/domain";
 import { getBookingService } from "@/lib/services/booking-service";
+import { playChime, showNativeOffer } from "./notify";
 
 export interface Toast {
   id: number;
@@ -47,15 +48,23 @@ export function useHelperPortal(helper: Helper) {
       !b.declinedBy.includes(helper.id)
   );
 
-  // Toast on newly arrived offers.
+  // Toast + chime + native OS notification on newly arrived offers.
   useEffect(() => {
+    let fresh = 0;
     offers.forEach((o) => {
       if (knownOffers.current.has(o.id)) return;
       knownOffers.current.add(o.id);
+      fresh++;
       const id = ++toastId.current;
       setToasts((t) => [...t, { id, text: `New job nearby: ${o.serviceName} · ${o.zone}` }]);
       setTimeout(() => setToasts((t) => t.filter((x) => x.id !== id)), 4200);
+      showNativeOffer(
+        `New job offer — ₹${bookingEarnings(o).toLocaleString("en-IN")}`,
+        `${o.serviceName} · ${o.zone} · ${o.slotLabel} (already paid)`,
+        o.id
+      );
     });
+    if (fresh > 0) playChime();
   }, [offers]);
 
   const activeJob = bookings.find(

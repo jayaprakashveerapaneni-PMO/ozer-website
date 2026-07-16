@@ -47,7 +47,9 @@ export function getBookingService(): BookingService {
     // Dynamic require keeps supabase-js out of the bundle when unconfigured.
     // eslint-disable-next-line @typescript-eslint/no-require-imports
     const { SupabaseBookingService } = require("./supabase-booking-service") as typeof import("./supabase-booking-service");
-    instance = new SupabaseBookingService(url, key);
+    // eslint-disable-next-line @typescript-eslint/no-require-imports
+    const { getSupabaseClient } = require("./supabase-client") as typeof import("./supabase-client");
+    instance = new SupabaseBookingService(getSupabaseClient()!);
   } else {
     // eslint-disable-next-line @typescript-eslint/no-require-imports
     const { LocalBookingService } = require("./local-booking-service") as typeof import("./local-booking-service");

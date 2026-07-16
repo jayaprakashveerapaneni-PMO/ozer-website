@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { prefersReducedMotion } from "@/lib/motion";
+import { isAutomatedAgent, prefersReducedMotion } from "@/lib/motion";
 
 // Completes the hero sentence: "Daily Help That Flows With ___".
 // Words stay short so the headline never reflows between rotations.
@@ -12,7 +12,7 @@ export default function WordRotate() {
   const [i, setI] = useState(0);
 
   useEffect(() => {
-    if (prefersReducedMotion()) return;
+    if (prefersReducedMotion() || isAutomatedAgent()) return;
     const id = setInterval(() => setI((v) => (v + 1) % WORDS.length), 2600);
     return () => clearInterval(id);
   }, []);

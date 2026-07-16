@@ -2,7 +2,7 @@
 // Multi-device: a booking placed on a phone appears on a helper's phone
 // instantly via a Realtime channel. Schema: supabase/migrations/001_init.sql.
 
-import { createClient, type SupabaseClient } from "@supabase/supabase-js";
+import type { SupabaseClient } from "@supabase/supabase-js";
 import type {
   Booking,
   BookingStatus,
@@ -39,7 +39,18 @@ interface BookingRow {
   amount_paid?: number | null;
   payment_id?: string | null;
   payment_method?: PaymentMethod | null;
+  customer_id?: string | null;
+  customer_email?: string | null;
 }
+
+/** Columns added after 001 — stripped from inserts until migrations run. */
+const OPTIONAL_COLUMNS = [
+  "amount_paid",
+  "payment_id",
+  "payment_method",
+  "customer_id",
+  "customer_email",
+] as const;
 
 function toBooking(r: BookingRow): Booking {
   return {
@@ -64,6 +75,8 @@ function toBooking(r: BookingRow): Booking {
     amountPaid: r.amount_paid ?? null,
     paymentId: r.payment_id ?? null,
     paymentMethod: r.payment_method ?? null,
+    customerId: r.customer_id ?? null,
+    customerEmail: r.customer_email ?? null,
   };
 }
 
@@ -83,8 +96,8 @@ export class SupabaseBookingService implements BookingService {
   private listeners = new Set<() => void>();
   private channelStarted = false;
 
-  constructor(url: string, anonKey: string) {
-    this.client = createClient(url, anonKey);
+  constructor(client: SupabaseClient) {
+    this.client = client;
   }
 
   private ensureChannel(): void {
@@ -145,16 +158,16 @@ export class SupabaseBookingService implements BookingService {
       amount_paid: input.amountPaid ?? null,
       payment_id: input.paymentId ?? null,
       payment_method: input.paymentMethod ?? null,
+      customer_id: input.customerId ?? null,
+      customer_email: input.customerEmail ?? null,
     };
     const { error } = await this.client.from("bookings").insert(row);
     if (error && /column|schema cache/i.test(error.message)) {
-      // Payment columns not migrated yet (002_payments.sql) — degrade
-      // gracefully so bookings never fail, but make the drift loud.
-      console.warn(`bookings.create: retrying without payment columns — apply supabase/migrations/002_payments.sql (${error.message})`);
+      // Newer columns not migrated yet (002/003 SQL) — degrade gracefully so
+      // bookings never fail, but make the drift loud.
+      console.warn(`bookings.create: retrying without post-001 columns — apply supabase/migrations 002+003 (${error.message})`);
       const legacy = { ...row };
-      delete legacy.amount_paid;
-      delete legacy.payment_id;
-      delete legacy.payment_method;
+      for (const col of OPTIONAL_COLUMNS) delete legacy[col];
       const retry = await this.client.from("bookings").insert(legacy);
       if (retry.error) throw new Error(`bookings.create failed: ${retry.error.message}`);
     } else if (error) {

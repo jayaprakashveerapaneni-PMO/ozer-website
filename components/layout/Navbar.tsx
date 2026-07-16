@@ -5,6 +5,7 @@ import Link from "next/link";
 import { Menu, X } from "lucide-react";
 import { Button } from "@/components/ui";
 import Logo from "@/components/layout/Logo";
+import AccountChip from "@/components/layout/AccountChip";
 
 const links = [
   { href: "/#services", label: "Services" },
@@ -40,6 +41,7 @@ export default function Navbar() {
               {l.label}
             </Link>
           ))}
+          <AccountChip />
           <Button href="/book" variant="pill" size="sm">
             Book now
           </Button>

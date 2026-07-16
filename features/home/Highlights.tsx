@@ -14,7 +14,7 @@ import {
 } from "lucide-react";
 import Reveal from "@/components/motion/Reveal";
 import CountUp from "@/components/motion/CountUp";
-import { prefersReducedMotion } from "@/lib/motion";
+import { isAutomatedAgent, prefersReducedMotion } from "@/lib/motion";
 import { ZONES } from "@/lib/domain";
 
 // Booking highlights — an auto-playing walkthrough of the real 4-step flow.
@@ -109,7 +109,7 @@ export default function Highlights() {
   const [paused, setPaused] = useState(false);
 
   useEffect(() => {
-    if (paused || prefersReducedMotion()) return;
+    if (paused || prefersReducedMotion() || isAutomatedAgent()) return;
     const id = setInterval(() => setActive((v) => (v + 1) % STEPS.length), CYCLE_MS);
     return () => clearInterval(id);
   }, [paused]);

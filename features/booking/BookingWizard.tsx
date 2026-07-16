@@ -1,9 +1,10 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { ChevronLeft } from "lucide-react";
 import {
+  HELPERS,
   SERVICES,
   ZONES,
   bookingQuote,
@@ -13,8 +14,12 @@ import {
 } from "@/lib/domain";
 import { getBookingService } from "@/lib/services/booking-service";
 import type { PaymentRecord } from "@/lib/services/payment-service";
+import { customerNameFromUser } from "@/lib/services/auth-service";
+import { useAuthUser } from "@/lib/services/use-auth";
 import { SLOT_PRESETS, WIZARD_STEPS, type SlotOption } from "./booking.constants";
-import { DEFAULT_DETAILS, useServiceDetails } from "./useServiceDetails";
+import { DEFAULT_DETAILS, useServiceDetails, type ServiceDetails } from "./useServiceDetails";
+import { clearDraft, readDraft, saveDraft } from "./booking-draft";
+import SignInCard from "./SignInCard";
 import ServiceStep from "./steps/ServiceStep";
 import DetailsStep from "./steps/DetailsStep";
 import SlotStep from "./steps/SlotStep";
@@ -43,11 +48,42 @@ export default function BookingWizard() {
   const [placing, setPlacing] = useState(false);
   const [paying, setPaying] = useState(false);
   const [bookingId, setBookingId] = useState<string | null>(null);
+  const user = useAuthUser();
 
   const svcMeta = SERVICES.find((s) => s.id === service)!;
   const quote = bookingQuote(estimate.low, estimate.high);
 
+  // Draft: saved while waiting for sign-in (the magic link may open a fresh
+  // tab), restored once on mount, cleared after restore or booking.
+  useEffect(() => {
+    if (step === 4 && !user) {
+      saveDraft({ service, details, zone, slotId: slot?.id ?? null, customDate, helperId: helper?.id ?? null });
+    }
+  }, [step, user, service, details, zone, slot, customDate, helper]);
+
+  useEffect(() => {
+    let cancelled = false;
+    void Promise.resolve().then(() => {
+      if (cancelled) return;
+      const draft = readDraft();
+      if (!draft || !SERVICES.some((s) => s.id === draft.service)) return;
+      setService(draft.service);
+      for (const [field, value] of Object.entries(draft.details)) {
+        set(field as keyof ServiceDetails, value as never);
+      }
+      setZone(draft.zone);
+      setSlot(SLOT_PRESETS.find((s) => s.id === draft.slotId) ?? null);
+      setCustomDate(draft.customDate);
+      setHelper(HELPERS.find((h) => h.id === draft.helperId) ?? null);
+      setStep(4);
+      clearDraft();
+    });
+    return () => { cancelled = true; };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   const placeBooking = async (payment: PaymentRecord) => {
+    if (!user) return;
     setPlacing(true);
     const b = await getBookingService().create({
       service,
@@ -57,13 +93,16 @@ export default function BookingWizard() {
       estHigh: estimate.high,
       slotLabel: slot?.id === "custom" ? customDate : slot?.label ?? "ASAP",
       zone,
-      customerName: "You (customer)",
+      customerName: customerNameFromUser(user),
       preferredHelperId: helper?.id ?? null,
       via: "app",
       amountPaid: payment.amount,
       paymentId: payment.paymentId,
       paymentMethod: payment.method,
+      customerId: user.id,
+      customerEmail: user.email ?? null,
     });
+    clearDraft();
     setBookingId(b.id);
     setPlacing(false);
     setPaying(false);
@@ -75,7 +114,7 @@ export default function BookingWizard() {
     : null;
 
   const placeInstantBooking = async (payment: PaymentRecord) => {
-    if (!validInitial || !instantEst) return;
+    if (!validInitial || !instantEst || !user) return;
     const svc = SERVICES.find((s) => s.id === validInitial)!;
     const b = await getBookingService().create({
       service: validInitial,
@@ -85,12 +124,14 @@ export default function BookingWizard() {
       estHigh: instantEst.high,
       slotLabel: "ASAP",
       zone: ZONES[0],
-      customerName: "You (instant customer)",
+      customerName: customerNameFromUser(user),
       preferredHelperId: null,
       via: "app",
       amountPaid: payment.amount,
       paymentId: payment.paymentId,
       paymentMethod: payment.method,
+      customerId: user.id,
+      customerEmail: user.email ?? null,
     });
     setBookingId(b.id);
   };
@@ -109,12 +150,18 @@ export default function BookingWizard() {
     return (
       <>
         <InstantScreen serviceName={svcMeta.name} />
-        <PaymentSheet
-          amount={bookingQuote(instantEst.low, instantEst.high)}
-          description={`${svcMeta.name} · ASAP · ${ZONES[0]}`}
-          onPaid={(rec) => void placeInstantBooking(rec)}
-          onClose={() => setInstant(false)}
-        />
+        {user ? (
+          <PaymentSheet
+            amount={bookingQuote(instantEst.low, instantEst.high)}
+            description={`${svcMeta.name} · ASAP · ${ZONES[0]}`}
+            onPaid={(rec) => void placeInstantBooking(rec)}
+            onClose={() => setInstant(false)}
+          />
+        ) : (
+          <div className="mx-auto -mt-10 max-w-xl px-4 pb-16 sm:px-6">
+            <SignInCard title="Sign in to pay & book instantly" />
+          </div>
+        )}
       </>
     );
   }
@@ -163,14 +210,17 @@ export default function BookingWizard() {
         )}
         {step === 3 && <HelperStep service={service} helper={helper} onSelect={setHelper} />}
         {step === 4 && (
-          <ConfirmStep
-            serviceName={svcMeta.name}
-            estimate={estimate}
-            slot={slot}
-            customDate={customDate}
-            helper={helper}
-            zone={zone}
-          />
+          <>
+            <ConfirmStep
+              serviceName={svcMeta.name}
+              estimate={estimate}
+              slot={slot}
+              customDate={customDate}
+              helper={helper}
+              zone={zone}
+            />
+            {!user && <SignInCard />}
+          </>
         )}
       </div>
 
@@ -196,7 +246,7 @@ export default function BookingWizard() {
           >
             Continue
           </button>
-        ) : (
+        ) : user ? (
           <button
             type="button"
             onClick={() => setPaying(true)}
@@ -205,6 +255,8 @@ export default function BookingWizard() {
           >
             {placing ? "Placing booking…" : `Pay ₹${quote.toLocaleString("en-IN")} & book`}
           </button>
+        ) : (
+          <span className="text-sm font-semibold text-muted">Sign in above to pay & book</span>
         )}
       </div>
 

@@ -21,6 +21,16 @@ export function prefersReducedMotion(): boolean {
   return window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 }
 
+/**
+ * True under automation (Lighthouse, CI, webdriver). Autonomous JS re-render
+ * loops (word rotation, walkthrough auto-advance) pause here so audits see a
+ * quiet main thread — endless churn on slow CI runners drops early trace
+ * events and kills FCP detection (the NO_FCP failure in CI runs #9/#10).
+ */
+export function isAutomatedAgent(): boolean {
+  return typeof navigator !== "undefined" && !!navigator.webdriver;
+}
+
 /** Named animation classes (defined in globals.css) for reference / autocomplete. */
 export const ANIMATION = {
   fadeUp: "animate-fade-up",

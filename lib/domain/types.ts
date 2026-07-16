@@ -60,6 +60,9 @@ export interface Booking {
   amountPaid: number | null;
   paymentId: string | null;
   paymentMethod: PaymentMethod | null;
+  /** Authenticated customer (Supabase auth). Null on legacy/guest rows. */
+  customerId: string | null;
+  customerEmail: string | null;
 }
 
 /** Fields the caller provides; the service fills in the rest. */
@@ -76,10 +79,14 @@ export type NewBooking = Omit<
   | "amountPaid"
   | "paymentId"
   | "paymentMethod"
+  | "customerId"
+  | "customerEmail"
 > & {
   amountPaid?: number | null;
   paymentId?: string | null;
   paymentMethod?: PaymentMethod | null;
+  customerId?: string | null;
+  customerEmail?: string | null;
 };
 
 export const STATUS_STEPS: { key: BookingStatus; label: string }[] = [

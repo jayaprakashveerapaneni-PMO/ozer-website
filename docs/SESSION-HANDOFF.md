@@ -7,17 +7,32 @@
 
 ## 0. Pending user actions (blockers for full fidelity)
 
-1. **Apply `supabase/migrations/002_payments.sql`** in the Supabase SQL editor
-   (Dashboard → SQL → paste → Run). Until then, prod bookings save WITHOUT the
-   payment columns via a logged graceful fallback in supabase-booking-service
-   (console.warn "retrying without payment columns"). Everything else works.
-2. **Razorpay keys** (when ready for real money): create a Razorpay account,
-   then set `NEXT_PUBLIC_RAZORPAY_KEY_ID` + `RAZORPAY_KEY_ID` +
-   `RAZORPAY_KEY_SECRET` in Vercel env (and .env.local). The checkout flips
-   from the clearly-labelled sandbox sheet to real Razorpay automatically —
-   code is fully wired (order + HMAC verify in app/api/payments/*).
-3. Supabase phone-OTP auth needs an SMS provider (e.g. Twilio) configured in
-   the Supabase dashboard — decide provider before the auth sprint.
+The agent CANNOT do these: supabase.com + gmail.com are blocked in the
+claude-in-chrome allowlist, DDL is impossible via the anon key, and the Gmail
+MCP mangles two characters of magic-link tokens (deterministic decode bug at
+"token=" — do NOT retry extracting links from it).
+
+1. **Apply migrations 002 + 003** in the Supabase SQL editor (Dashboard → SQL →
+   paste BOTH `supabase/migrations/002_payments.sql` and
+   `003_customer_identity.sql` → Run). Until then prod bookings save without
+   payment/customer columns via a logged graceful fallback (console.warn
+   "retrying without post-001 columns").
+2. **Auth URL config for prod sign-in** (Dashboard → Authentication → URL
+   Configuration): set Site URL to `https://ozer-website.vercel.app`, add
+   `http://localhost:3000/**` and `https://ozer-website.vercel.app/**` to
+   Redirect URLs. (Site URL is currently the default localhost:3000 — email
+   links only work against dev until this is done.)
+3. **Optional, better sign-in UX**: Authentication → Email Templates → add the
+   6-digit `{{ .Token }}` to the "Confirm signup" and "Magic Link" templates.
+   The SignInCard already has a code-entry field; with the token in the email,
+   customers sign in WITHOUT leaving the page (no redirect at all).
+4. **Razorpay keys** (when ready for real money): set
+   `NEXT_PUBLIC_RAZORPAY_KEY_ID` + `RAZORPAY_KEY_ID` + `RAZORPAY_KEY_SECRET`
+   in Vercel env (and .env.local). Checkout flips from the labelled sandbox to
+   real Razorpay automatically (order + HMAC verify already live in
+   app/api/payments/*).
+5. Supabase phone-OTP needs an SMS provider (e.g. Twilio) — decide before the
+   phone-auth sprint.
 
 ## 1. What this is
 
@@ -105,7 +120,26 @@ UPI/card/netbanking (labelled "Sandbox payment — no money moves…") until Raz
 env keys exist, then real checkout (see §0). Instant path pays first too.
 Supabase insert degrades gracefully while payment columns are unmigrated (§0.1).
 
-**Helper sign-in (NEW, interim):** phone+PIN against `HELPER_LOGINS` in
+**Customer auth (NEW, real):** Supabase email auth. `lib/services/supabase-client`
+(shared singleton — auth JWT flows into the booking client), `auth-service`
+(subscribe/snapshot for useSyncExternalStore + sendSignInEmail/verifyEmailCode/
+signOutUser + customerNameFromUser), `use-auth` hook, `SignInCard` (inline in
+the wizard's Review & pay when signed out; also surfaces expired-link errors
+from the URL hash), `booking-draft` (localStorage; survives the email
+round-trip — VERIFIED: failed-link redirect restored the full wizard),
+`AccountChip` in the navbar. Bookings carry customer_id/customer_email +
+real customerName. Payment gate requires sign-in. E2E status: everything
+verified live except the final email-link click (agent can't click in the
+user's inbox — see §0 for why); Supabase accepted OTP sends against the
+user's real address.
+
+**Helper notifications (NEW):** on new offers the portal shows the toast,
+plays a WebAudio two-tone chime and fires a native OS Notification (Enable
+alerts button requests permission). VERIFIED live: REST insert → Realtime →
+offer + toast within ~1s (toast auto-hides at 4.2s — poll fast or use a
+MutationObserver when testing). Web Push (browser closed) = roadmap.
+
+**Helper sign-in (interim):** phone+PIN against `HELPER_LOGINS` in
 features/helper/helper-session.ts (h1: 98490 10001/1111 … h6: …10006/6666),
 localStorage session, online/offline toggle per helper. Credentials are listed
 in a "Pilot roster access" disclosure on /helper. Replaced by Supabase
@@ -232,11 +266,14 @@ Razorpay keys (§0.2) — code path is complete and server-verified;
 
 ## 10. Where the last session ended
 
-Shipped the "out of demo" sprint in four commits (homepage de-demo +
-Highlights walkthrough; payment-first cycle; helper app sign-in; docs) and
-deployed + verified on prod. The user's brief was: animations on page one,
-remove voice demo/Alexa-Siri-Google/build story (voice removed outright —
-it couldn't complete a booking alone), booking highlights instead, proper
-helper app, payment BEFORE service with the full cycle done, "we are not in
-demo anymore". Next: user actions in §0, then the Supabase phone-OTP auth +
-real RLS sprint (roadmap #1).
+One long session shipped, in order: (1) the "out of demo" sprint (homepage
+de-demo + Highlights walkthrough, payment-first cycle, helper sign-in app);
+(2) the flowing golden motion front page (SilkDividers, reveal glide, hero
+scroll parallax) + the CLS fix; (3) the NO_FCP CI fix (isAutomatedAgent gate —
+CI runs #9/#10 failed because autonomous JS loops churned the runner's trace);
+(4) REAL customer auth + helper notifications (§3). CI status at handoff:
+watch the latest run — earlier failures were NO_FCP, believed fixed by the
+webdriver gate but not yet re-proven green. The user's standing directive:
+"proper user-ready app, we are not in demo anymore," and they want to USE it
+themselves as a customer. Their §0 actions are the remaining gate; after
+those, prod login works and the roadmap continues with real RLS + phone auth.

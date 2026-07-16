@@ -1,9 +1,10 @@
 "use client";
 
 import { useState, useSyncExternalStore } from "react";
-import { Bell, ShieldCheck, Star, GraduationCap, Wallet, LogOut, Moon, TrendingUp, BadgeCheck } from "lucide-react";
+import { Bell, BellRing, ShieldCheck, Star, GraduationCap, Wallet, LogOut, Moon, TrendingUp, BadgeCheck } from "lucide-react";
 import { HELPERS, bookingEarnings } from "@/lib/domain";
 import { useHelperPortal } from "./useHelperPortal";
+import { notificationState, requestNotifications, type NotifyState } from "./notify";
 import {
   getServerSessionSnapshot,
   getSessionHelperId,
@@ -35,6 +36,7 @@ function HelperPortal({ helperId }: { helperId: string }) {
 
   const onlineKey = `ozer-helper-online-${helper.id}`;
   const [online, setOnline] = useState(() => localStorage.getItem(onlineKey) !== "0");
+  const [alerts, setAlerts] = useState<NotifyState>(notificationState);
   const toggleOnline = () => {
     setOnline((v) => {
       localStorage.setItem(onlineKey, v ? "0" : "1");
@@ -91,6 +93,20 @@ function HelperPortal({ helperId }: { helperId: string }) {
             </div>
           </div>
           <div className="flex items-center gap-2">
+            {alerts === "default" && (
+              <button
+                type="button"
+                onClick={() => void requestNotifications().then(setAlerts)}
+                className="glass inline-flex items-center gap-1.5 rounded-2xl px-4 py-2.5 text-sm font-semibold text-muted transition-colors hover:text-primary"
+              >
+                <BellRing className="h-4 w-4" aria-hidden /> Enable alerts
+              </button>
+            )}
+            {alerts === "granted" && (
+              <span className="inline-flex items-center gap-1.5 rounded-2xl bg-primary/10 px-4 py-2.5 text-sm font-semibold text-primary">
+                <BellRing className="h-4 w-4" aria-hidden /> Alerts on
+              </span>
+            )}
             <button
               type="button"
               role="switch"
