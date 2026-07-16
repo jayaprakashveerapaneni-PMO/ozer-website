@@ -1,7 +1,6 @@
 "use client";
 
-import Link from "next/link";
-import { Bell, MapPin, X, ArrowRight } from "lucide-react";
+import { Bell, MapPin, X } from "lucide-react";
 import { bookingEarnings, type Booking } from "@/lib/domain";
 
 export default function OfferList({
@@ -31,18 +30,8 @@ export default function OfferList({
         <div className="glass mt-4 rounded-3xl p-8 text-center">
           <p className="font-semibold">No offers right now</p>
           <p className="mt-1 text-sm text-muted">
-            Offers appear here the moment a customer books a {serviceLabel} job. Try it
-            yourself — open the customer app and book one.
-          </p>
-          <Link
-            href="/book"
-            target="_blank"
-            className="btn-shine mt-4 inline-flex items-center gap-2 rounded-2xl bg-primary px-5 py-3 text-sm font-bold text-on-primary glow-primary transition-transform hover:scale-105"
-          >
-            Open customer app <ArrowRight className="h-4 w-4" aria-hidden />
-          </Link>
-          <p className="mt-2 text-xs text-muted">
-            Tip: keep both tabs open side by side — the offer lands here instantly.
+            You&apos;re online. The moment a customer books a {serviceLabel} job in your
+            zones, it lands here instantly — already paid for, ready to accept.
           </p>
         </div>
       ) : (

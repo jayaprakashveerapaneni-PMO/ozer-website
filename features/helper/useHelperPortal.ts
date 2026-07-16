@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { HELPERS, bookingEarnings, type Booking, type Helper } from "@/lib/domain";
+import { bookingEarnings, type Booking, type Helper } from "@/lib/domain";
 import { getBookingService } from "@/lib/services/booking-service";
 
 export interface Toast {
@@ -9,9 +9,9 @@ export interface Toast {
   text: string;
 }
 
-/** All helper-portal state and actions; components stay purely presentational. */
-export function useHelperPortal() {
-  const [helper, setHelper] = useState<Helper>(HELPERS[0]);
+/** All helper-portal state and actions for the SIGNED-IN helper; components
+ *  stay purely presentational. Identity comes from helper-session. */
+export function useHelperPortal(helper: Helper) {
   const [bookings, setBookings] = useState<Booking[]>([]);
   const [wallet, setWallet] = useState(0);
   const [toasts, setToasts] = useState<Toast[]>([]);
@@ -20,6 +20,7 @@ export function useHelperPortal() {
 
   useEffect(() => {
     let cancelled = false;
+    knownOffers.current.clear(); // fresh toast slate when the account changes
     const svc = getBookingService();
     // setState only after awaits (async) and guarded against unmount —
     // never synchronously in the effect body.
@@ -67,11 +68,6 @@ export function useHelperPortal() {
   const svc = () => getBookingService();
 
   return {
-    helper,
-    switchHelper: (h: Helper) => {
-      setHelper(h);
-      knownOffers.current.clear();
-    },
     wallet,
     toasts,
     offers,

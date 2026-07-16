@@ -151,7 +151,10 @@ export class SupabaseBookingService implements BookingService {
       // Payment columns not migrated yet (002_payments.sql) — degrade
       // gracefully so bookings never fail, but make the drift loud.
       console.warn(`bookings.create: retrying without payment columns — apply supabase/migrations/002_payments.sql (${error.message})`);
-      const { amount_paid: _a, payment_id: _p, payment_method: _m, ...legacy } = row;
+      const legacy = { ...row };
+      delete legacy.amount_paid;
+      delete legacy.payment_id;
+      delete legacy.payment_method;
       const retry = await this.client.from("bookings").insert(legacy);
       if (retry.error) throw new Error(`bookings.create failed: ${retry.error.message}`);
     } else if (error) {

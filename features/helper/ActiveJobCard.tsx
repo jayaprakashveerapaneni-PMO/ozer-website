@@ -127,7 +127,7 @@ export default function ActiveJobCard({
             className="btn-shine inline-flex w-full items-center justify-center gap-2 rounded-2xl bg-success px-6 py-4 text-base font-bold text-white transition-transform hover:scale-[1.02]"
             style={{ boxShadow: "0 8px 28px rgba(5, 150, 105, 0.3)" }}
           >
-            <CheckCircle2 className="h-5 w-5" aria-hidden /> Mark done — collect payment
+            <CheckCircle2 className="h-5 w-5" aria-hidden /> Mark job done — payment already settled
           </button>
         )}
       </div>
