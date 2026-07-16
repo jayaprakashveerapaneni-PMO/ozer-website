@@ -24,7 +24,11 @@ export default function HelperSignIn() {
 
   return (
     <div className="mx-auto max-w-md px-4 py-14 sm:px-6">
-      <div className="glass animate-fade-up rounded-3xl p-8">
+      {/* No entrance animation: this card is the page's primary (FCP) content,
+          and opacity-animated primary content never paints in backgrounded
+          headless Chrome (the CI NO_FCP failure on /helper). Same rule as the
+          hero subcopy. */}
+      <div className="glass rounded-3xl p-8">
         <span className="flex h-12 w-12 items-center justify-center rounded-2xl bg-primary/10">
           <ShieldCheck className="h-6 w-6 text-primary" aria-hidden />
         </span>
