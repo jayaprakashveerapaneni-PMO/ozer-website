@@ -1,8 +1,23 @@
 # OZER — Session Handoff (100% context)
 
 > Read this top to bottom before doing anything. It is the complete state of the
-> project as of 2026-07-16. The previous session ended with the LuminaAI-reference
-> hero deployed and the user happy with the centered composition.
+> project as of 2026-07-16 (evening). The previous session shipped the
+> "out of demo" sprint: voice/assistants/build-story removed, payment-first
+> booking cycle, and a sign-in helper app. See §0 for actions ONLY the user can do.
+
+## 0. Pending user actions (blockers for full fidelity)
+
+1. **Apply `supabase/migrations/002_payments.sql`** in the Supabase SQL editor
+   (Dashboard → SQL → paste → Run). Until then, prod bookings save WITHOUT the
+   payment columns via a logged graceful fallback in supabase-booking-service
+   (console.warn "retrying without payment columns"). Everything else works.
+2. **Razorpay keys** (when ready for real money): create a Razorpay account,
+   then set `NEXT_PUBLIC_RAZORPAY_KEY_ID` + `RAZORPAY_KEY_ID` +
+   `RAZORPAY_KEY_SECRET` in Vercel env (and .env.local). The checkout flips
+   from the clearly-labelled sandbox sheet to real Razorpay automatically —
+   code is fully wired (order + HMAC verify in app/api/payments/*).
+3. Supabase phone-OTP auth needs an SMS provider (e.g. Twilio) configured in
+   the Supabase dashboard — decide provider before the auth sprint.
 
 ## 1. What this is
 
@@ -24,7 +39,7 @@ re-extract if needed.
 | Thing | Value |
 |---|---|
 | Production | https://ozer-website.vercel.app (aliases: ozer-website-jayaprakashveerapaneni-1633s-projects.vercel.app) |
-| Pages | `/` `/book` `/helper` `/flow` (+ robots.txt, sitemap.xml, icon, opengraph-image) |
+| Pages | `/` `/book` `/helper` (+ robots.txt, sitemap.xml, icon, opengraph-image; `/flow` DELETED). API: `/api/payments/order`, `/api/payments/verify` (dynamic; 503 until Razorpay env set) |
 | GitHub | https://github.com/jayaprakashveerapaneni-PMO/ozer-website — remote `origin`, branch `main`, push works (credentials cached) |
 | CI | GitHub Actions on push/PR — see §6 |
 | Vercel | Project `ozer-website` under account `jayaprakashveerapaneni-1633` (auto-created via CLI device login). CLI is authenticated; deploy with `npx vercel deploy --prod --yes` from the repo. ⚠ The user's browser Vercel dashboard may be a DIFFERENT account — unresolved; they couldn't see the project. Git auto-deploy NOT connected (deploys are CLI-only). |
@@ -47,39 +62,54 @@ All routes statically prerendered. AGENTS.md says: read `node_modules/next/dist/
 before assuming Next APIs.
 
 ```
-app/            routes only (page/layout/template/robots/sitemap/icon/opengraph-image)
+app/            routes only (+ api/payments/{order,verify}/route.ts — Razorpay
+                order creation & HMAC signature verification, Node crypto)
 components/ui/      Button (variants: primary|glass|ghost|success|pill) Card Badge
                     Container Section NumberField SegmentedControl (+ index barrel)
 components/motion/  Reveal Spotlight CountUp WordRotate
 components/layout/  Navbar Footer Logo (gem-cut O) SilkWave (dune field) FlowRibbons
-                    (light-strings, currently unused in hero) ScrollProgress
-                    RisingParticles StructuredData CrystalField(DELETED)
-features/home/      Hero Services HowItWorks Estimator Trust Helpers Testimonials
-                    Faq Personas Marquee
-features/booking/   BookingWizard(orchestrator) steps/{Service,Details,Slot,Helper,
-                    Confirm}Step SuccessScreen InstantScreen ServiceDetailsFields
+                    (unused) ScrollProgress RisingParticles StructuredData
+features/home/      Hero Services Highlights(NEW: auto-playing 4-step booking
+                    walkthrough + CountUp proof band, replaces VoiceDemo)
+                    HowItWorks Estimator Trust Helpers Testimonials Faq
+                    Personas Marquee
+features/booking/   BookingWizard(orchestrator, payment-first) steps/{Service,
+                    Details,Slot,Helper,Confirm}Step PaymentSheet(NEW)
+                    SuccessScreen InstantScreen ServiceDetailsFields
                     useServiceDetails booking.constants
-features/helper/    HelperApp useHelperPortal ActiveJobCard OfferList
-features/voice/     VoiceDemo (Web Speech API, te-IN/hi-IN/ta-IN/en-IN)
-features/assistants/ Assistants (playable Alexa/Siri/Google conversations)
-lib/domain/         types catalog estimator content (+barrel) — pure, tested
+features/helper/    HelperApp (sign-in gate + portal) HelperSignIn(NEW)
+                    helper-session(NEW: phone+PIN localStorage session,
+                    useSyncExternalStore) useHelperPortal ActiveJobCard OfferList
+lib/domain/         types (+PaymentMethod, amountPaid/paymentId/paymentMethod,
+                    bookingQuote) catalog estimator content (+barrel)
 lib/services/       booking-service (interface+factory) local-booking-service
-                    supabase-booking-service — UI ONLY touches the interface
-lib/voice/          parser responses speech (longest-keyword slot matching!)
-lib/design/         tokens (3-tier: PALETTE→semantic→component; *_INK = AA-safe
-                    variants for text/solid, bright = decorative only) contrast
-                    (WCAG math) — both tested
+                    supabase-booking-service payment-service(NEW: modes,
+                    sandbox mint) razorpay-client(NEW: checkout.js + verify)
+lib/design/         tokens (ASSISTANT_* removed) contrast — both tested
 lib/motion/         stagger prefersReducedMotion ANIMATION + timing tokens
 lib/site.ts lib/cn.ts
+DELETED: features/voice, features/assistants, app/flow, lib/voice
 ```
 
 **BookingService:** factory picks Supabase when NEXT_PUBLIC_SUPABASE_URL/ANON_KEY set
 (they are, so prod = Postgres + Realtime, multi-device verified E2E), else localStorage.
 Booking FSM: pending_offer→assigned→en_route→arrived(OTP)→in_progress→completed.
-OTP handshake FR-16: wrong OTP blocks (verified). Wallet credit = estimate midpoint via
-atomic RPC. Care bookings only match certified helpers (FR-37). 6 mock helpers (h1 Meena
-cleaning+laundry, h2 Lakshmi cleaning+cook, h3 Fatima cook, h4 Radha care+cleaning cert,
-h5 Sunitha care cert, h6 Anand laundry).
+OTP handshake FR-16: wrong OTP blocks (verified). Care bookings only match certified
+helpers (FR-37). 6 mock helpers (h1 Meena cleaning+laundry, h2 Lakshmi cleaning+cook,
+h3 Fatima cook, h4 Radha care+cleaning cert, h5 Sunitha care cert, h6 Anand laundry).
+
+**Payment-first cycle (NEW):** booking rows are created only AFTER a payment record
+exists. Fixed price = `bookingQuote` = estimate-band midpoint = helper payout
+(wallet credit via atomic RPC on completion, T+0). PaymentSheet: sandbox
+UPI/card/netbanking (labelled "Sandbox payment — no money moves…") until Razorpay
+env keys exist, then real checkout (see §0). Instant path pays first too.
+Supabase insert degrades gracefully while payment columns are unmigrated (§0.1).
+
+**Helper sign-in (NEW, interim):** phone+PIN against `HELPER_LOGINS` in
+features/helper/helper-session.ts (h1: 98490 10001/1111 … h6: …10006/6666),
+localStorage session, online/offline toggle per helper. Credentials are listed
+in a "Pilot roster access" disclosure on /helper. Replaced by Supabase
+phone-OTP auth in the next sprint — this is identity UX, not security.
 
 ## 4. Current design (just shipped, user approved direction)
 
@@ -105,22 +135,30 @@ strip on the wave). Viewed the actual frames via the user's Chrome (claude-in-ch
   icon.tsx favicon matches. opengraph-image.tsx exists (older palette — could refresh).
 - Other sections still use the previous light-glass style with token colors (consistent
   but not yet dune-themed) — possible next design task if user asks.
+- Homepage flow (2026-07-16 evening): Hero → Marquee → Services → Highlights
+  (auto-playing 4-step booking walkthrough, 3.4s cycle, pauses on hover/interaction,
+  `.highlight-progress` keyframe, reduced-motion safe) → Personas (Rao garu is now
+  the family-books-for-him story) → HowItWorks (payment-first steps) → Estimator →
+  Trust → Helpers → Testimonials → Faq. All voice/assistant/pay-after copy is gone
+  sitewide (incl. metadata + OG image). Hero CTA: "Book a service" → /book.
 
 ## 5. Quality state (measured, not guessed)
 
 - Lighthouse prod: **Desktop 99/100/100/100; Mobile ~72 median** (LCP ~3.7s structural:
   throttled fonts/CSS on animation-rich 950-node page).
 - axe: 0 violations all routes + voice-confirm state (when last run).
-- 45 vitest tests: estimator, voice parser (Hindi "कल शाम" bug fixed via
-  longest-keyword-wins), local service FSM/wallet, design tokens, WCAG contrast
-  enforcement, Button/NumberField/SegmentedControl (jsdom).
+- 47 vitest tests: estimator, local service FSM/wallet/payment persistence,
+  payment modes + quote math, helper session/credentials, design tokens, WCAG
+  contrast enforcement, Button/NumberField/SegmentedControl (jsdom).
+  (Voice parser tests were deleted with lib/voice.)
 - CI `.github/workflows/ci.yml`: job1 typecheck+lint+test+build; job2 Lighthouse budget
   vs PROD (3 runs × /, /book, /helper) with `lighthouserc.json`: a11y=1.0, seo=1.0,
   bp≥0.95, **perf≥0.6**, CLS≤0.05. Run #1 failed & caught 2 real a11y bugs (fixed);
   since green. IMPORTANT: deploy to prod BEFORE/WITH push, since the budget audits prod.
-- Security headers in next.config.ts (CSP with dev-only unsafe-eval, HSTS, X-Frame DENY,
-  Permissions-Policy microphone=(self)). npm audit: 2 moderate = postcss vendored inside
-  Next, build-time only — documented-accept, do NOT "fix" (npm suggests Next 9!).
+- Security headers in next.config.ts (CSP with dev-only unsafe-eval + Razorpay
+  script/frame/connect allowances, HSTS, X-Frame DENY, Permissions-Policy
+  microphone=() — mic denied now, voice is gone). npm audit: 2 moderate = postcss
+  vendored inside Next, build-time only — documented-accept, do NOT "fix".
 - SEO: metadataBase/canonicals/OG/Twitter/robots/sitemap/JSON-LD LocalBusiness.
 
 ## 6. Conventions this project follows
@@ -157,18 +195,24 @@ strip on the wave). Viewed the actual frames via the user's Chrome (claude-in-ch
 
 ## 8. Honest product status ("can clients book?")
 
-YES for pilot: real cross-device booking loop on Postgres, verified end-to-end
-repeatedly. NOT yet commercial: (1) no auth/accounts — helper page is open, OTP
-readable via API (fine for demo personas only), demo-open RLS policies; (2) helpers
-are 6 mock personas; (3) no payment collection (pay-after is displayed, not charged).
+YES for pilot: real cross-device booking loop on Postgres, payment-first UX,
+verified end-to-end repeatedly (again this session: pay → book → sign in as
+helper → accept → OTP → complete → wallet credit). NOT yet commercial:
+(1) customer accounts don't exist; helper sign-in is client-side phone+PIN
+(identity UX, not security) — OTP still readable via API, demo-open RLS;
+(2) helpers are 6 mock personas; (3) payments are sandbox until the user adds
+Razorpay keys (§0.2) — code path is complete and server-verified;
+(4) payment columns unmigrated in prod until §0.1 is run.
 
 ## 9. Roadmap (agreed priorities)
 
-1. **NEXT SPRINT (user said "that's where I want to be"): Supabase phone-OTP auth +
-   real RLS policies** + move OTP verify server-side (security-definer function).
-   The migration file documents the demo policies to replace.
+0. User actions in §0 (migration 002, Razorpay keys, SMS provider choice).
+1. **NEXT SPRINT: Supabase phone-OTP auth + real RLS policies** + move OTP
+   verify server-side (security-definer function) + replace the interim
+   phone+PIN helper sign-in. The migration file documents the demo policies.
 2. Real helper onboarding (replace mock catalog).
-3. Payments: Razorpay/Cashfree per TR-20.
+3. Payments hardening once keys exist: webhook capture-confirmation, refunds
+   (cancellation + money-back promise flows), receipts. (Checkout itself: DONE.)
 4. i18n framework (next-intl) — TR-12 warns retrofitting is the classic failure.
 5. error.tsx/404, Sentry-class monitoring, analytics events (TR-13).
 6. Vercel↔GitHub auto-deploy once the user sorts dashboard account access.
@@ -178,6 +222,11 @@ are 6 mock personas; (3) no payment collection (pay-after is displayed, not char
 
 ## 10. Where the last session ended
 
-Deployed commit `f585a65` (LuminaAI hero) — since verified live. User was asked for
-a design verdict + told auth+RLS is next. Continue from there: greet with current
-state, act on whatever they ask, keep the ship-loop discipline.
+Shipped the "out of demo" sprint in four commits (homepage de-demo +
+Highlights walkthrough; payment-first cycle; helper app sign-in; docs) and
+deployed + verified on prod. The user's brief was: animations on page one,
+remove voice demo/Alexa-Siri-Google/build story (voice removed outright —
+it couldn't complete a booking alone), booking highlights instead, proper
+helper app, payment BEFORE service with the full cycle done, "we are not in
+demo anymore". Next: user actions in §0, then the Supabase phone-OTP auth +
+real RLS sprint (roadmap #1).
