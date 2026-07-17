@@ -5,6 +5,44 @@
 > "out of demo" sprint: voice/assistants/build-story removed, payment-first
 > booking cycle, and a sign-in helper app. See §0 for actions ONLY the user can do.
 
+## 0-NEW. STATE AS OF 2026-07-17 EVENING (supersedes §0 below where they conflict)
+
+SIGN-IN IS SOLVED, TWO WAYS, VERIFIED ON PROD:
+- **Google OAuth is LIVE end-to-end** (clicked through on prod: chooser →
+  consent → signed in, name from Google profile, own bookings listed).
+  GCP project `ozer-502712` (user's thinkhat.ai account), Google Auth
+  Platform app "Ozer", External, **published to production** (basic scopes,
+  no verification needed). OAuth client "Ozer Web (Supabase)", redirect URI
+  = Supabase callback. Client ID
+  `333118650050-aoc1b9pcq8q200pielg46ja9817mbkmh.apps.googleusercontent.com`.
+  Supabase Google provider enabled; the ACTIVE secret is the one marked NEW
+  (****dDIu); the orphaned first secret ****XOw7 is unusable (Google masks
+  post-creation) — user may Disable it (agent clicks on that link don't
+  register in Google console).
+- **Email codes now deliver**: custom SMTP (Brevo) was DISABLED in Supabase;
+  the BUILT-IN mailer is active — delivers to the project owner's address
+  (verified in inbox), custom {{ .Token }} template survived, codes are
+  8 DIGITS (app now accepts 6–8). LIMITS: 2 emails/hour, owner/team
+  addresses only — a testing bridge, NOT for customers. Brevo SMTP config
+  is saved intact in Supabase for one-toggle re-enable.
+- **Brevo/domain saga parked**: thinkhat.ai DNS is at a Dynadot account the
+  user has NO access to (company IT). The user created their OWN Dynadot
+  account (username "ozer", empty, security questions set). User declined
+  buying a domain for now ("try something free"). The launch-grade email fix
+  remains: own domain → authenticate in Brevo → re-enable custom SMTP.
+- **/login page shipped** (commit 109ab86): silk-dune stage, Google + email
+  code card (shared hook features/auth/useEmailCodeSignIn), signed-in
+  account panel with per-customer bookings (features/auth/
+  bookings-for-customer.ts, unit-tested; UI-level only — RLS still
+  demo-open), ?next= redirect with open-redirect guard, navbar Sign in
+  link, /login in sitemap. 57 vitest green. Supabase redirect allow-list
+  VERIFIED: prod/** and localhost:3000/**.
+- Also fixed earlier (efd0573): sign-in input capped at 6 digits rejected
+  the built-in mailer's 8-digit codes.
+- launch.json (both roots) now has autoPort:true; port 3000 may be held by
+  a long-lived dev server from an old session — it hot-reloads this repo
+  and works fine for pane verification.
+
 ## 0. CURRENT BLOCKER + the email-delivery saga (state as of 2026-07-17 ~16:30 IST)
 
 **The ONLY thing between the user and their first real signed-in booking is
