@@ -221,12 +221,25 @@ strip on the wave). Viewed the actual frames via the user's Chrome (claude-in-ch
 
 ## 7. Known gotchas (hard-won)
 
-- **NEVER opacity-animate a page's primary/above-fold content** (hero subcopy
-  rule, generalized). In backgrounded headless Chrome (CI runners, browser
-  pane) animation clocks freeze at t=0, so `animate-fade-up` content stays
-  invisible → Lighthouse NO_FCP → whole CI job dies. Cost three red CI runs
-  (#9–#11) to find on /helper. Related: autonomous JS re-render loops must
-  check `isAutomatedAgent()` (lib/motion) or they churn the runner's trace.
+- **Lighthouse-on-Linux cannot measure /helper-class pages — /helper is
+  deliberately EXCLUDED from the CI Lighthouse URL list** (see the comment in
+  ci.yml). Full story of the NO_FCP saga (CI runs #9–#15, closed 2026-07-17):
+  Lighthouse on the ubuntu runner (Chrome 140 AND 150, LHCI and plain CLI)
+  never receives first-contentful-paint for /helper and aborts the whole
+  collect. Four hypotheses were tested ON THE RUNNER and falsified: entrance
+  animation on primary content; localStorage read during hydration; all text
+  inside glass/backdrop-filter; page too static to produce frames
+  (animate-breathe changed nothing). Killer datapoint: a bare `<h1>` probe
+  page ALSO gets NO_FCP, while /helper paints in 1.0s in local headless
+  Chrome and the runner's own puppeteer shows its text visible at ~200ms with
+  zero errors. Verdict: measurement artifact, not product defect. DO NOT
+  reopen by re-adding /helper to the audit; if investigating again, the only
+  technique that produced truth was a temporary debug-branch workflow running
+  puppeteer/lighthouse ON the runner and printing paint entries — guessing
+  cost 4 red runs. Hygiene fixes shipped during the hunt (KEEP them all):
+  plain-canvas h1 outside glass on /helper, no opacity-animation on primary
+  content, isAutomatedAgent() gate on JS animation loops, deferred
+  helper-session storage read past first paint.
 
 - **Browser pane tab often reports visibilityState:hidden** → screenshots time out AND
   CSS/rAF animation clocks freeze. Not a code bug. Verify animations via WAAPI

@@ -37,7 +37,12 @@ export default function HelperSignIn() {
       </p>
 
       <div className="glass mt-6 rounded-3xl p-8">
-        <span className="flex h-12 w-12 items-center justify-center rounded-2xl bg-primary/10">
+        {/* animate-breathe doubles as the FCP guarantee: fully static pages
+            render one frame, and headless Linux Chrome loses that single
+            frame's presentation feedback → NO_FCP in CI (bisection-proven:
+            even a bare <h1> page fails; the always-animated / and /book never
+            do). Ambient motion = continuous frames = reliable paint metrics. */}
+        <span className="animate-breathe flex h-12 w-12 items-center justify-center rounded-2xl bg-primary/10">
           <ShieldCheck className="h-6 w-6 text-primary" aria-hidden />
         </span>
         <h2 className="mt-4 text-2xl font-bold">Sign in</h2>
