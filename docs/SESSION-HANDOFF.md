@@ -291,9 +291,11 @@ de-demo + Highlights walkthrough, payment-first cycle, helper sign-in app);
 (2) the flowing golden motion front page (SilkDividers, reveal glide, hero
 scroll parallax) + the CLS fix; (3) the NO_FCP CI fix (isAutomatedAgent gate —
 CI runs #9/#10 failed because autonomous JS loops churned the runner's trace);
-(4) REAL customer auth + helper notifications (§3). CI status at handoff:
-watch the latest run — earlier failures were NO_FCP, believed fixed by the
-webdriver gate but not yet re-proven green. The user's standing directive:
+(4) REAL customer auth + helper notifications (§3); (5) the booking draft
+trap fix (users were stuck at Review & pay — see git log d96a4cd); (6) the
+NO_FCP saga closed by excluding /helper from the audit (§7). CI: GREEN as of
+run #16 / commit 57dea82 (typecheck+lint+test+build, Lighthouse budgets on
+/ and /book). The user's standing directive:
 "proper user-ready app, we are not in demo anymore," and they want to USE it
 themselves as a customer. Their §0 actions are the remaining gate; after
 those, prod login works and the roadmap continues with real RLS + phone auth.
