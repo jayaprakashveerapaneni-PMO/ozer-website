@@ -77,6 +77,37 @@ export async function verifyEmailCode(email: string, code: string): Promise<void
   if (error) throw toFriendlyAuthError(error);
 }
 
+const GOOGLE_DISABLED_MSG =
+  "Google sign-in isn't switched on for this project yet — use the email code instead.";
+
+/** Start Google OAuth. On success the browser navigates to Google and returns
+ *  signed in at `redirectPath`; this promise only rejects, it never resolves
+ *  into a signed-in state in-place. */
+export async function signInWithGoogle(redirectPath = "/book"): Promise<void> {
+  const client = getSupabaseClient();
+  if (!client) throw new Error("Accounts are unavailable — backend not configured.");
+  const { data, error } = await client.auth.signInWithOAuth({
+    provider: "google",
+    // Don't auto-redirect: a misconfigured provider would land the customer on
+    // a raw JSON error page. Preflight the authorize URL first.
+    options: { redirectTo: `${window.location.origin}${redirectPath}`, skipBrowserRedirect: true },
+  });
+  if (error) {
+    if (/not enabled|unsupported provider/i.test(error.message ?? "")) throw new Error(GOOGLE_DISABLED_MSG);
+    throw toFriendlyAuthError(error);
+  }
+  if (!data?.url) throw new Error(GOOGLE_DISABLED_MSG);
+  try {
+    // Enabled provider → 302 to Google (opaqueredirect); disabled → 400 JSON.
+    const probe = await fetch(data.url, { redirect: "manual" });
+    if (probe.status === 400) throw new Error(GOOGLE_DISABLED_MSG);
+  } catch (e) {
+    if (e instanceof Error && e.message === GOOGLE_DISABLED_MSG) throw e;
+    // Network/CORS opacity — fall through and let the real navigation decide.
+  }
+  window.location.assign(data.url);
+}
+
 export async function signOutUser(): Promise<void> {
   await getSupabaseClient()?.auth.signOut();
 }

@@ -70,6 +70,13 @@ export default function Navbar() {
               {l.label}
             </Link>
           ))}
+          <Link
+            href="/login"
+            className="block border-b border-line py-3 text-sm font-medium text-foreground/80"
+            onClick={() => setOpen(false)}
+          >
+            Sign in / account
+          </Link>
           <Button href="/book" fullWidth className="mt-3" onClick={() => setOpen(false)}>
             Book now
           </Button>
