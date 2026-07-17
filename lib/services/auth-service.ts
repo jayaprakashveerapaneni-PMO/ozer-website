@@ -1,4 +1,4 @@
-// Customer auth — Supabase email sign-in (magic link + 6-digit code, both
+// Customer auth — Supabase email sign-in (magic link + one-time code, both
 // verified server-side by Supabase). Exposed as a subscribe/snapshot pair so
 // components consume it with useSyncExternalStore (SSR-safe: server sees
 // signed-out). Phone-OTP replaces email once an SMS provider is configured.
@@ -69,7 +69,7 @@ export async function sendSignInEmail(email: string, redirectPath = "/book"): Pr
   if (error) throw toFriendlyAuthError(error);
 }
 
-/** Verify the 6-digit code from the sign-in email. */
+/** Verify the one-time code from the sign-in email (6 digits via custom SMTP, 8 via Supabase's built-in mailer). */
 export async function verifyEmailCode(email: string, code: string): Promise<void> {
   const client = getSupabaseClient();
   if (!client) throw new Error("Accounts are unavailable — backend not configured.");

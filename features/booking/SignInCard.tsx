@@ -6,7 +6,7 @@ import { sendSignInEmail, verifyEmailCode } from "@/lib/services/auth-service";
 
 type Phase = "idle" | "sending" | "sent" | "verifying";
 
-/** Inline customer sign-in: emails a magic link + 6-digit code. On success the
+/** Inline customer sign-in: emails a magic link + one-time code. On success the
  *  auth store updates and the parent re-renders signed-in — no callback needed. */
 /** Reads a Supabase auth error from the URL hash (e.g. an expired magic
  *  link redirecting back) so the user gets words, not silence. */
@@ -126,7 +126,7 @@ export default function SignInCard({
       ) : (
         <div className="mt-4">
           <p className="rounded-2xl bg-success/10 p-3 text-sm font-medium text-success">
-            Sent to {email}. Click the link in the email — or enter the 6-digit code:
+            Sent to {email}. Click the link in the email — or enter the sign-in code:
           </p>
           <div className="mt-3 flex gap-2">
             <label className="relative">
@@ -134,18 +134,18 @@ export default function SignInCard({
               <input
                 type="text"
                 inputMode="numeric"
-                maxLength={6}
+                maxLength={8}
                 value={code}
                 onChange={(e) => { setCode(e.target.value.replace(/\D/g, "")); setError(null); }}
                 placeholder="••••••"
-                aria-label="6-digit sign-in code"
-                className="w-44 rounded-2xl border border-line bg-surface py-3 pl-10 pr-3 text-center font-display text-lg font-bold tracking-[0.3em] focus:border-primary focus:outline-none"
+                aria-label="Sign-in code"
+                className="w-48 rounded-2xl border border-line bg-surface py-3 pl-10 pr-3 text-center font-display text-lg font-bold tracking-[0.3em] focus:border-primary focus:outline-none"
               />
             </label>
             <button
               type="button"
               onClick={() => void verify()}
-              disabled={code.length !== 6 || phase === "verifying"}
+              disabled={code.length < 6 || phase === "verifying"}
               className="flex-1 rounded-2xl bg-primary px-5 py-3 text-sm font-bold text-on-primary glow-primary transition-transform hover:scale-[1.02] disabled:opacity-50 disabled:hover:scale-100"
             >
               {phase === "verifying" ? "Verifying…" : "Verify & continue"}
