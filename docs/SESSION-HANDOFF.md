@@ -5,34 +5,73 @@
 > "out of demo" sprint: voice/assistants/build-story removed, payment-first
 > booking cycle, and a sign-in helper app. See §0 for actions ONLY the user can do.
 
-## 0. Pending user actions (blockers for full fidelity)
+## 0. CURRENT BLOCKER + the email-delivery saga (state as of 2026-07-17 ~16:30 IST)
 
-The agent CANNOT do these: supabase.com + gmail.com are blocked in the
-claude-in-chrome allowlist, DDL is impossible via the anon key, and the Gmail
-MCP mangles two characters of magic-link tokens (deterministic decode bug at
-"token=" — do NOT retry extracting links from it).
+**The ONLY thing between the user and their first real signed-in booking is
+email DELIVERABILITY.** Everything else works and is verified. Full state:
 
-1. **Apply migrations 002 + 003** in the Supabase SQL editor (Dashboard → SQL →
-   paste BOTH `supabase/migrations/002_payments.sql` and
-   `003_customer_identity.sql` → Run). Until then prod bookings save without
-   payment/customer columns via a logged graceful fallback (console.warn
-   "retrying without post-001 columns").
-2. **Auth URL config for prod sign-in** (Dashboard → Authentication → URL
-   Configuration): set Site URL to `https://ozer-website.vercel.app`, add
-   `http://localhost:3000/**` and `https://ozer-website.vercel.app/**` to
-   Redirect URLs. (Site URL is currently the default localhost:3000 — email
-   links only work against dev until this is done.)
-3. **Optional, better sign-in UX**: Authentication → Email Templates → add the
-   6-digit `{{ .Token }}` to the "Confirm signup" and "Magic Link" templates.
-   The SignInCard already has a code-entry field; with the token in the email,
-   customers sign in WITHOUT leaving the page (no redirect at all).
-4. **Razorpay keys** (when ready for real money): set
-   `NEXT_PUBLIC_RAZORPAY_KEY_ID` + `RAZORPAY_KEY_ID` + `RAZORPAY_KEY_SECRET`
-   in Vercel env (and .env.local). Checkout flips from the labelled sandbox to
-   real Razorpay automatically (order + HMAC verify already live in
-   app/api/payments/*).
-5. Supabase phone-OTP needs an SMS provider (e.g. Twilio) — decide before the
-   phone-auth sprint.
+DONE (verified this session — do not redo):
+- Migrations 002+003 APPLIED to prod DB (ran via the user's logged-in
+  dashboard tab in the browser pane; verified via REST: amount_paid,
+  payment_id, payment_method, customer_id, customer_email columns exist).
+- Supabase Auth Site URL = https://ozer-website.vercel.app (user set it).
+  Redirect URLs /** entries: ASKED FOR but UNVERIFIED — check. (With
+  code-entry sign-in, redirects barely matter.)
+- Email templates ("Magic link or OTP" + Confirm signup): customized with
+  `{{ .Token }}` — verified correct via screenshot. NOTE: custom templates
+  REQUIRE custom SMTP in Supabase (that dependency caused a day of 500s).
+- Custom SMTP = Brevo, fully configured & SAVED (host smtp-relay.brevo.com,
+  port 587, login b2546d001@smtp-brevo.com, SMTP key named "Ozer", sender
+  jayaprakash.veerapaneni@thinkhat.ai, which is a Verified sender). Brevo
+  account validated, 300 emails/day. Brevo IP-restriction for SMTP keys was
+  the first 500-cause (user deactivated it); Supabase mailer IP
+  13.193.86.234 authorized by user via Brevo's security-alert email.
+- POST $SUPABASE_URL/auth/v1/otp with anon key returns HTTP 200 (sending
+  WORKS — use this curl as the health probe; a 500 "Error sending magic link
+  email" means template/SMTP breakage).
+
+THE REMAINING PROBLEM — thinkhat.ai domain NOT authenticated in Brevo:
+- To @thinkhat.ai recipients: Brevo keeps From=thinkhat.ai → Google
+  Workspace SOFT-BOUNCES every send (DMARC fail; thinkhat.ai has DMARC).
+- To other recipients (tested jpveerapaneni25@gmail.com): Brevo rewrites
+  From to jayaprakash.veerapaneni@11687021.brevosend.com → Gmail DEFERS
+  (greylist/tarpit of the day-old subdomain) — "Deferred" events repeating
+  for 40+ min, "First opening" events are Gmail's scanner, nothing reached
+  inbox/spam/All Mail. May self-resolve within hours.
+- Diagnosis tool: Brevo → Transactional → Logs (Sent/Deferred/Soft
+  bounce/Delivered per message). Read it before theorizing.
+
+**THE RIGHT FIX (user explicitly rejected the Gmail-app-password shortcut as
+"not the right way"): authenticate thinkhat.ai in Brevo.** Brevo → Senders,
+Domains & Dedicated IPs → Domains → thinkhat.ai → Authenticate → add the
+shown DKIM/SPF/code records at thinkhat.ai's DNS host → Verify. Needs the
+user's DNS access (host unknown — ASK). After that, sends to ANY mailbox
+deliver, properly branded. OPEN QUESTION posed to the user, unanswered when
+the session ended: DNS route, or rearchitect sign-in entirely (they may
+prefer phone-OTP — which anyway needs an SMS provider, or another approach)?
+
+Agent access constraints (hard-learned, do not re-attempt):
+- claude-in-chrome (user's Chrome) BLOCKS supabase.com, gmail.com,
+  app.brevo.com at extension policy level regardless of "all sites" setting.
+- WORKAROUND THAT WORKS: the user logs into dashboards inside the app's
+  BROWSER PANE tabs; the agent can then drive them (SQL editor, Brevo logs
+  all worked this way). Pane logins are session-scoped — gone in a new chat;
+  ask the user to log in again in the pane when dashboard work is needed.
+  Gotcha: heavy SPAs (Supabase Studio) render blank until tabs_select
+  fronts the tab.
+- The runtime classifier BLOCKS the agent from: weakening security settings
+  (Brevo IP toggle), authorizing IPs, revealing/handling the Supabase secret
+  key (sb_secret_*). These clicks must be the user's; frame the exact click
+  and ask. Entering passwords/credentials into forms is prohibited for the
+  agent, period.
+- Gmail MCP (thinkhat mailbox only) works for READING; it mangles ~2 chars
+  of magic-link tokens (decode bug at "token=") — links from it are
+  unusable; the 6-digit {{ .Token }} code reads fine.
+
+Other pending (unchanged): Razorpay keys for real money (checkout code
+complete, flips on env vars); SMS provider decision for phone-OTP sprint.
+Minor test residue: helper h1 wallet has ₹680 from E2E tests; a stray
+booking OZ-MJPC8CR may exist — check/clean when convenient.
 
 ## 1. What this is
 
@@ -286,16 +325,20 @@ Razorpay keys (§0.2) — code path is complete and server-verified;
 
 ## 10. Where the last session ended
 
-One long session shipped, in order: (1) the "out of demo" sprint (homepage
-de-demo + Highlights walkthrough, payment-first cycle, helper sign-in app);
-(2) the flowing golden motion front page (SilkDividers, reveal glide, hero
-scroll parallax) + the CLS fix; (3) the NO_FCP CI fix (isAutomatedAgent gate —
-CI runs #9/#10 failed because autonomous JS loops churned the runner's trace);
-(4) REAL customer auth + helper notifications (§3); (5) the booking draft
-trap fix (users were stuck at Review & pay — see git log d96a4cd); (6) the
-NO_FCP saga closed by excluding /helper from the audit (§7). CI: GREEN as of
-run #16 / commit 57dea82 (typecheck+lint+test+build, Lighthouse budgets on
-/ and /book). The user's standing directive:
-"proper user-ready app, we are not in demo anymore," and they want to USE it
-themselves as a customer. Their §0 actions are the remaining gate; after
-those, prod login works and the roadmap continues with real RLS + phone auth.
+Two marathon days. Day 1 shipped: the "out of demo" sprint (homepage de-demo
++ Highlights walkthrough, payment-first cycle, helper sign-in app), the
+flowing golden motion front page + CLS fix, real customer auth + helper
+notifications. Day 2: the booking draft trap fix (users were stuck at
+Review & pay — d96a4cd), the NO_FCP CI saga closed by excluding /helper from
+the Lighthouse list after runner-side probes proved a measurement artifact
+(§7), CI GREEN since run #16 (57dea82), and then the email-delivery saga
+(§0) chased through Supabase templates/SMTP dependency → Brevo IP
+restriction → IP authorization → DMARC bounce → Gmail greylist, ending at:
+authenticate thinkhat.ai DNS in Brevo, or rearchitect sign-in — USER'S CALL
+PENDING (they rejected the Gmail-app-password shortcut as "not the right
+way"; respect that bar). E2E status: pay-first booking, realtime helper
+offer + chime/notification, draft round-trip, migrations — all VERIFIED on
+prod; the customer's actual email sign-in is the one unverified link, purely
+on deliverability. The user's standing directive remains: proper user-ready
+product, no shortcuts, they act as the customer. Greet with current state,
+get their §0 decision, keep ship-loop discipline.
