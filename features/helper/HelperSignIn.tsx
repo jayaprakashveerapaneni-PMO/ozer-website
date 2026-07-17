@@ -24,18 +24,25 @@ export default function HelperSignIn() {
 
   return (
     <div className="mx-auto max-w-md px-4 py-14 sm:px-6">
-      {/* No entrance animation: this card is the page's primary (FCP) content,
-          and opacity-animated primary content never paints in backgrounded
-          headless Chrome (the CI NO_FCP failure on /helper). Same rule as the
-          hero subcopy. */}
-      <div className="glass rounded-3xl p-8">
+      {/* This heading must stay OUTSIDE the glass card, unanimated: backdrop-
+          filter subtrees don't emit contentful-paint events in software-
+          rendered headless Chrome, so a page whose only above-fold text sits
+          in glass never registers FCP (the CI NO_FCP failure on /helper —
+          proven by a runner-side probe: first-paint fired, FCP never did). */}
+      <h1 className="text-3xl font-bold tracking-tight">
+        Ozer <span className="text-primary">Helper</span>
+      </h1>
+      <p className="mt-2 text-sm text-muted">
+        Your jobs, your earnings, your hours.
+      </p>
+
+      <div className="glass mt-6 rounded-3xl p-8">
         <span className="flex h-12 w-12 items-center justify-center rounded-2xl bg-primary/10">
           <ShieldCheck className="h-6 w-6 text-primary" aria-hidden />
         </span>
-        <h1 className="mt-4 text-2xl font-bold">Helper sign in</h1>
+        <h2 className="mt-4 text-2xl font-bold">Sign in</h2>
         <p className="mt-1 text-sm text-muted">
-          Your jobs, your earnings, your hours — sign in with your registered
-          phone number and 4-digit PIN.
+          Use your registered phone number and 4-digit PIN.
         </p>
 
         <form onSubmit={submit} className="mt-6 space-y-4">
