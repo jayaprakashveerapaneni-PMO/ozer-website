@@ -34,9 +34,25 @@ export function findHelperByLogin(phone: string, pin: string): Helper | null {
   return null;
 }
 
+// Storage is read LAZILY after subscription (i.e. after first paint), never
+// during the hydration render: synchronous localStorage access during
+// hydration wedges/aborts first paint in storage-cleaned headless contexts
+// (the Lighthouse-CI NO_FCP failure on /helper). The snapshot serves a cache.
+let cachedId: string | null = null;
+let storageRead = false;
+
+function refreshFromStorage(): void {
+  try {
+    cachedId = window.localStorage.getItem(KEY);
+  } catch {
+    cachedId = null; // storage disabled — behave as signed out
+  }
+  storageRead = true;
+}
+
 export function getSessionHelperId(): string | null {
-  if (typeof window === "undefined") return null;
-  return window.localStorage.getItem(KEY);
+  if (typeof window === "undefined" || !storageRead) return null;
+  return cachedId;
 }
 
 export function getServerSessionSnapshot(): null {
@@ -44,20 +60,41 @@ export function getServerSessionSnapshot(): null {
 }
 
 export function subscribeSession(cb: () => void): () => void {
-  window.addEventListener("storage", cb);
+  const onChange = () => {
+    refreshFromStorage();
+    cb();
+  };
+  if (!storageRead) {
+    // First subscriber (post-paint): load the persisted session now.
+    refreshFromStorage();
+    if (cachedId !== null) queueMicrotask(cb);
+  }
+  window.addEventListener("storage", onChange);
   window.addEventListener(EVT, cb);
   return () => {
-    window.removeEventListener("storage", cb);
+    window.removeEventListener("storage", onChange);
     window.removeEventListener(EVT, cb);
   };
 }
 
 export function signIn(helper: Helper): void {
-  window.localStorage.setItem(KEY, helper.id);
+  cachedId = helper.id;
+  storageRead = true;
+  try {
+    window.localStorage.setItem(KEY, helper.id);
+  } catch {
+    /* session lives for this page only */
+  }
   window.dispatchEvent(new Event(EVT));
 }
 
 export function signOut(): void {
-  window.localStorage.removeItem(KEY);
+  cachedId = null;
+  storageRead = true;
+  try {
+    window.localStorage.removeItem(KEY);
+  } catch {
+    /* ignore */
+  }
   window.dispatchEvent(new Event(EVT));
 }
