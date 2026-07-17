@@ -53,18 +53,23 @@ export default function BookingWizard() {
   const svcMeta = SERVICES.find((s) => s.id === service)!;
   const quote = bookingQuote(estimate.low, estimate.high);
 
-  // Draft: saved while waiting for sign-in (the magic link may open a fresh
-  // tab), restored once on mount, cleared after restore or booking.
-  useEffect(() => {
-    if (step === 4 && !user) {
-      saveDraft({ service, details, zone, slotId: slot?.id ?? null, customDate, helperId: helper?.id ?? null });
-    }
-  }, [step, user, service, details, zone, slot, customDate, helper]);
+  // Draft lifecycle: saved ONLY at the moment a sign-in email is requested
+  // (the magic link may open a fresh tab); restored ONLY when returning from
+  // that email (?resume=1); any other visit purges leftovers. A blanket
+  // save/restore here previously trapped users at Review & pay forever.
+  const resuming = params.get("resume") === "1";
+  const saveDraftForSignIn = () => {
+    saveDraft({ service, details, zone, slotId: slot?.id ?? null, customDate, helperId: helper?.id ?? null });
+  };
 
   useEffect(() => {
     let cancelled = false;
     void Promise.resolve().then(() => {
       if (cancelled) return;
+      if (!resuming) {
+        clearDraft(); // heal any stale draft from an abandoned sign-in
+        return;
+      }
       const draft = readDraft();
       if (!draft || !SERVICES.some((s) => s.id === draft.service)) return;
       setService(draft.service);
@@ -219,7 +224,7 @@ export default function BookingWizard() {
               helper={helper}
               zone={zone}
             />
-            {!user && <SignInCard />}
+            {!user && <SignInCard onBeforeSend={saveDraftForSignIn} />}
           </>
         )}
       </div>

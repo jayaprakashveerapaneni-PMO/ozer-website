@@ -221,6 +221,13 @@ strip on the wave). Viewed the actual frames via the user's Chrome (claude-in-ch
 
 ## 7. Known gotchas (hard-won)
 
+- **NEVER opacity-animate a page's primary/above-fold content** (hero subcopy
+  rule, generalized). In backgrounded headless Chrome (CI runners, browser
+  pane) animation clocks freeze at t=0, so `animate-fade-up` content stays
+  invisible → Lighthouse NO_FCP → whole CI job dies. Cost three red CI runs
+  (#9–#11) to find on /helper. Related: autonomous JS re-render loops must
+  check `isAutomatedAgent()` (lib/motion) or they churn the runner's trace.
+
 - **Browser pane tab often reports visibilityState:hidden** → screenshots time out AND
   CSS/rAF animation clocks freeze. Not a code bug. Verify animations via WAAPI
   (`el.getAnimations()`, resolved keyframes) or ask the user to look.

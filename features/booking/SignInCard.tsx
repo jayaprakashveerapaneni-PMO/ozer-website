@@ -20,7 +20,25 @@ function authErrorFromUrl(): string | null {
   return params.get("error_description")?.replace(/\+/g, " ") ?? "Sign-in failed — request a fresh link below.";
 }
 
-export default function SignInCard({ title = "Sign in to pay & book" }: { title?: string }) {
+/** Maps raw Supabase auth errors to words a customer can act on. */
+function friendlyAuthError(raw: string): string {
+  if (/rate limit|too many|60 seconds|security purposes/i.test(raw)) {
+    return "Too many sign-in emails just now — please wait a minute or two and try again.";
+  }
+  if (/invalid|expired/i.test(raw) && /token|otp|code/i.test(raw)) {
+    return "That code didn't match or has expired — check the latest email and retry.";
+  }
+  return raw;
+}
+
+export default function SignInCard({
+  title = "Sign in to pay & book",
+  onBeforeSend,
+}: {
+  title?: string;
+  /** Called right before the email is requested (e.g. save the booking draft). */
+  onBeforeSend?: () => void;
+}) {
   const [email, setEmail] = useState("");
   const [code, setCode] = useState("");
   const [phase, setPhase] = useState<Phase>("idle");
@@ -44,12 +62,15 @@ export default function SignInCard({ title = "Sign in to pay & book" }: { title?
     setPhase("sending");
     setError(null);
     try {
-      // Return to this exact page (service, instant, etc.) if the link is used.
-      await sendSignInEmail(email, window.location.pathname + window.location.search);
+      onBeforeSend?.();
+      // Return to this exact page, flagged so the wizard restores the draft.
+      const search = new URLSearchParams(window.location.search);
+      search.set("resume", "1");
+      await sendSignInEmail(email, `${window.location.pathname}?${search.toString()}`);
       setPhase("sent");
     } catch (e) {
       setPhase("idle");
-      setError(e instanceof Error ? e.message : "Could not send the email. Retry.");
+      setError(friendlyAuthError(e instanceof Error ? e.message : "Could not send the email. Retry."));
     }
   };
 
@@ -61,7 +82,7 @@ export default function SignInCard({ title = "Sign in to pay & book" }: { title?
       // Auth store emits; parent re-renders as signed-in.
     } catch (e) {
       setPhase("sent");
-      setError(e instanceof Error ? e.message : "Code didn't match. Check and retry.");
+      setError(friendlyAuthError(e instanceof Error ? e.message : "Code didn't match. Check and retry."));
     }
   };
 
