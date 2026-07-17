@@ -43,6 +43,21 @@ export function getServerAuthSnapshot(): null {
   return null;
 }
 
+/** Auth errors arrive with empty bodies ("{}") on rate limits — translate
+ *  status codes and junk messages into words a customer can act on. */
+function toFriendlyAuthError(error: { message?: string; status?: number }): Error {
+  const msg = error.message && error.message.trim() !== "{}" ? error.message : "";
+  if (
+    error.status === 429 ||
+    /rate limit|too many|60 seconds|security purposes/i.test(msg)
+  ) {
+    return new Error(
+      "The email service has hit its hourly limit — please wait a few minutes and try once more."
+    );
+  }
+  return new Error(msg || "Could not send the email right now. Please retry in a minute.");
+}
+
 /** Email a sign-in link (and code, if the template includes it). */
 export async function sendSignInEmail(email: string, redirectPath = "/book"): Promise<void> {
   const client = getSupabaseClient();
@@ -51,7 +66,7 @@ export async function sendSignInEmail(email: string, redirectPath = "/book"): Pr
     email,
     options: { emailRedirectTo: `${window.location.origin}${redirectPath}` },
   });
-  if (error) throw new Error(error.message);
+  if (error) throw toFriendlyAuthError(error);
 }
 
 /** Verify the 6-digit code from the sign-in email. */
@@ -59,7 +74,7 @@ export async function verifyEmailCode(email: string, code: string): Promise<void
   const client = getSupabaseClient();
   if (!client) throw new Error("Accounts are unavailable — backend not configured.");
   const { error } = await client.auth.verifyOtp({ email, token: code, type: "email" });
-  if (error) throw new Error(error.message);
+  if (error) throw toFriendlyAuthError(error);
 }
 
 export async function signOutUser(): Promise<void> {
