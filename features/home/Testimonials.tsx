@@ -6,7 +6,7 @@ export default function Testimonials() {
   return (
     <section className="py-20 lg:py-28">
       <div className="mx-auto max-w-6xl px-4 sm:px-6">
-        <Reveal className="max-w-2xl">
+        <Reveal className="cine max-w-2xl">
           <h2 className="text-3xl font-bold tracking-tight sm:text-5xl">
             Hyderabad households, <span className="gradient-text">heard.</span>
           </h2>

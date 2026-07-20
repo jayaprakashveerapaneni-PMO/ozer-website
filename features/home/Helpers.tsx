@@ -31,7 +31,7 @@ export default function Helpers() {
       <div className="blob blob-b left-[-5%] bottom-[10%] h-80 w-80 bg-orange-500" aria-hidden />
       <div className="relative mx-auto max-w-6xl px-4 sm:px-6">
         <div className="grid items-center gap-12 lg:grid-cols-2">
-          <Reveal>
+          <Reveal className="cine">
             <p className="mb-4 inline-block rounded-full glass px-4 py-1.5 text-xs font-semibold text-primary">
               For helpers · సహాయకుల కోసం · सहायकों के लिए
             </p>

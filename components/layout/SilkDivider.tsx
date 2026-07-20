@@ -10,7 +10,7 @@ const TILE_B = "M0,80 C300,110 600,30 900,80 S1240,120 1440,80 S1800,30 2100,90 
 export default function SilkDivider({ flip = false }: { flip?: boolean }) {
   return (
     <div
-      className={`silk-divider pointer-events-none relative h-[120px] overflow-hidden ${flip ? "-scale-x-100" : ""}`}
+      className={`silk-divider light-sweep pointer-events-none relative h-[120px] overflow-hidden ${flip ? "-scale-x-100" : ""}`}
       aria-hidden
     >
       {/* golden cream back ridge */}

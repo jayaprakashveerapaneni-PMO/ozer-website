@@ -11,8 +11,20 @@ import { ZONES } from "@/lib/domain";
 
 export default function Hero() {
   return (
-    <section className="relative flex min-h-[92vh] flex-col overflow-hidden">
+    <section className="cine-vignette relative flex min-h-[92vh] flex-col overflow-hidden">
       <SilkWave />
+
+      {/* volumetric god-rays sweeping the upper canvas (desktop only) */}
+      <div
+        className="sun-shaft left-[8%] top-[-22%] h-[85%] w-[34%]"
+        style={{ animationDuration: "16s" }}
+        aria-hidden
+      />
+      <div
+        className="sun-shaft right-[10%] top-[-28%] h-[75%] w-[26%]"
+        style={{ animationDuration: "21s", animationDelay: "-7s" }}
+        aria-hidden
+      />
 
       <div className="relative mx-auto flex w-full max-w-6xl flex-1 flex-col items-center px-4 pt-20 text-center sm:px-6 lg:pt-24">
         <Badge variant="glass" className="animate-fade-up mb-8">
@@ -20,14 +32,19 @@ export default function Hero() {
           Every helper police-verified — free, within 48 hours
         </Badge>
 
+        {/* Title-card entrance: each line rises out of its own mask. The
+            lines start clipped, so the (unanimated) subcopy below stays LCP. */}
         <h1
           className="mx-auto max-w-4xl text-6xl leading-[1.02] tracking-tight text-foreground sm:text-7xl lg:text-8xl"
           style={{ fontFamily: "var(--font-serif)" }}
         >
-          <span className="word-in">Daily Help That</span>
-          <br />
-          <span className="word-in" style={{ animationDelay: "140ms" }}>
-            Flows With <em className="not-italic"><WordRotate /></em>
+          <span className="cine-mask">
+            <span className="cine-line">Daily Help That</span>
+          </span>
+          <span className="cine-mask">
+            <span className="cine-line" style={{ "--cine-delay": "180ms" } as React.CSSProperties}>
+              Flows With <em className="not-italic"><WordRotate /></em>
+            </span>
           </span>
         </h1>
 

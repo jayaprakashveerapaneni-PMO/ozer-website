@@ -469,6 +469,114 @@ button, a, select, [role="button"] {
   box-shadow: 0 20px 48px rgba(30, 27, 46, 0.12);
 }
 
+/* ---------- Cinematic pack ----------
+   Film-language motion: masked line-rise titles, focus-pull section reveals,
+   drifting light shafts, lens vignette, sweeping glints and grain. Every
+   animation is transform/opacity/filter-only — CLS-impossible by design. */
+:root {
+  /* Long expressive settle — the "camera easing" all cine motion shares. */
+  --ease-cine: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Masked line-rise: each headline line climbs out of an overflow-hidden
+   mask like a film title card. Line is invisible until it rises — never
+   put this on the LCP element. */
+.cine-mask { display: block; overflow: hidden; padding-block: 0.06em; }
+@keyframes cine-rise {
+  from { transform: translateY(114%); }
+  to { transform: translateY(0); }
+}
+.cine-line {
+  display: inline-block;
+  transform: translateY(114%);
+  animation: cine-rise 1.15s var(--ease-cine) both;
+  animation-delay: var(--cine-delay, 0ms);
+  will-change: transform;
+}
+
+/* Focus pull: sections resolve from soft-focus as they enter — pairs with
+   the Reveal IntersectionObserver (add className="cine"). */
+.reveal.cine {
+  transform: translateY(30px) scale(1.03);
+  filter: blur(10px);
+  transition: opacity 1.1s var(--ease-cine),
+    transform 1.1s var(--ease-cine),
+    filter 1.1s var(--ease-cine);
+}
+.reveal.cine.in-view { transform: none; filter: blur(0); }
+
+/* Light sweep: a soft skewed beam glides across the container (dune
+   dividers, hero CTA band) like sun catching silk. */
+@keyframes cine-sweep {
+  0%, 55% { transform: translateX(-80%) skewX(-14deg); }
+  100% { transform: translateX(240%) skewX(-14deg); }
+}
+.light-sweep { position: relative; overflow: hidden; }
+.light-sweep::after {
+  content: "";
+  position: absolute;
+  top: -20%;
+  bottom: -20%;
+  left: 0;
+  width: 45%;
+  background: linear-gradient(100deg, transparent 0%, rgba(255, 255, 255, 0.55) 50%, transparent 100%);
+  mix-blend-mode: soft-light;
+  pointer-events: none;
+  animation: cine-sweep 8s ease-in-out infinite;
+}
+
+/* Volumetric sun shafts — slow god-rays swaying over the hero canvas. */
+@keyframes shaft-sway {
+  0%, 100% { transform: rotate(-5deg) translateX(-2%); opacity: 0.45; }
+  50% { transform: rotate(4deg) translateX(2%); opacity: 0.8; }
+}
+.sun-shaft {
+  position: absolute;
+  pointer-events: none;
+  background: linear-gradient(180deg, rgba(251, 191, 119, 0.3), rgba(253, 164, 175, 0.08) 55%, transparent 75%);
+  clip-path: polygon(38% 0, 62% 0, 96% 100%, 4% 100%);
+  filter: blur(26px);
+  transform-origin: top center;
+  animation: shaft-sway ease-in-out infinite;
+  will-change: transform;
+}
+
+/* Lens vignette — a static radial edge-darkening; zero runtime cost. */
+.cine-vignette::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 4;
+  background: radial-gradient(120% 90% at 50% 42%, transparent 58%, rgba(38, 34, 28, 0.12) 100%);
+}
+
+/* Film grain — one fixed viewport layer of animated noise (steps() jitter,
+   transform-only). Desktop-only; killed under reduced motion. */
+@keyframes grain-jitter {
+  0%, 100% { transform: translate(0, 0); }
+  25% { transform: translate(-42px, 26px); }
+  50% { transform: translate(28px, -38px); }
+  75% { transform: translate(-24px, -18px); }
+}
+.film-grain {
+  position: fixed;
+  inset: -80px;
+  pointer-events: none;
+  z-index: 70;
+  opacity: 0.045;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  animation: grain-jitter 0.9s steps(2) infinite;
+  will-change: transform;
+}
+
+/* Cinematic page entrance — longer settle on the shared camera easing. */
+@keyframes page-cine {
+  from { opacity: 0; transform: translateY(26px) scale(0.995); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+.page-cine { animation: page-cine 0.85s var(--ease-cine) both; }
+
 /* ---------- Rendering-cost controls ----------
    Below-the-fold home sections skip style/layout/paint until near the
    viewport (~951 DOM nodes rendered eagerly otherwise). The intrinsic size
@@ -485,7 +593,9 @@ main > :not(:first-child) {
 @media (max-width: 767px) {
   .blob,
   .rise-dot,
-  .star {
+  .star,
+  .film-grain,
+  .sun-shaft {
     display: none;
   }
 }
@@ -498,5 +608,10 @@ main > :not(:first-child) {
     transition-duration: 0.01ms !important;
   }
   .reveal { opacity: 1; transform: none; }
+  .reveal.cine { transform: none; filter: none; }
   .silk-parallax { animation: none; }
+  .cine-line { animation: none; transform: none; }
+  .film-grain,
+  .sun-shaft { display: none; }
+  .light-sweep::after { animation: none; opacity: 0; }
 }

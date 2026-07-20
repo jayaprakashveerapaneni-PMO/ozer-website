@@ -18,7 +18,7 @@ export default function LoginPage() {
     <>
       <Navbar />
       <main id="main-content" className="flex-1">
-        <section className="relative isolate overflow-hidden">
+        <section className="cine-vignette relative isolate overflow-hidden">
           <RisingParticles />
 
           <div className="relative z-10 mx-auto flex min-h-[calc(100dvh-4rem)] w-full max-w-lg flex-col justify-center px-4 pb-44 pt-14 sm:px-6">

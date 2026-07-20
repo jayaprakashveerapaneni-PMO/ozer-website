@@ -121,7 +121,7 @@ export default function Highlights() {
       <div className="blob blob-a left-[10%] top-[10%] h-72 w-72 bg-orange-400" aria-hidden />
 
       <div className="relative mx-auto max-w-6xl px-4 sm:px-6">
-        <Reveal className="mx-auto max-w-2xl text-center">
+        <Reveal className="cine mx-auto max-w-2xl text-center">
           <h2 className="text-3xl font-bold tracking-tight sm:text-5xl">
             Booking help takes <span className="gradient-text">about two minutes.</span>
           </h2>

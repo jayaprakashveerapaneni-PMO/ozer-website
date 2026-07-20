@@ -28,7 +28,7 @@ export default function HowItWorks() {
   return (
     <section id="how-it-works" className="scroll-mt-16 py-20 lg:py-28">
       <div className="mx-auto max-w-6xl px-4 sm:px-6">
-        <Reveal className="max-w-2xl">
+        <Reveal className="cine max-w-2xl">
           <h2 className="text-3xl font-bold tracking-tight sm:text-5xl">
             From “I need help” to helped — <span className="gradient-text">in four steps</span>
           </h2>

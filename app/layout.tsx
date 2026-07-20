@@ -84,6 +84,8 @@ export default function RootLayout({
           Skip to content
         </a>
         <RisingParticles />
+        {/* cinematic film grain — fixed overlay, desktop only (see globals) */}
+        <div className="film-grain" aria-hidden />
         {children}
       </body>
     </html>
