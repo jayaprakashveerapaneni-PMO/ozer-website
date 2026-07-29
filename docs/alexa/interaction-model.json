@@ -1,0 +1,67 @@
+{
+  "interactionModel": {
+    "languageModel": {
+      "invocationName": "ozer",
+      "intents": [
+        { "name": "AMAZON.CancelIntent", "samples": [] },
+        { "name": "AMAZON.HelpIntent", "samples": [] },
+        { "name": "AMAZON.StopIntent", "samples": [] },
+        { "name": "AMAZON.FallbackIntent", "samples": [] },
+        {
+          "name": "PairDeviceIntent",
+          "slots": [{ "name": "code", "type": "AMAZON.NUMBER" }],
+          "samples": [
+            "pair {code}",
+            "pair my account with {code}",
+            "my pairing code is {code}",
+            "link my account {code}",
+            "connect my account with code {code}"
+          ]
+        },
+        {
+          "name": "BookServiceIntent",
+          "slots": [
+            { "name": "service", "type": "OzerService" },
+            { "name": "hours", "type": "AMAZON.NUMBER" },
+            { "name": "zone", "type": "OzerZone" }
+          ],
+          "samples": [
+            "book {service}",
+            "book a {service}",
+            "book {service} in {zone}",
+            "book {hours} hours of {service}",
+            "book {hours} hours of {service} in {zone}",
+            "I need {service}",
+            "I need {service} in {zone}",
+            "get me a {service}",
+            "start a {service} booking"
+          ]
+        }
+      ],
+      "types": [
+        {
+          "name": "OzerService",
+          "values": [
+            { "name": { "value": "cleaning", "synonyms": ["house cleaning", "maid", "clean", "safai", "deep clean"] } },
+            { "name": { "value": "cook", "synonyms": ["home cook", "cooking", "meals", "khana", "tiffin"] } },
+            { "name": { "value": "laundry", "synonyms": ["washing", "ironing", "istri", "clothes"] } },
+            { "name": { "value": "care", "synonyms": ["child care", "elder care", "babysitter", "nanny", "ayah", "caretaker"] } }
+          ]
+        },
+        {
+          "name": "OzerZone",
+          "values": [
+            { "name": { "value": "Madhapur" } },
+            { "name": { "value": "Gachibowli" } },
+            { "name": { "value": "Kondapur" } },
+            { "name": { "value": "Kukatpally" } },
+            { "name": { "value": "Hitech City" } },
+            { "name": { "value": "Jubilee Hills" } },
+            { "name": { "value": "Banjara Hills" } },
+            { "name": { "value": "Miyapur" } }
+          ]
+        }
+      ]
+    }
+  }
+}

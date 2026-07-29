@@ -14,6 +14,9 @@ export interface BookingDraft {
   slotId: string | null;
   customDate: string;
   helperId: string | null;
+  /** "voice" when the draft was started on an assistant (Alexa/Siri) —
+   *  carried into the booking row's `via` column. Absent = "app". */
+  via?: "voice" | "app";
   savedAt: number;
 }
 

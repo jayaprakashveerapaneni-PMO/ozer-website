@@ -8,6 +8,7 @@ import { useAuthUser } from "@/lib/services/use-auth";
 import { customerNameFromUser, signOutUser } from "@/lib/services/auth-service";
 import LoginCard from "./LoginCard";
 import MyBookings from "./MyBookings";
+import VoiceAssistantsCard from "@/features/assistants/VoiceAssistantsCard";
 import { sanitizeNextPath } from "./next-path";
 
 /** /login orchestrator: signed out → LoginCard; signed in → account panel
@@ -51,6 +52,7 @@ export default function LoginExperience() {
         Your bookings
       </h3>
       <MyBookings user={user} />
+      <VoiceAssistantsCard user={user} />
 
       <div className="mt-6 flex flex-col gap-3 sm:flex-row">
         <Button href="/book" className="flex-1">

@@ -3,3 +3,4 @@ export * from "./types";
 export * from "./catalog";
 export * from "./estimator";
 export * from "./content";
+export * from "./assistant";

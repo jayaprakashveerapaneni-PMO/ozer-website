@@ -48,6 +48,7 @@ export default function BookingWizard() {
   const [placing, setPlacing] = useState(false);
   const [paying, setPaying] = useState(false);
   const [bookingId, setBookingId] = useState<string | null>(null);
+  const [via, setVia] = useState<"voice" | "app">("app");
   const user = useAuthUser();
 
   const svcMeta = SERVICES.find((s) => s.id === service)!;
@@ -80,6 +81,7 @@ export default function BookingWizard() {
       setSlot(SLOT_PRESETS.find((s) => s.id === draft.slotId) ?? null);
       setCustomDate(draft.customDate);
       setHelper(HELPERS.find((h) => h.id === draft.helperId) ?? null);
+      if (draft.via === "voice") setVia("voice");
       setStep(4);
       clearDraft();
     });
@@ -100,7 +102,7 @@ export default function BookingWizard() {
       zone,
       customerName: customerNameFromUser(user),
       preferredHelperId: helper?.id ?? null,
-      via: "app",
+      via,
       amountPaid: payment.amount,
       paymentId: payment.paymentId,
       paymentMethod: payment.method,

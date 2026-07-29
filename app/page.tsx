@@ -7,6 +7,7 @@ import Highlights from "@/features/home/Highlights";
 import Personas from "@/features/home/Personas";
 import HowItWorks from "@/features/home/HowItWorks";
 import Estimator from "@/features/home/Estimator";
+import Assistants from "@/features/home/Assistants";
 import Trust from "@/features/home/Trust";
 import Helpers from "@/features/home/Helpers";
 import Testimonials from "@/features/home/Testimonials";
@@ -49,6 +50,7 @@ export default function Home() {
         <HowItWorks />
         <SilkDivider flip />
         <Estimator />
+        <Assistants />
         <Trust />
         <Helpers />
         <SilkDivider />

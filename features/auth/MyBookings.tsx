@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import type { User } from "@supabase/supabase-js";
-import { CalendarClock, CheckCircle2, KeyRound, MapPin } from "lucide-react";
+import { CalendarClock, CheckCircle2, KeyRound, MapPin, Mic } from "lucide-react";
 import { Badge } from "@/components/ui";
 import { getBookingService } from "@/lib/services/booking-service";
 import { serviceChecklist } from "@/lib/domain";
@@ -88,7 +88,12 @@ export default function MyBookings({ user }: { user: User }) {
       {bookings.map((b) => (
         <li key={b.id} className="rounded-2xl border border-line bg-surface/70 p-4">
           <div className="flex items-center justify-between gap-3">
-            <p className="font-display text-sm font-bold">{b.serviceName}</p>
+            <p className="flex items-center gap-1.5 font-display text-sm font-bold">
+              {b.serviceName}
+              {b.via === "voice" && (
+                <Mic className="h-3.5 w-3.5 text-primary" aria-label="Started by voice" />
+              )}
+            </p>
             <Badge
               className={cn(
                 b.status === "completed" && "bg-success/10 text-success",
