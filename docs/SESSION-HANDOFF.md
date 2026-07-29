@@ -51,13 +51,32 @@ HARD-WON GOTCHAS ADDED THIS SESSION:
   constraint fires before upsert-add) — test wallet credits cannot be
   reverted via anon REST. h1 wallet residue now ₹1,280.
 
-TEST-DATA STATE (2026-07-29): my test booking OZ-C6XFRSI deleted. NOT
-deleted (not mine / concurrent): OZ-928L2K4 (created mid-session by a
-CONCURRENT actor — someone else was demoing while I worked; OZ-2NJ2V9W was
-created+completed by them today too), stray en_route rows OZ-MJPC8CR (h1)
-and OZ-FTQ42IY (h2, sarat.tumu), and several old pending_offer rows
-(OZ-50A90OG, OZ-HKEC22W, OZ-V8FDF33, OZ-NMVIY9K, OZ-TIEXI30). Clean when
-the coast is clear.
+SHIPPED LATER THE SAME DAY (3d3fc67, deployed + CI):
+- **Completion experience**: shared `features/booking/CompletedCard.tsx`
+  (who completed it + what-was-covered checklist + settled note) on the
+  booking screen; `/login` panel gets a collapsible "what was covered"
+  disclosure per completed booking and a live role=status toast when a
+  booking completes while watched (SuccessScreen fires the same toast).
+  Checklist source: `serviceChecklist()` in lib/domain/catalog (the
+  service's published bullets — honest until per-task tracking exists),
+  unit-tested. 61 vitest green.
+- **Stale active-job hijack FIXED** (the user hit it live: after
+  completing a real job the helper card "went back to the OTP step").
+  Cause: zombie en_route row OZ-MJPC8CR (2026-07-17) — `activeJob` picked
+  any non-completed assigned row. Fix: activeJob sorts by updatedAt desc;
+  zombies OZ-MJPC8CR and OZ-FTQ42IY deleted from prod.
+- Verifying toasts in the browser pane: the 6s toast outruns tool
+  round-trips — install a MutationObserver logging '[role="status"]' into
+  window.__toastLog BEFORE the status flip, then read the log. Rapid
+  back-to-back REST status flips can coalesce into one realtime load
+  (transition never observed) — space flips ≥4s apart.
+
+TEST-DATA STATE (2026-07-29 end of session): my test rows (OZ-C6XFRSI,
+OZ-CLAUDE1) and zombies (OZ-MJPC8CR, OZ-FTQ42IY) deleted. Remaining rows
+are the user's/colleague's own demo data: completed OZ-GSFBGKP,
+OZ-2NJ2V9W, OZ-2BTVZ9Q; pending_offer OZ-3HVZ95M, OZ-928L2K4, OZ-NMVIY9K,
+OZ-50A90OG, OZ-HKEC22W, OZ-V8FDF33, OZ-TIEXI30 (sarat). h1 wallet ₹1,480
+(test residue, cannot decrement via anon REST).
 
 ## 0-NEW. STATE AS OF 2026-07-17 EVENING (supersedes §0 below where they conflict)
 
