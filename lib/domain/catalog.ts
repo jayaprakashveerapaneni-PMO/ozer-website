@@ -75,6 +75,14 @@ export const ZONES = [
   "Miyapur",
 ];
 
+/** Standard inclusions a completed job covered — the customer-facing
+ *  "what was done" checklist on completion (booking screen + account panel).
+ *  Mock supply has no per-task tracking yet, so the service's published
+ *  scope is the honest summary. */
+export function serviceChecklist(service: Service["id"]): string[] {
+  return SERVICES.find((s) => s.id === service)?.bullets ?? [];
+}
+
 /** Helpers eligible for a service (FR-8 verified-only; FR-37 certified care). */
 export function eligibleHelpers(service: Service["id"]): Helper[] {
   return HELPERS.filter(

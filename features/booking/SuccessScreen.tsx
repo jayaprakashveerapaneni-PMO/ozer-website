@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { CheckCircle2, BellRing } from "lucide-react";
 import {
@@ -9,8 +9,10 @@ import {
   otpVisibleToCustomer,
   statusIndex,
   type Booking,
+  type BookingStatus,
 } from "@/lib/domain";
 import { getBookingService } from "@/lib/services/booking-service";
+import CompletedCard from "./CompletedCard";
 import { CONFETTI } from "./booking.constants";
 
 /**
@@ -25,13 +27,24 @@ export default function SuccessScreen({
   onReset: () => void;
 }) {
   const [booking, setBooking] = useState<Booking | null>(null);
+  const [justCompleted, setJustCompleted] = useState(false);
+  const lastStatus = useRef<BookingStatus | null>(null);
 
   useEffect(() => {
     const svc = getBookingService();
     let alive = true;
     const sync = () => {
       void svc.get(bookingId).then((b) => {
-        if (alive) setBooking(b);
+        if (!alive) return;
+        // Live completion notice when the helper finishes while we watch.
+        if (b && lastStatus.current && lastStatus.current !== "completed" && b.status === "completed") {
+          setJustCompleted(true);
+          window.setTimeout(() => {
+            if (alive) setJustCompleted(false);
+          }, 6000);
+        }
+        lastStatus.current = b?.status ?? null;
+        setBooking(b);
       });
     };
     sync();
@@ -46,6 +59,15 @@ export default function SuccessScreen({
 
   return (
     <div className="mx-auto max-w-2xl px-4 py-14 sm:px-6">
+      {justCompleted && (
+        <div
+          role="status"
+          className="animate-fade-up motion-reduce:animate-none glass fixed bottom-6 left-1/2 z-50 flex -translate-x-1/2 items-center gap-2 rounded-2xl px-5 py-3 text-sm font-semibold text-success shadow-lg"
+        >
+          <CheckCircle2 className="h-4 w-4 shrink-0" aria-hidden />
+          Job completed — payment was already settled. Summary below.
+        </div>
+      )}
       <div className="glass animate-fade-up relative overflow-hidden rounded-3xl p-8 text-center glow-ring">
         <div className="pointer-events-none absolute inset-x-0 top-0 h-0" aria-hidden>
           {CONFETTI.map((f, i) => (
@@ -133,12 +155,7 @@ export default function SuccessScreen({
           </div>
         )}
 
-        {booking?.status === "completed" && (
-          <p className="animate-fade-up mt-6 rounded-2xl bg-success/10 p-4 text-sm font-semibold text-success">
-            Job completed! Your payment was settled at booking — rate{" "}
-            {booking.helperName} to save them as a favourite.
-          </p>
-        )}
+        {booking?.status === "completed" && <CompletedCard booking={booking} />}
 
         <p className="mt-6 rounded-2xl bg-surface p-3 text-xs text-muted">
           <BellRing className="mr-1 inline h-3.5 w-3.5 text-primary" aria-hidden />

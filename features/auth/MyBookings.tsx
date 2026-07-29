@@ -1,10 +1,11 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import type { User } from "@supabase/supabase-js";
-import { CalendarClock, KeyRound, MapPin } from "lucide-react";
+import { CalendarClock, CheckCircle2, KeyRound, MapPin } from "lucide-react";
 import { Badge } from "@/components/ui";
 import { getBookingService } from "@/lib/services/booking-service";
+import { serviceChecklist } from "@/lib/domain";
 import {
   STATUS_STEPS,
   otpVisibleToCustomer,
@@ -23,6 +24,8 @@ function statusLabel(s: BookingStatus): string {
  *  the booking service's realtime subscription. */
 export default function MyBookings({ user }: { user: User }) {
   const [bookings, setBookings] = useState<Booking[] | null>(null);
+  const [toast, setToast] = useState<string | null>(null);
+  const lastStatuses = useRef<Map<string, BookingStatus>>(new Map());
 
   const { id: customerId, email: customerEmail } = user;
   useEffect(() => {
@@ -32,7 +35,21 @@ export default function MyBookings({ user }: { user: User }) {
       try {
         const all = await svc.list();
         if (cancelled) return;
-        setBookings(bookingsForCustomer(all, { id: customerId, email: customerEmail }));
+        const mine = bookingsForCustomer(all, { id: customerId, email: customerEmail });
+        // Live completion notice when a helper finishes while we watch.
+        for (const b of mine) {
+          const prev = lastStatuses.current.get(b.id);
+          if (prev && prev !== "completed" && b.status === "completed") {
+            setToast(
+              `${b.serviceName} completed${b.helperName ? ` by ${b.helperName}` : ""} — payment was already settled.`
+            );
+            window.setTimeout(() => {
+              if (!cancelled) setToast(null);
+            }, 6000);
+          }
+          lastStatuses.current.set(b.id, b.status);
+        }
+        setBookings(mine);
       } catch {
         if (!cancelled) setBookings([]);
       }
@@ -57,6 +74,16 @@ export default function MyBookings({ user }: { user: User }) {
   }
 
   return (
+    <>
+      {toast && (
+        <div
+          role="status"
+          className="animate-fade-up motion-reduce:animate-none glass fixed bottom-6 left-1/2 z-50 flex -translate-x-1/2 items-center gap-2 rounded-2xl px-5 py-3 text-sm font-semibold text-success shadow-lg"
+        >
+          <CheckCircle2 className="h-4 w-4 shrink-0" aria-hidden />
+          {toast}
+        </div>
+      )}
     <ul className="mt-6 space-y-3">
       {bookings.map((b) => (
         <li key={b.id} className="rounded-2xl border border-line bg-surface/70 p-4">
@@ -101,8 +128,24 @@ export default function MyBookings({ user }: { user: User }) {
               </p>
             </div>
           )}
+          {b.status === "completed" && (
+            <details className="mt-3 rounded-xl bg-success/10 p-3">
+              <summary className="cursor-pointer text-xs font-semibold text-success">
+                Completed{b.helperName ? ` by ${b.helperName}` : ""} — what was covered
+              </summary>
+              <ul className="mt-2 space-y-1 text-xs leading-relaxed text-foreground/80">
+                {serviceChecklist(b.service).map((task) => (
+                  <li key={task} className="flex items-start gap-1.5">
+                    <CheckCircle2 className="mt-0.5 h-3 w-3 shrink-0 text-success" aria-hidden />
+                    {task}
+                  </li>
+                ))}
+              </ul>
+            </details>
+          )}
         </li>
       ))}
     </ul>
+    </>
   );
 }

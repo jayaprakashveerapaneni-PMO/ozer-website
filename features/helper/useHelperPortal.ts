@@ -67,9 +67,14 @@ export function useHelperPortal(helper: Helper) {
     if (fresh > 0) playChime();
   }, [offers]);
 
-  const activeJob = bookings.find(
-    (b) => b.helperId === helper.id && b.status !== "completed" && b.status !== "pending_offer"
-  );
+  // Most recently touched first: a live job must always outrank a stale
+  // active row (a leftover en_route booking once hijacked the card with its
+  // OTP prompt right after a real job completed).
+  const activeJob = bookings
+    .filter(
+      (b) => b.helperId === helper.id && b.status !== "completed" && b.status !== "pending_offer"
+    )
+    .sort((a, b) => b.updatedAt - a.updatedAt)[0];
   const completedJobs = bookings.filter(
     (b) => b.helperId === helper.id && b.status === "completed"
   );
