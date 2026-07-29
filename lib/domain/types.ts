@@ -102,6 +102,14 @@ export function statusIndex(s: BookingStatus): number {
   return STATUS_STEPS.findIndex((x) => x.key === s);
 }
 
+/** FR-16: the arrival OTP is shown to the customer only while a helper is
+ *  assigned or on the way — before that there is nobody to verify, and from
+ *  "arrived" onward the handshake already happened. Single source of truth
+ *  for every surface that renders the OTP (booking screen, account panel). */
+export function otpVisibleToCustomer(status: BookingStatus): boolean {
+  return status === "assigned" || status === "en_route";
+}
+
 /** Fixed price charged upfront at booking — midpoint of the estimate band. */
 export function bookingQuote(estLow: number, estHigh: number): number {
   return Math.round((estLow + estHigh) / 2);

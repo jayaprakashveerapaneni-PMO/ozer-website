@@ -6,6 +6,7 @@ import { CheckCircle2, BellRing } from "lucide-react";
 import {
   STATUS_STEPS,
   formatEstimate,
+  otpVisibleToCustomer,
   statusIndex,
   type Booking,
 } from "@/lib/domain";
@@ -117,7 +118,7 @@ export default function SuccessScreen({
         </ol>
 
         {/* arrival OTP (FR-16) */}
-        {booking && (booking.status === "en_route" || booking.status === "assigned") && (
+        {booking && otpVisibleToCustomer(booking.status) && (
           <div className="glow-ring animate-fade-up mx-auto mt-6 max-w-xs rounded-2xl bg-surface p-4">
             <p className="text-xs font-semibold uppercase tracking-widest text-muted">
               Your arrival OTP

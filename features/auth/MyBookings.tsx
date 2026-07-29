@@ -2,10 +2,15 @@
 
 import { useEffect, useState } from "react";
 import type { User } from "@supabase/supabase-js";
-import { CalendarClock, MapPin } from "lucide-react";
+import { CalendarClock, KeyRound, MapPin } from "lucide-react";
 import { Badge } from "@/components/ui";
 import { getBookingService } from "@/lib/services/booking-service";
-import { STATUS_STEPS, type Booking, type BookingStatus } from "@/lib/domain/types";
+import {
+  STATUS_STEPS,
+  otpVisibleToCustomer,
+  type Booking,
+  type BookingStatus,
+} from "@/lib/domain/types";
 import { bookingsForCustomer } from "./bookings-for-customer";
 import { cn } from "@/lib/cn";
 
@@ -79,6 +84,23 @@ export default function MyBookings({ user }: { user: User }) {
             )}
             <span className="ml-auto font-mono text-[11px]">{b.id}</span>
           </div>
+          {/* FR-16: recover the arrival OTP after the booking tab is gone —
+              same visibility window as the booking screen. */}
+          {otpVisibleToCustomer(b.status) && (
+            <div className="mt-3 rounded-xl bg-surface p-3">
+              <p className="flex items-center gap-1.5 text-xs font-semibold uppercase tracking-widest text-muted">
+                <KeyRound className="h-3.5 w-3.5 text-primary" aria-hidden />
+                Your arrival OTP
+              </p>
+              <p className="mt-1 font-display text-2xl font-bold tracking-[0.35em] text-primary">
+                {b.otp}
+              </p>
+              <p className="mt-1 text-xs text-muted">
+                Share only at your door — it proves the arriving person is{" "}
+                {b.helperName ?? "your assigned helper"}.
+              </p>
+            </div>
+          )}
         </li>
       ))}
     </ul>
