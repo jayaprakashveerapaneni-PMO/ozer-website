@@ -71,6 +71,41 @@ SHIPPED LATER THE SAME DAY (3d3fc67, deployed + CI):
   back-to-back REST status flips can coalesce into one realtime load
   (transition never observed) — space flips ≥4s apart.
 
+VOICE ASSISTANTS SHIPPED (31c3f55, EP-14 — deployed, degrades gracefully
+until activated):
+- Architecture: assistants create DRAFTS only (FR-27/AI-7 + payment-first).
+  Draft → /login "Voice assistants" card (realtime) → Continue & pay →
+  wizard resumes at Review & pay via the existing localStorage-draft
+  mechanism (booking-draft now carries via:'voice' → booking row + mic
+  badge in MyBookings).
+- Pieces: lib/domain/assistant.ts (matching/speech/codes, tested);
+  lib/services/assistant/{store,alexa,siri}.ts (REST store + pure protocol
+  handlers, tested); POST /api/assistant/{alexa,siri}; VoiceAssistantsCard;
+  homepage #assistants section; /assistants setup page (+sitemap);
+  supabase/migrations/004_assistant.sql (assistant_links+assistant_drafts,
+  demo-open RLS); docs/alexa/interaction-model.json. 78 vitest green.
+- Pairing model (user chose over OAuth): 6-digit code generated on /login,
+  spoken once to Alexa (stored per Alexa userId in device_ref) or embedded
+  in the Siri Shortcut body.
+- Honest platform depth: Siri = Apple Shortcut (SiriKit needs an iOS app);
+  Google Assistant = NOT integrated (Google killed web Conversational
+  Actions in 2023; App Actions need the Android app) — /assistants says so.
+- ⚠ USER ACTIONS TO ACTIVATE: (1) run 004_assistant.sql in the Supabase
+  SQL editor — until then the /login card hides itself and the APIs return
+  friendly not-provisioned responses (verified on prod); (2) create the
+  Alexa skill: developer.amazon.com → Create Skill (custom, self-hosted) →
+  paste docs/alexa/interaction-model.json in the JSON editor → endpoint
+  https://ozer-website.vercel.app/api/assistant/alexa (SSL: "trusted CA")
+  → build; set ALEXA_SKILL_ID in Vercel env. Amazon request-signature
+  verification is a documented gap to close before PUBLIC certification
+  (dev/household testing works without it).
+- Verified on prod pre-migration: Alexa LaunchRequest speaks the welcome;
+  Siri endpoint 503s with friendly speech; homepage section + /assistants
+  render; /login unaffected. Full draft→pay E2E pending migration.
+- JSX gotcha (new): a mid-line space after an inline element can be eaten
+  by the compiler ("</em> under" rendered as "under" glued) — use the
+  {\" \"} idiom between inline elements and following text.
+
 TEST-DATA STATE (2026-07-29 end of session): my test rows (OZ-C6XFRSI,
 OZ-CLAUDE1) and zombies (OZ-MJPC8CR, OZ-FTQ42IY) deleted. Remaining rows
 are the user's/colleague's own demo data: completed OZ-GSFBGKP,
