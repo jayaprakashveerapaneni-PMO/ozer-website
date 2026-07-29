@@ -20,9 +20,15 @@ export default function HeroTitle() {
 
       const run = contextSafe(() => {
         if (!ref.current) return;
+        // SplitText's built-in aria feature writes aria-label onto the split
+        // targets — prohibited on a plain <span> (axe aria-prohibited-attr,
+        // fails the CI a11y=1.0 budget). Name the heading itself instead and
+        // hide the char-sliced lines from assistive tech.
+        ref.current.setAttribute("aria-label", "Daily Help That Flows With You.");
+        for (const line of ref.current.children) line.setAttribute("aria-hidden", "true");
         const splits = Array.from(
           ref.current.querySelectorAll<HTMLElement>("[data-split]")
-        ).map((el) => new SplitText(el, { type: "chars,lines", mask: "lines" }));
+        ).map((el) => new SplitText(el, { type: "chars,lines", mask: "lines", aria: "none" }));
 
         const tl = gsap.timeline({ defaults: { ease: "power4.out" } });
         splits.forEach((split, line) => {
