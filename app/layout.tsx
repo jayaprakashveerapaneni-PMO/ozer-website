@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Space_Grotesk, Inter, Instrument_Serif } from "next/font/google";
 import RisingParticles from "@/components/layout/RisingParticles";
+import SmoothScroll from "@/components/motion/SmoothScroll";
 import { SITE } from "@/lib/site";
 import "./globals.css";
 
@@ -83,8 +84,9 @@ export default function RootLayout({
         <a href="#main-content" className="skip-link">
           Skip to content
         </a>
+        <SmoothScroll />
         <RisingParticles />
-        {/* cinematic film grain — fixed overlay, desktop only (see globals) */}
+        {/* cinematic film grain — fixed overlay (see globals) */}
         <div className="film-grain" aria-hidden />
         {children}
       </body>

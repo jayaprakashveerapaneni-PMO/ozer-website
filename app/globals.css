@@ -570,22 +570,34 @@ button, a, select, [role="button"] {
   will-change: transform;
 }
 
-/* Cinematic page entrance — longer settle on the shared camera easing. */
+/* Cinematic page entrance — longer settle on the shared camera easing.
+   fill-mode backwards (not both) so the transform CLEARS after the
+   entrance: a retained transform would turn the page wrapper into a
+   containing block and break position:fixed + ScrollTrigger pinning. */
 @keyframes page-cine {
   from { opacity: 0; transform: translateY(26px) scale(0.995); }
   to { opacity: 1; transform: translateY(0) scale(1); }
 }
-.page-cine { animation: page-cine 0.85s var(--ease-cine) both; }
+.page-cine { animation: page-cine 0.85s var(--ease-cine) backwards; }
 
-/* ---------- Rendering-cost controls ----------
-   Below-the-fold home sections skip style/layout/paint until near the
-   viewport (~951 DOM nodes rendered eagerly otherwise). The intrinsic size
-   reserves space so scrollbar/CLS stay stable; anchors (#highlights) still work
-   because the browser renders on demand when jumped to. */
-main > :not(:first-child) {
-  content-visibility: auto;
-  contain-intrinsic-size: auto 800px;
+/* SplitText slices .gradient-text h2s into word/line wrappers — children
+   must re-clip the inherited gradient or the text renders transparent. */
+.gradient-text div,
+.gradient-text span {
+  background: inherit;
+  -webkit-background-clip: text;
+  background-clip: text;
 }
+
+/* Lenis smooth scrolling (html gets .lenis when active) */
+html.lenis, html.lenis body { height: auto; }
+.lenis.lenis-smooth { scroll-behavior: auto !important; }
+.lenis.lenis-smooth [data-lenis-prevent] { overscroll-behavior: contain; }
+.lenis.lenis-stopped { overflow: hidden; }
+
+/* content-visibility was removed here: GSAP pinning + Lenis need real
+   layout geometry for the whole page, and the perf budget it served is
+   retired. (Was: content-visibility:auto on below-fold home sections.) */
 
 /* Mobile: decorative compositing layers (blurred blobs, rising particles)
    cost real main-thread time on throttled CPUs for near-invisible benefit
@@ -594,7 +606,6 @@ main > :not(:first-child) {
   .blob,
   .rise-dot,
   .star,
-  .film-grain,
   .sun-shaft {
     display: none;
   }

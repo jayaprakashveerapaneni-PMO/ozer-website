@@ -1,52 +1,50 @@
 import Link from "next/link";
 import { ShieldCheck, CalendarCheck, ArrowRight } from "lucide-react";
-import WordRotate from "@/components/motion/WordRotate";
 import { Button, Badge } from "@/components/ui";
 import SilkWave from "@/components/layout/SilkWave";
+import HeroTitle from "@/features/home/HeroTitle";
 import { ZONES } from "@/lib/domain";
 
 // LuminaAI-reference hero: elegant serif headline on a clear ivory canvas,
 // dark pill CTA, and the silk-dune wave field owning the lower half with the
-// trust strip resting on it. Text and wave never meet.
+// trust strip resting on it. Server-rendered; HomeCinema + HeroTitle add the
+// GSAP choreography via the data-* hooks.
 
 export default function Hero() {
   return (
-    <section className="cine-vignette relative flex min-h-[92vh] flex-col overflow-hidden">
+    <section data-hero className="cine-vignette relative flex min-h-[92vh] flex-col overflow-hidden">
       <SilkWave />
 
       {/* volumetric god-rays sweeping the upper canvas (desktop only) */}
+      <div data-shafts className="pointer-events-none absolute inset-0" aria-hidden>
+        <div
+          className="sun-shaft left-[8%] top-[-22%] h-[85%] w-[34%]"
+          style={{ animationDuration: "16s" }}
+        />
+        <div
+          className="sun-shaft right-[10%] top-[-28%] h-[75%] w-[26%]"
+          style={{ animationDuration: "21s", animationDelay: "-7s" }}
+        />
+      </div>
+
+      {/* cursor-tracked light — HomeCinema drives x/y over the silk */}
       <div
-        className="sun-shaft left-[8%] top-[-22%] h-[85%] w-[34%]"
-        style={{ animationDuration: "16s" }}
-        aria-hidden
-      />
-      <div
-        className="sun-shaft right-[10%] top-[-28%] h-[75%] w-[26%]"
-        style={{ animationDuration: "21s", animationDelay: "-7s" }}
+        data-hero-glow
+        className="pointer-events-none absolute left-0 top-0 z-[3] h-[42rem] w-[42rem] rounded-full opacity-0"
+        style={{ background: "radial-gradient(circle, rgba(251,146,60,0.16), transparent 62%)" }}
         aria-hidden
       />
 
-      <div className="relative mx-auto flex w-full max-w-6xl flex-1 flex-col items-center px-4 pt-20 text-center sm:px-6 lg:pt-24">
+      <div
+        data-hero-copy
+        className="relative mx-auto flex w-full max-w-6xl flex-1 flex-col items-center px-4 pt-20 text-center sm:px-6 lg:pt-24"
+      >
         <Badge variant="glass" className="animate-fade-up mb-8">
           <ShieldCheck className="h-3.5 w-3.5" aria-hidden />
           Every helper police-verified — free, within 48 hours
         </Badge>
 
-        {/* Title-card entrance: each line rises out of its own mask. The
-            lines start clipped, so the (unanimated) subcopy below stays LCP. */}
-        <h1
-          className="mx-auto max-w-4xl text-6xl leading-[1.02] tracking-tight text-foreground sm:text-7xl lg:text-8xl"
-          style={{ fontFamily: "var(--font-serif)" }}
-        >
-          <span className="cine-mask">
-            <span className="cine-line">Daily Help That</span>
-          </span>
-          <span className="cine-mask">
-            <span className="cine-line" style={{ "--cine-delay": "180ms" } as React.CSSProperties}>
-              Flows With <em className="not-italic"><WordRotate /></em>
-            </span>
-          </span>
-        </h1>
+        <HeroTitle />
 
         {/* LCP element — never animate its opacity (Lighthouse LCP penalty). */}
         <p className="mx-auto mt-6 max-w-xl text-base leading-relaxed text-muted sm:text-lg">
@@ -56,10 +54,12 @@ export default function Hero() {
         </p>
 
         <div className="animate-fade-up mt-9 flex flex-col items-center justify-center gap-5 sm:flex-row" style={{ animationDelay: "240ms" }}>
-          <Button href="/book" variant="pill" size="lg" className="group">
-            <CalendarCheck className="h-5 w-5 transition-transform group-hover:scale-125" aria-hidden />
-            Book a service
-          </Button>
+          <span data-magnetic className="inline-block">
+            <Button href="/book" variant="pill" size="lg" className="group">
+              <CalendarCheck className="h-5 w-5 transition-transform group-hover:scale-125" aria-hidden />
+              Book a service
+            </Button>
+          </span>
           <Link
             href="/#services"
             className="group inline-flex items-center gap-1.5 text-sm font-semibold text-foreground/80 transition-colors hover:text-primary"

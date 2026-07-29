@@ -57,47 +57,55 @@ const RIDGES: Ridge[] = [
 export default function SilkWave() {
   return (
     <div className="silk-parallax pointer-events-none absolute inset-x-0 bottom-0 h-[52%] overflow-hidden" aria-hidden>
-      {/* glowing amber core behind the crest (reference: lit silk fold) */}
-      <div
-        className="silk-breathe absolute left-[18%] bottom-[8%] h-[240px] w-[46%] rounded-full"
-        style={{
-          background:
-            "radial-gradient(ellipse at 40% 60%, rgba(249,115,22,0.5) 0%, rgba(251,146,60,0.28) 45%, transparent 75%)",
-          filter: "blur(34px)",
-          animationDuration: "12s",
-          willChange: "transform",
-        }}
-      />
+      {/* glowing amber core behind the crest (reference: lit silk fold).
+          The outer wrapper owns positioning so HomeCinema can parallax it
+          without fighting the CSS breathe animation on the inner layer. */}
+      <div data-dune-glow className="absolute left-[18%] bottom-[8%] h-[240px] w-[46%]">
+        <div
+          className="silk-breathe absolute inset-0 rounded-full"
+          style={{
+            background:
+              "radial-gradient(ellipse at 40% 60%, rgba(249,115,22,0.5) 0%, rgba(251,146,60,0.28) 45%, transparent 75%)",
+            filter: "blur(34px)",
+            animationDuration: "12s",
+            willChange: "transform",
+          }}
+        />
+      </div>
       {RIDGES.map((rg, i) => (
         <div
           key={i}
-          className={`silk-breathe absolute left-0 w-full ${rg.desktopOnly ? "hidden md:block" : ""}`}
-          style={{
-            bottom: rg.bottom,
-            height: rg.height,
-            opacity: rg.opacity,
-            filter: `blur(${rg.blur}px)`,
-            animationDuration: `${rg.breatheDuration}s`,
-            animationDelay: `${rg.breatheDelay}s`,
-            willChange: "transform",
-          }}
+          data-ridge
+          className={`absolute left-0 w-full ${rg.desktopOnly ? "hidden md:block" : ""}`}
+          style={{ bottom: rg.bottom, height: rg.height }}
         >
-          <svg
-            className="silk-drift absolute h-full"
-            style={{ width: "200%", animationDuration: `${rg.driftDuration}s` }}
-            viewBox="0 0 2880 360"
-            preserveAspectRatio="none"
-            fill="none"
+          <div
+            className="silk-breathe absolute inset-0"
+            style={{
+              opacity: rg.opacity,
+              filter: `blur(${rg.blur}px)`,
+              animationDuration: `${rg.breatheDuration}s`,
+              animationDelay: `${rg.breatheDelay}s`,
+              willChange: "transform",
+            }}
           >
-            <defs>
-              <linearGradient id={`dune-${i}`} x1="0" y1="0" x2="1" y2="0">
-                <stop offset="0%" stopColor={rg.from} />
-                <stop offset="45%" stopColor={rg.via} />
-                <stop offset="100%" stopColor={rg.to} />
-              </linearGradient>
-            </defs>
-            <path d={rg.d} fill={`url(#dune-${i})`} />
-          </svg>
+            <svg
+              className="silk-drift absolute h-full"
+              style={{ width: "200%", animationDuration: `${rg.driftDuration}s` }}
+              viewBox="0 0 2880 360"
+              preserveAspectRatio="none"
+              fill="none"
+            >
+              <defs>
+                <linearGradient id={`dune-${i}`} x1="0" y1="0" x2="1" y2="0">
+                  <stop offset="0%" stopColor={rg.from} />
+                  <stop offset="45%" stopColor={rg.via} />
+                  <stop offset="100%" stopColor={rg.to} />
+                </linearGradient>
+              </defs>
+              <path d={rg.d} fill={`url(#dune-${i})`} />
+            </svg>
+          </div>
         </div>
       ))}
     </div>

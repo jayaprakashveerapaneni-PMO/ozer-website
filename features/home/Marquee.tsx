@@ -26,9 +26,13 @@ export default function Marquee() {
 
   return (
     <div className="relative overflow-hidden border-y border-line bg-surface0 py-4">
-      <div className="animate-marquee flex w-max">
-        {row(false)}
-        {row(true)}
+      {/* skew wrapper: HomeCinema tilts it with scroll velocity; the CSS
+          marquee animation stays on the inner track (no transform clash) */}
+      <div data-marquee-skew className="will-change-transform">
+        <div data-marquee-track className="animate-marquee flex w-max">
+          {row(false)}
+          {row(true)}
+        </div>
       </div>
       <div className="pointer-events-none absolute inset-y-0 left-0 w-24 bg-gradient-to-r from-background to-transparent" aria-hidden />
       <div className="pointer-events-none absolute inset-y-0 right-0 w-24 bg-gradient-to-l from-background to-transparent" aria-hidden />
