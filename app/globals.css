@@ -147,7 +147,23 @@ button, a, select, [role="button"] {
   border: 1px solid rgba(30, 27, 46, 0.08);
   backdrop-filter: blur(14px);
   -webkit-backdrop-filter: blur(14px);
-  box-shadow: 0 8px 32px rgba(30, 27, 46, 0.06);
+  /* Layered low-alpha depth — one harsh shadow reads "template". */
+  box-shadow:
+    0 1px 2px rgba(30, 27, 46, 0.04),
+    0 8px 24px rgba(30, 27, 46, 0.05),
+    0 28px 72px rgba(30, 27, 46, 0.05);
+}
+
+/* Editorial section display — the hero's serif voice carried through every
+   section headline (LuminaAI language: serif display over grotesk body).
+   Fluid clamp so it stays confident at 375px and commanding at 1440px. */
+.section-display {
+  font-family: var(--font-serif);
+  font-weight: 400;
+  font-size: clamp(2.375rem, 1.45rem + 3.6vw, 3.9rem);
+  line-height: 1.07;
+  letter-spacing: -0.015em;
+  text-wrap: balance;
 }
 
 .glow-primary {
@@ -466,7 +482,10 @@ button, a, select, [role="button"] {
 }
 .tilt-card:hover {
   transform: translateY(-6px) scale(1.015);
-  box-shadow: 0 20px 48px rgba(30, 27, 46, 0.12);
+  box-shadow:
+    0 2px 4px rgba(30, 27, 46, 0.05),
+    0 16px 40px rgba(30, 27, 46, 0.09),
+    0 40px 96px rgba(30, 27, 46, 0.08);
 }
 
 /* ---------- Cinematic pack ----------

@@ -24,14 +24,14 @@ const PLATFORMS = [
 
 export default function Assistants() {
   return (
-    <section id="assistants" className="relative scroll-mt-16 py-20 lg:py-28">
+    <section id="assistants" className="relative scroll-mt-16 py-24 lg:py-36">
       <div className="blob blob-b right-[8%] top-[15%] h-72 w-72 bg-violet-500" aria-hidden />
       <div className="relative mx-auto max-w-6xl px-4 sm:px-6">
         <Reveal className="max-w-2xl">
           <p className="mb-4 inline-flex items-center gap-1.5 rounded-full glass px-4 py-1.5 text-xs font-semibold text-primary">
             <Mic className="h-3.5 w-3.5" aria-hidden /> Voice assistants
           </p>
-          <h2 className="text-3xl font-bold tracking-tight sm:text-5xl">
+          <h2 className="section-display">
             Say it to your speaker. <span className="gradient-text">Approve it here.</span>
           </h2>
           <p className="mt-4 text-muted">
@@ -50,7 +50,12 @@ export default function Assistants() {
                     {p.tag}
                   </span>
                 </div>
-                <p className="mt-4 rounded-2xl bg-surface p-4 text-sm font-semibold italic">{p.say}</p>
+                <p
+                  className="mt-4 rounded-2xl bg-surface p-4 text-lg italic leading-snug"
+                  style={{ fontFamily: "var(--font-serif)" }}
+                >
+                  {p.say}
+                </p>
                 <p className="mt-3 text-sm leading-relaxed text-muted">{p.body}</p>
               </div>
             </Reveal>

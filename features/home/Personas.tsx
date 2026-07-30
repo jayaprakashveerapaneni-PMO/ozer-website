@@ -153,12 +153,12 @@ export default function Personas() {
   const p = PERSONAS[active];
 
   return (
-    <section id="personas" className="relative scroll-mt-16 overflow-hidden py-20 lg:py-28">
+    <section id="personas" className="relative scroll-mt-16 overflow-hidden py-24 lg:py-36">
       <div className="blob blob-a right-[15%] top-[0%] h-80 w-80 bg-violet-500" aria-hidden />
 
       <div className="relative mx-auto max-w-6xl px-4 sm:px-6">
         <div className="mx-auto max-w-2xl text-center">
-          <h2 className="text-3xl font-bold tracking-tight sm:text-5xl">
+          <h2 className="section-display">
             One app. <span className="gradient-text">Four very different lives.</span>
           </h2>
           <p className="mt-4 text-lg text-muted">

@@ -117,12 +117,12 @@ export default function Highlights() {
   const step = STEPS[active];
 
   return (
-    <section id="highlights" className="relative scroll-mt-16 overflow-hidden py-20 lg:py-28">
+    <section id="highlights" className="relative scroll-mt-16 overflow-hidden py-24 lg:py-36">
       <div className="blob blob-a left-[10%] top-[10%] h-72 w-72 bg-orange-400" aria-hidden />
 
       <div className="relative mx-auto max-w-6xl px-4 sm:px-6">
         <Reveal className="mx-auto max-w-2xl text-center">
-          <h2 className="text-3xl font-bold tracking-tight sm:text-5xl">
+          <h2 className="section-display">
             Booking help takes <span className="gradient-text">about two minutes.</span>
           </h2>
           <p className="mt-4 text-lg text-muted">

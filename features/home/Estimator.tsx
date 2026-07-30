@@ -13,12 +13,12 @@ export default function Estimator() {
   const { details, set, estimate } = useServiceDetails(service);
 
   return (
-    <section id="pricing" className="relative scroll-mt-16 overflow-hidden py-20 lg:py-28">
+    <section id="pricing" className="relative scroll-mt-16 overflow-hidden py-24 lg:py-36">
       <div className="blob blob-a right-[10%] top-[20%] h-72 w-72 bg-cyan-400" aria-hidden />
       <div className="relative mx-auto max-w-6xl px-4 sm:px-6">
         <div className="grid gap-10 lg:grid-cols-[1fr_1fr] lg:items-start">
           <div>
-            <h2 className="flex items-center gap-3 text-3xl font-bold tracking-tight sm:text-5xl">
+            <h2 className="flex items-center gap-3 section-display">
               <Calculator className="h-9 w-9 text-primary" aria-hidden />
               <span>
                 Know your price <span className="gradient-text">before you book</span>

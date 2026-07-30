@@ -12,6 +12,7 @@ import Trust from "@/features/home/Trust";
 import Helpers from "@/features/home/Helpers";
 import Testimonials from "@/features/home/Testimonials";
 import Faq from "@/features/home/Faq";
+import FinalCta from "@/features/home/FinalCta";
 import Footer from "@/components/layout/Footer";
 import StructuredData from "@/components/layout/StructuredData";
 import SilkDivider from "@/components/layout/SilkDivider";
@@ -56,6 +57,7 @@ export default function Home() {
         <SilkDivider />
         <Testimonials />
         <Faq />
+        <FinalCta />
       </main>
       <Footer />
     </>

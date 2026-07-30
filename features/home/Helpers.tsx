@@ -27,7 +27,7 @@ const benefits = [
 
 export default function Helpers() {
   return (
-    <section id="helpers" className="relative scroll-mt-16 overflow-hidden py-20 lg:py-28">
+    <section id="helpers" className="relative scroll-mt-16 overflow-hidden py-24 lg:py-36">
       <div className="blob blob-b left-[-5%] bottom-[10%] h-80 w-80 bg-orange-500" aria-hidden />
       <div className="relative mx-auto max-w-6xl px-4 sm:px-6">
         <div className="grid items-center gap-12 lg:grid-cols-2">
@@ -35,7 +35,7 @@ export default function Helpers() {
             <p className="mb-4 inline-block rounded-full glass px-4 py-1.5 text-xs font-semibold text-primary">
               For helpers · సహాయకుల కోసం · सहायकों के लिए
             </p>
-            <h2 className="text-3xl font-bold tracking-tight sm:text-5xl">
+            <h2 className="section-display">
               Steady work. Daily pay. <span className="gradient-text">Real respect.</span>
             </h2>
             <p className="mt-4 text-lg text-muted">

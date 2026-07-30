@@ -40,7 +40,7 @@ export default function Trust() {
     <Section id="trust">
       <Container>
         <Reveal className="max-w-2xl">
-          <h2 className="text-3xl font-bold tracking-tight sm:text-5xl">
+          <h2 className="section-display">
             Trust isn&apos;t a feature. <span className="gradient-text">It&apos;s the product.</span>
           </h2>
           <p className="mt-4 text-lg text-muted">

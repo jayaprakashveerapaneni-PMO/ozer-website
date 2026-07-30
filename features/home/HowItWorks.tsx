@@ -34,7 +34,7 @@ export default function HowItWorks() {
     <section id="how-it-works" data-hiw className="flex scroll-mt-16 flex-col justify-center py-20 lg:min-h-screen lg:py-24">
       <div className="mx-auto w-full max-w-6xl px-4 sm:px-6">
         <Reveal className="max-w-2xl">
-          <h2 className="text-3xl font-bold tracking-tight sm:text-5xl">
+          <h2 className="section-display">
             From “I need help” to helped — <span className="gradient-text">in four steps</span>
           </h2>
           <p className="mt-4 text-lg text-muted">

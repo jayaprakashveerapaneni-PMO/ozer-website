@@ -26,7 +26,9 @@ export default function HomeCinema() {
       end: "bottom top",
       scrub: true,
     } as const;
-    const ridges = gsap.utils.toArray<HTMLElement>("[data-ridge]");
+    // Scoped to the hero: FinalCta reuses SilkWave and must keep its own
+    // (CSS scroll-timeline) parallax, not the hero scrub's end state.
+    const ridges = gsap.utils.toArray<HTMLElement>("[data-hero] [data-ridge]");
     ridges.forEach((ridge, i) => {
       gsap.to(ridge, {
         yPercent: 7 + i * (30 / Math.max(1, ridges.length - 1)),
@@ -34,7 +36,7 @@ export default function HomeCinema() {
         scrollTrigger: { ...heroScrub },
       });
     });
-    gsap.to("[data-dune-glow]", { yPercent: 36, ease: "none", scrollTrigger: { ...heroScrub } });
+    gsap.to("[data-hero] [data-dune-glow]", { yPercent: 36, ease: "none", scrollTrigger: { ...heroScrub } });
     gsap.to("[data-hero-copy]", {
       yPercent: -13,
       autoAlpha: 0.3,

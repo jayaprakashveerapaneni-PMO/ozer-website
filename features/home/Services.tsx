@@ -14,10 +14,10 @@ const ICONS: Record<ServiceId, React.ComponentType<{ className?: string }>> = {
 
 export default function Services() {
   return (
-    <section id="services" className="relative scroll-mt-16 py-20 lg:py-28">
+    <section id="services" className="relative scroll-mt-16 py-24 lg:py-36">
       <div className="mx-auto max-w-6xl px-4 sm:px-6">
         <Reveal className="max-w-2xl">
-          <h2 className="text-3xl font-bold tracking-tight sm:text-5xl">
+          <h2 className="section-display">
             Four services. <span className="gradient-text">One transparent price.</span>
           </h2>
           <p className="mt-4 text-lg text-muted">

@@ -8,9 +8,9 @@ export default function Faq() {
   const [open, setOpen] = useState<number | null>(0);
 
   return (
-    <section id="faq" className="scroll-mt-16 py-20 lg:py-28">
+    <section id="faq" className="scroll-mt-16 py-24 lg:py-36">
       <div className="mx-auto max-w-3xl px-4 sm:px-6">
-        <h2 className="text-3xl font-bold tracking-tight sm:text-5xl">
+        <h2 className="section-display">
           Questions, <span className="gradient-text">answered</span>
         </h2>
 
