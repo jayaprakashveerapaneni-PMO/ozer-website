@@ -106,6 +106,19 @@ until activated):
   by the compiler ("</em> under" rendered as "under" glued) — use the
   {\" \"} idiom between inline elements and following text.
 
+DESIGN PASS 2026-07-30 (f3d66a5): editorial serif system — `.section-display`
+(globals.css: Instrument Serif, clamp 38→62px, -0.015em, text-wrap balance)
+now owns ALL homepage section h2s (the old `text-3xl font-bold tracking-tight
+sm:text-5xl` is gone from features/home). Section rhythm py-24 lg:py-36
+(also components/ui/Section). .glass/.tilt-card shadows are layered
+low-alpha stacks. NEW features/home/FinalCta.tsx closes the page on a second
+SilkWave before the footer (content clears the vivid crest via pb;
+data-magnetic CTA works via HomeCinema's global wiring). ⚠ HomeCinema's dune
+parallax selectors are scoped to `[data-hero] [data-ridge]` — required
+because FinalCta's SilkWave must keep its CSS scroll-timeline parallax, not
+freeze at the hero scrub's end state. Assistants quote cards use the serif.
+Verified 375/1280 locally + prod Lighthouse a11y/bp/seo 1.0.
+
 TEST-DATA STATE (2026-07-29 end of session): my test rows (OZ-C6XFRSI,
 OZ-CLAUDE1) and zombies (OZ-MJPC8CR, OZ-FTQ42IY) deleted. Remaining rows
 are the user's/colleague's own demo data: completed OZ-GSFBGKP,
