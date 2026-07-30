@@ -2,6 +2,7 @@ import Link from "next/link";
 import { ShieldCheck, CalendarCheck, ArrowRight } from "lucide-react";
 import { Button, Badge } from "@/components/ui";
 import SilkWave from "@/components/layout/SilkWave";
+import HeroLiquid from "@/components/motion/HeroLiquid";
 import HeroTitle from "@/features/home/HeroTitle";
 import { ZONES } from "@/lib/domain";
 
@@ -13,6 +14,8 @@ import { ZONES } from "@/lib/domain";
 export default function Hero() {
   return (
     <section data-hero className="cine-vignette relative flex min-h-[92vh] flex-col overflow-hidden">
+      {/* WebGL liquid light — behind the dunes; desktop + motion-ok users only */}
+      <HeroLiquid />
       <SilkWave />
 
       {/* volumetric god-rays sweeping the upper canvas (desktop only) */}
