@@ -25,7 +25,10 @@ const links = [
  *  resolves the layer underneath it. */
 export default function Navbar({ overDark = false }: { overDark?: boolean }) {
   const [open, setOpen] = useState(false);
-  const [onStage, setOnStage] = useState(false);
+  // Starts ON the stage when the page opens on one, so the dark bar is in the
+  // server HTML: initialising to false renders an ivory bar that snaps dark
+  // once the observer fires, which is a visible flash on every load.
+  const [onStage, setOnStage] = useState(overDark);
 
   useEffect(() => {
     if (!overDark) return;
