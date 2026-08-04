@@ -2,10 +2,11 @@
 
 import { useEffect, useState } from "react";
 import { isAutomatedAgent, prefersReducedMotion } from "@/lib/motion";
+import { NOCTURNE } from "@/lib/design";
 
 // Completes the hero sentence: "Daily Help That Flows With ___".
 // Words stay short so the headline never reflows between rotations.
-const WORDS = ["You.", "Trust.", "Ease.", "Care."];
+const WORDS = ["Care.", "You.", "Trust.", "Ease."];
 
 /** Cycles hero words with a blur-slide swap. */
 export default function WordRotate() {
@@ -18,7 +19,9 @@ export default function WordRotate() {
   }, []);
 
   return (
-    <span key={i} className="word-swap inline-block text-primary">
+    // Gold, not --primary: this sits on the hero's nocturne stage, where the
+    // ink-dark primary would vanish. AA-enforced in contrast.test.ts.
+    <span key={i} className="word-swap inline-block" style={{ color: NOCTURNE.gold }}>
       {WORDS[i]}
     </span>
   );

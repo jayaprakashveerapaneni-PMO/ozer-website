@@ -6,9 +6,10 @@ import { glSceneEnabled } from "@/lib/motion/webgl";
 
 // Loads the three.js chunk (~150KB) only where it earns its keep: desktop
 // pointers, motion allowed, real users, WebGL present. Everyone else keeps
-// the static ivory hero — the dunes render either way, so nothing is lost.
+// HeroStage's server-rendered composition, which is the same shot — so the
+// hero is never an empty box while this decides.
 
-const LiquidGradient = dynamic(() => import("./LiquidGradient"), { ssr: false });
+const HeroField = dynamic(() => import("./HeroField"), { ssr: false });
 
 export default function HeroLiquid() {
   const [show, setShow] = useState(false);
@@ -23,5 +24,5 @@ export default function HeroLiquid() {
     };
   }, []);
 
-  return show ? <LiquidGradient /> : null;
+  return show ? <HeroField /> : null;
 }

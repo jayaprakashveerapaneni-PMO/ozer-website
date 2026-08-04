@@ -19,32 +19,23 @@ export default function HomeCinema() {
     // The page-entrance transform skews measurements for ~0.9s — re-measure after.
     const refreshTimer = setTimeout(() => ScrollTrigger.refresh(), 1200);
 
-    /* ---- HERO: take ownership of dune parallax; add depth per ridge ---- */
-    document.querySelector(".silk-parallax")?.classList.remove("silk-parallax");
+    /* ---- HERO: the nocturne recedes as the page dawns ----
+       The WebGL field runs its own dawn off field.heroScroll; this moves the
+       server-rendered stage and the copy with it so both layers travel as
+       one shot whether or not the canvas mounted. */
     const heroScrub = {
       trigger: "[data-hero]",
       start: "top top",
       end: "bottom top",
       scrub: true,
     } as const;
-    // Scoped to the hero: FinalCta reuses SilkWave and must keep its own
-    // (CSS scroll-timeline) parallax, not the hero scrub's end state.
-    const ridges = gsap.utils.toArray<HTMLElement>("[data-hero] [data-ridge]");
-    ridges.forEach((ridge, i) => {
-      gsap.to(ridge, {
-        yPercent: 7 + i * (30 / Math.max(1, ridges.length - 1)),
-        ease: "none",
-        scrollTrigger: { ...heroScrub },
-      });
-    });
-    gsap.to("[data-hero] [data-dune-glow]", { yPercent: 36, ease: "none", scrollTrigger: { ...heroScrub } });
+    gsap.to("[data-hero-stage] svg", { yPercent: 14, scale: 1.06, ease: "none", scrollTrigger: { ...heroScrub } });
     gsap.to("[data-hero-copy]", {
       yPercent: -13,
       autoAlpha: 0.3,
       ease: "none",
       scrollTrigger: { ...heroScrub },
     });
-    gsap.to("[data-shafts]", { autoAlpha: 0, ease: "none", scrollTrigger: { ...heroScrub } });
 
     /* ---- H2s: word-level masked rises as each section enters ---- */
     void document.fonts.ready.then(

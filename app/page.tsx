@@ -2,6 +2,7 @@ import Navbar from "@/components/layout/Navbar";
 import ScrollProgress from "@/components/layout/ScrollProgress";
 import Marquee from "@/features/home/Marquee";
 import Hero from "@/features/home/Hero";
+import ZoneStrip from "@/features/home/ZoneStrip";
 import Services from "@/features/home/Services";
 import Personas from "@/features/home/Personas";
 import HowItWorks from "@/features/home/HowItWorks";
@@ -42,7 +43,7 @@ export default function Home() {
       <HomeCinema />
       <LightDirector />
       <PointerCinema />
-      <Navbar />
+      <Navbar overDark />
       <main id="main-content" className="relative flex-1 overflow-x-clip">
         <Sun />
         <Orb className="left-[-8rem] top-[16%]" tint="rgba(251,146,60,0.18)" />
@@ -50,6 +51,7 @@ export default function Home() {
         <Orb className="left-[-6rem] top-[64%]" tint="rgba(124,58,237,0.12)" />
         <Orb className="right-[-8rem] top-[86%]" tint="rgba(249,115,22,0.16)" />
         <Hero />
+        <ZoneStrip />
         <Marquee />
         <Services />
         <Personas />

@@ -88,6 +88,29 @@ export const PERSONA_ACCENT_INK = [
 ] as const;
 
 /**
+ * Tier 2 — the hero's nocturne stage: the warm dark chamber the film opens in,
+ * where the gold light-ribbons and the reflecting pool live before the page
+ * dawns into ivory.
+ *
+ * `bg` is the deep base and `bgLift` the brightest chamber tone.
+ * contrast.test.ts enforces every text token against BOTH (measured
+ * 5.3–14.7:1).
+ *
+ * The stage's light is procedural, so nothing can promise a given pixel is
+ * dark: the guarantee is the scrim wrapping [data-hero-copy] in Hero.tsx,
+ * which composites even a blown-white ribbon down to #433c36 (ivory 10.2:1).
+ * Change that scrim's alpha and you are changing this contract.
+ */
+export const NOCTURNE = {
+  bg: "#241c15",
+  bgLift: "#5c4835",
+  text: "#f4efe7",
+  textSoft: "#cfc3b2",
+  gold: "#fbbf6e",
+  goldHi: "#fdd9a8",
+} as const;
+
+/**
  * Tier 2 — the dusk act's dark stage (the homepage's mid-page evening scene).
  * `bg` is the section's CSS backdrop; every text token is AA-enforced on it
  * by contrast.test.ts (measured 8.2–16.1:1).

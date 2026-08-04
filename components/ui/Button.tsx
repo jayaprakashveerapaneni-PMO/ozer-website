@@ -1,7 +1,13 @@
 import Link from "next/link";
 import { cn } from "@/lib/cn";
 
-export type ButtonVariant = "primary" | "glass" | "ghost" | "success" | "pill";
+export type ButtonVariant =
+  | "primary"
+  | "glass"
+  | "ghost"
+  | "success"
+  | "pill"
+  | "pillInvert";
 export type ButtonSize = "sm" | "md" | "lg";
 
 const BASE =
@@ -14,6 +20,8 @@ const VARIANTS: Record<ButtonVariant, string> = {
   success: "bg-success text-white hover:scale-105",
   /* Dark editorial pill (reference aesthetic) — overrides size radius. */
   pill: "!rounded-full bg-foreground text-background shadow-lg hover:scale-105",
+  /* The same pill inverted, for use on dark stages (hero nocturne navbar). */
+  pillInvert: "!rounded-full bg-background text-foreground shadow-lg hover:scale-105",
 };
 
 // Radius tracks size: large CTAs read as pills-ish (2xl), controls as xl.
