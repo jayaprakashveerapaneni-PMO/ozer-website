@@ -5,6 +5,63 @@
 > "out of demo" sprint: voice/assistants/build-story removed, payment-first
 > booking cycle, and a sign-in helper app. See §0 for actions ONLY the user can do.
 
+## 0-NEWEST-3. STATE AS OF 2026-08-04 (later) — the nocturne hero
+
+The user supplied a reference reel (Downloads/Make_it_better_like_a_team_of.mp4)
+and chose, when asked, "dark hero that dawns into ivory". Shipped in d9ddf37
+(+ the hero commit before it), deployed + pushed.
+
+- **Act I is now a warm dark chamber**: gold silk ribbons streaming out of a
+  lit heart over a reflecting pool, dawning into the ivory page as you scroll
+  out. The ivory palette and its contrast suite are UNCHANGED — the stage
+  adds `NOCTURNE` tokens the same way the dusk act added `DUSK`.
+- Pieces: `lib/motion/shaders/heroField.ts` (the GLSL),
+  `components/motion/HeroField.tsx` (R3F quad, uniforms eased off
+  `lib/motion/field`), `components/layout/HeroStage.tsx` +
+  `heroStageArt.ts` (the same shot in server-rendered SVG),
+  `features/home/ZoneStrip.tsx`, Navbar `overDark`, Button `pillInvert`.
+
+SHADER LESSONS (these took several passes — do not re-learn them):
+- **Describe the strands in POLAR space around the light.** Written as
+  y = f(x) they read as bands crossing a frame, not light radiating out.
+- **Let values exceed 1.0 and tone-map** (`1 - exp(-c)`). Clamped highlights
+  turn satin into flat painted tubes. The curve saturates R before B and
+  walks warm highlights toward white, so push saturation BEFORE it.
+- Contrast: dial exposure by pairing a genuinely dark chamber with ribbons
+  well above 1.0. Lowering both at once produced grey fog.
+- **The dawn must pass through warm light before ivory** — mixing dark water
+  straight to ivory reads as dirty grey.
+- **Text contrast is owned by a DOM scrim wrapping [data-hero-copy]**, NOT by
+  a band clamped in shader UV space: the shader cannot know where the type
+  landed at a given viewport, and the clamp left a visible smudge. Worst case
+  (blown-white ribbon under 0.86 NOCTURNE.bg) composites to #433c36 —
+  ivory 10.2:1. Changing that alpha changes the contract.
+- **Two SVG art cuts are required.** `preserveAspectRatio="slice"` on the
+  1440-wide artwork shows a 375px phone only the pinched middle, where there
+  is no silk — the phone got an empty dark box until TALL was added.
+- Nothing is placed over the dawn ramp: ivory type loses contrast there as
+  the stage lifts. The hero's lower half is deliberately empty.
+
+VERIFYING GRAPHICS IN THE BROWSER PANE (the pane freezes rAF, so R3F never
+draws and screenshots time out — this is how the shader was actually seen):
+1. temporary dev-only page that compiles the FRAG with raw WebGL and draws
+   ONE frame synchronously in an effect (`preserveDrawingBuffer: true`),
+   with ?t=/?s= for uTime/uScroll;
+2. temporary dev-only POST route writing base64 → PNG on disk;
+3. `canvas.toDataURL()` → POST → Read the PNG as an image.
+   For the server-rendered SVG stage, `XMLSerializer` → data URI → `Image` →
+   canvas → same route. DELETE both temp files before committing (they were
+   `app/devshader/` and `app/api/devcap/`).
+- ⚠ **Backticks inside the /* glsl */ template literal terminate the string**
+  ("Expected a semicolon" at the comment line). No backticks in GLSL comments.
+- ⚠ Folders under `app/api/` prefixed with `_` are PRIVATE in the App Router
+  and never route — `_devcap` 404s, `devcap` works.
+- ⚠ A Node OOM in a compound Bash command reset the shell's cwd to the PARENT
+  repo; a following `rm -rf` then targeted the wrong tree. Use absolute paths
+  or re-`cd` after a crash, and re-verify deletions with `git status`.
+- ⚠ Backticks in a `git commit -m "..."` message are shell command
+  substitution — the word vanishes. Use a heredoc or `-F`.
+
 ## 0-NEWEST-2. STATE AS OF 2026-08-04 — "one continuous film" homepage rebuild
 
 SHIPPED (8d1cdeb + 2667149, both deployed to prod + pushed, CI green ×2):

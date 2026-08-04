@@ -61,7 +61,14 @@ export default function Navbar({ overDark = false }: { overDark?: boolean }) {
         className="mx-auto flex h-16 max-w-6xl items-center justify-between px-4 sm:px-6"
         aria-label="Main"
       >
-        <Link href="/" className="group flex items-center gap-2">
+        {/* the wordmark sets no colour of its own — it inherits, so the link
+            has to carry the stage's ink or it stays --foreground on the dark
+            bar (this is what dropped Lighthouse a11y to 0.96) */}
+        <Link
+          href="/"
+          className="group flex items-center gap-2"
+          style={dark ? { color: NOCTURNE.text } : undefined}
+        >
           <Logo />
           <span
             className={`ml-1 hidden rounded-full px-2 py-0.5 text-xs font-medium sm:inline ${
@@ -90,7 +97,7 @@ export default function Navbar({ overDark = false }: { overDark?: boolean }) {
               {l.label}
             </Link>
           ))}
-          <AccountChip />
+          <AccountChip dark={dark} />
           <Button href="/book" variant={dark ? "pillInvert" : "pill"} size="sm">
             Book now
           </Button>
