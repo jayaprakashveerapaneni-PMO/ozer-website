@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { contrastRatio, meetsAA } from "./contrast";
-import { BRAND_INK, SERVICE_ACCENT_INK } from "./tokens";
+import { BRAND_INK, DUSK, SERVICE_ACCENT_INK } from "./tokens";
 
 // The light background and semantic text colors, mirroring globals.css :root.
 const BG_LIGHT = "#f4efe7";
@@ -38,6 +38,14 @@ describe("WCAG AA contrast enforcement", () => {
   it("white text on every solid service-ink surface meets AA", () => {
     for (const [id, hex] of Object.entries(SERVICE_ACCENT_INK)) {
       expect(meetsAA(WHITE, hex), `white on service ${id} (${hex})`).toBe(true);
+    }
+  });
+
+  it("every dusk-act text token meets AA (4.5:1) on the dusk backdrop", () => {
+    const { bg, ...text } = DUSK;
+    for (const [name, hex] of Object.entries(text)) {
+      const ratio = contrastRatio(hex, bg);
+      expect(ratio, `dusk ${name} (${hex}) = ${ratio.toFixed(2)}:1`).toBeGreaterThanOrEqual(4.5);
     }
   });
 

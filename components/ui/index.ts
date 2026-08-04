@@ -7,3 +7,4 @@ export { default as Container } from "./Container";
 export { default as Section } from "./Section";
 export { default as NumberField } from "./NumberField";
 export { default as SegmentedControl } from "./SegmentedControl";
+export { default as ActLabel } from "./ActLabel";

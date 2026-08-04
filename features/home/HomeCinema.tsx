@@ -2,6 +2,7 @@
 
 import { useGSAP } from "@gsap/react";
 import { ensureGsap, gsap, ScrollTrigger, SplitText, cinemaEnabled } from "@/lib/motion/cinema";
+import { HIW_STEP_EVENT } from "@/lib/motion";
 
 /** The homepage film director. One client component orchestrates every
  *  scroll scene against server-rendered markup via data-attributes:
@@ -63,12 +64,16 @@ export default function HomeCinema() {
       })
     );
 
-    /* ---- HOW IT WORKS: pinned scrub on desktop, batch rise on mobile ---- */
+    /* ---- HOW IT WORKS: pinned scrub on desktop, batch rise on mobile.
+       The scrub also broadcasts the active step so the phone stage plays
+       the matching app screen — cards and product move as one shot. ---- */
     mm.add("(min-width: 1024px)", () => {
       const cards = gsap.utils.toArray<HTMLElement>("[data-hiw-card]");
       if (!cards.length) return;
+      let lastStep = -1;
       gsap.set("[data-hiw-grid]", { perspective: 900 });
       gsap.set(cards, { yPercent: 26, autoAlpha: 0, rotationX: 14, transformOrigin: "50% 100%" });
+      gsap.set("[data-hiw-phone]", { yPercent: 10, autoAlpha: 0 });
       const tl = gsap.timeline({
         scrollTrigger: {
           trigger: "[data-hiw]",
@@ -77,8 +82,17 @@ export default function HomeCinema() {
           pin: true,
           scrub: 0.6,
           anticipatePin: 1,
+          onUpdate: (self) => {
+            // card i enters at timeline time i*0.85 of 4.25 total → i*0.2
+            const step = Math.min(cards.length - 1, Math.floor(self.progress / 0.2));
+            if (step !== lastStep) {
+              lastStep = step;
+              window.dispatchEvent(new CustomEvent(HIW_STEP_EVENT, { detail: { step } }));
+            }
+          },
         },
       });
+      tl.to("[data-hiw-phone]", { yPercent: 0, autoAlpha: 1, duration: 0.9, ease: "power2.out" }, 0);
       cards.forEach((card, i) => {
         tl.to(card, { yPercent: 0, autoAlpha: 1, rotationX: 0, duration: 1, ease: "power2.out" }, i * 0.85);
       });
@@ -113,6 +127,21 @@ export default function HomeCinema() {
       if (trackAnim) trackAnim.playbackRate = 1 + marqueeBoost;
     };
     gsap.ticker.add(settle);
+
+    /* ---- DEPTH DRIFT: any [data-drift="0.15"] floats at its own depth.
+       Wrappers only (never elements with CSS transform transitions). ---- */
+    gsap.utils.toArray<HTMLElement>("[data-drift]").forEach((el) => {
+      const depth = parseFloat(el.dataset.drift ?? "0.1");
+      gsap.fromTo(
+        el,
+        { yPercent: depth * 60 },
+        {
+          yPercent: depth * -60,
+          ease: "none",
+          scrollTrigger: { trigger: el, start: "top bottom", end: "bottom top", scrub: true },
+        }
+      );
+    });
 
     /* ---- AMBIENT ORBS: slow counter-parallax through the page ---- */
     gsap.utils.toArray<HTMLElement>("[data-orb]").forEach((orb, i) => {

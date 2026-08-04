@@ -6,6 +6,7 @@ import { Calculator, Info } from "lucide-react";
 import { SERVICES, formatEstimate, type ServiceId } from "@/lib/domain";
 import ServiceDetailsFields from "@/features/booking/ServiceDetailsFields";
 import { useServiceDetails } from "@/features/booking/useServiceDetails";
+import { ActLabel } from "@/components/ui";
 
 /** Marketing-page price estimator (FR-6): estimate visible before any login. */
 export default function Estimator() {
@@ -18,6 +19,7 @@ export default function Estimator() {
       <div className="relative mx-auto max-w-6xl px-4 sm:px-6">
         <div className="grid gap-10 lg:grid-cols-[1fr_1fr] lg:items-start">
           <div>
+            <ActLabel n="04">Your price</ActLabel>
             <h2 className="flex items-center gap-3 section-display">
               <Calculator className="h-9 w-9 text-primary" aria-hidden />
               <span>

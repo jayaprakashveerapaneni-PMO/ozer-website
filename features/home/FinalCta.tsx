@@ -10,7 +10,11 @@ import Reveal from "@/components/motion/Reveal";
 
 export default function FinalCta() {
   return (
-    <section className="relative flex min-h-[76vh] flex-col overflow-hidden">
+    <section
+      data-finale
+      data-sun-stop="0.5,0.78,1.3,1"
+      className="relative flex min-h-[76vh] flex-col overflow-hidden"
+    >
       <SilkWave />
       <div className="relative z-10 mx-auto flex w-full max-w-4xl flex-1 flex-col items-center px-4 pb-32 pt-24 text-center sm:px-6 lg:pb-44 lg:pt-32">
         <Reveal>

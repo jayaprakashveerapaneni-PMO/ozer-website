@@ -13,7 +13,11 @@ import { ZONES } from "@/lib/domain";
 
 export default function Hero() {
   return (
-    <section data-hero className="cine-vignette relative flex min-h-[92vh] flex-col overflow-hidden">
+    <section
+      data-hero
+      data-sun-stop="0.32,0.74,1,1"
+      className="cine-vignette relative flex min-h-[92vh] flex-col overflow-hidden"
+    >
       {/* WebGL liquid light — behind the dunes; desktop + motion-ok users only */}
       <HeroLiquid />
       <SilkWave />

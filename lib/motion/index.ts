@@ -41,3 +41,7 @@ export const ANIMATION = {
   breathe: "animate-breathe",
   reveal: "reveal",
 } as const;
+
+/** CustomEvent name: the pinned How-It-Works director broadcasts the active
+ *  step index ({ detail: { step } }) so the phone stage can follow the scrub. */
+export const HIW_STEP_EVENT = "ozer:hiw-step";

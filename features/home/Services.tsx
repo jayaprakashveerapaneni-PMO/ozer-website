@@ -4,6 +4,7 @@ import { SERVICES, type ServiceId } from "@/lib/domain";
 import { SERVICE_ACCENT, SERVICE_ACCENT_INK, withAlpha } from "@/lib/design";
 import Reveal from "@/components/motion/Reveal";
 import Spotlight from "@/components/motion/Spotlight";
+import { ActLabel } from "@/components/ui";
 
 const ICONS: Record<ServiceId, React.ComponentType<{ className?: string }>> = {
   cleaning: Sparkles,
@@ -14,9 +15,14 @@ const ICONS: Record<ServiceId, React.ComponentType<{ className?: string }>> = {
 
 export default function Services() {
   return (
-    <section id="services" className="relative scroll-mt-16 py-24 lg:py-36">
+    <section
+      id="services"
+      data-sun-stop="0.80,0.20,1.15,0.9"
+      className="relative scroll-mt-16 py-24 lg:py-36"
+    >
       <div className="mx-auto max-w-6xl px-4 sm:px-6">
         <Reveal className="max-w-2xl">
+          <ActLabel n="01">The services</ActLabel>
           <h2 className="section-display">
             Four services. <span className="gradient-text">One transparent price.</span>
           </h2>
@@ -32,8 +38,9 @@ export default function Services() {
             const accent = SERVICE_ACCENT[s.id]; // bright: decorative fills only
             const ink = SERVICE_ACCENT_INK[s.id]; // AA-safe: text + solid button
             return (
-              <Reveal key={s.id} delay={i * 80}>
-                <Spotlight color={withAlpha(accent, 0.19)} className="h-full rounded-3xl">
+              <div key={s.id} data-drift={i % 2 ? "0.13" : "0.05"}>
+                <Reveal delay={i * 80}>
+                  <Spotlight color={withAlpha(accent, 0.19)} className="h-full rounded-3xl">
                   {/* whole card is one link — clickable anywhere */}
                   <Link
                     href={`/book?service=${s.id}`}
@@ -91,8 +98,9 @@ export default function Services() {
                   >
                     <Zap className="h-3.5 w-3.5" aria-hidden /> Instant — ASAP
                   </Link>
-                </Spotlight>
-              </Reveal>
+                  </Spotlight>
+                </Reveal>
+              </div>
             );
           })}
         </div>

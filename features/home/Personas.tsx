@@ -17,6 +17,7 @@ import {
 } from "lucide-react";
 import Spotlight from "@/components/motion/Spotlight";
 import { PERSONA_ACCENT, PERSONA_ACCENT_INK } from "@/lib/design";
+import { ActLabel } from "@/components/ui";
 
 interface Persona {
   id: string;
@@ -158,6 +159,9 @@ export default function Personas() {
 
       <div className="relative mx-auto max-w-6xl px-4 sm:px-6">
         <div className="mx-auto max-w-2xl text-center">
+          <ActLabel n="02" className="justify-center">
+            Who books
+          </ActLabel>
           <h2 className="section-display">
             One app. <span className="gradient-text">Four very different lives.</span>
           </h2>

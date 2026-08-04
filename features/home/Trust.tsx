@@ -1,6 +1,6 @@
 import { ShieldCheck, MapPin, Wallet, KeyRound, RotateCcw, FileCheck } from "lucide-react";
 import Reveal from "@/components/motion/Reveal";
-import { Section, Container, Card } from "@/components/ui";
+import { ActLabel, Section, Container, Card } from "@/components/ui";
 
 const pillars = [
   {
@@ -40,6 +40,7 @@ export default function Trust() {
     <Section id="trust">
       <Container>
         <Reveal className="max-w-2xl">
+          <ActLabel n="06">The guarantees</ActLabel>
           <h2 className="section-display">
             Trust isn&apos;t a feature. <span className="gradient-text">It&apos;s the product.</span>
           </h2>

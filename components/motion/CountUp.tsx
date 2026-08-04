@@ -16,7 +16,9 @@ export default function CountUp({
   duration?: number;
 }) {
   const ref = useRef<HTMLSpanElement>(null);
-  const [value, setValue] = useState(0);
+  // Starts at the real value so SSR/no-JS reads the truth; the observer
+  // rewinds to 0 and counts up only when motion is allowed.
+  const [value, setValue] = useState(end);
 
   useEffect(() => {
     const el = ref.current;

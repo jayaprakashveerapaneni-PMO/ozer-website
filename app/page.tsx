@@ -3,20 +3,22 @@ import ScrollProgress from "@/components/layout/ScrollProgress";
 import Marquee from "@/features/home/Marquee";
 import Hero from "@/features/home/Hero";
 import Services from "@/features/home/Services";
-import Highlights from "@/features/home/Highlights";
 import Personas from "@/features/home/Personas";
 import HowItWorks from "@/features/home/HowItWorks";
+import DuskAct from "@/features/home/DuskAct";
 import Estimator from "@/features/home/Estimator";
 import Assistants from "@/features/home/Assistants";
 import Trust from "@/features/home/Trust";
 import Helpers from "@/features/home/Helpers";
-import Testimonials from "@/features/home/Testimonials";
+import Proof from "@/features/home/Proof";
 import Faq from "@/features/home/Faq";
 import FinalCta from "@/features/home/FinalCta";
 import Footer from "@/components/layout/Footer";
 import StructuredData from "@/components/layout/StructuredData";
-import SilkDivider from "@/components/layout/SilkDivider";
+import Atmosphere from "@/components/layout/Atmosphere";
+import Sun from "@/components/layout/Sun";
 import HomeCinema from "@/features/home/HomeCinema";
+import LightDirector from "@/features/home/LightDirector";
 
 /** Ambient depth orb — parallax-driven by HomeCinema, invisible to layout. */
 function Orb({ className, tint }: { className: string; tint: string }) {
@@ -35,9 +37,12 @@ export default function Home() {
     <>
       <StructuredData />
       <ScrollProgress />
+      <Atmosphere />
       <HomeCinema />
+      <LightDirector />
       <Navbar />
       <main id="main-content" className="relative flex-1 overflow-x-clip">
+        <Sun />
         <Orb className="left-[-8rem] top-[16%]" tint="rgba(251,146,60,0.18)" />
         <Orb className="right-[-10rem] top-[38%]" tint="rgba(8,145,178,0.14)" />
         <Orb className="left-[-6rem] top-[64%]" tint="rgba(124,58,237,0.12)" />
@@ -45,17 +50,14 @@ export default function Home() {
         <Hero />
         <Marquee />
         <Services />
-        <SilkDivider />
-        <Highlights />
         <Personas />
         <HowItWorks />
-        <SilkDivider flip />
+        <DuskAct />
         <Estimator />
         <Assistants />
         <Trust />
         <Helpers />
-        <SilkDivider />
-        <Testimonials />
+        <Proof />
         <Faq />
         <FinalCta />
       </main>

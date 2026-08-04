@@ -1,6 +1,6 @@
 import { BadgeCheck, CalendarCheck, Banknote, GraduationCap } from "lucide-react";
 import Reveal from "@/components/motion/Reveal";
-import { Button } from "@/components/ui";
+import { ActLabel, Button } from "@/components/ui";
 
 const benefits = [
   {
@@ -32,9 +32,7 @@ export default function Helpers() {
       <div className="relative mx-auto max-w-6xl px-4 sm:px-6">
         <div className="grid items-center gap-12 lg:grid-cols-2">
           <Reveal>
-            <p className="mb-4 inline-block rounded-full glass px-4 py-1.5 text-xs font-semibold text-primary">
-              For helpers · సహాయకుల కోసం · सहायकों के लिए
-            </p>
+            <ActLabel n="07">For helpers · సహాయకుల కోసం · सहायकों के लिए</ActLabel>
             <h2 className="section-display">
               Steady work. Daily pay. <span className="gradient-text">Real respect.</span>
             </h2>

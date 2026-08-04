@@ -25,7 +25,7 @@ export default function Marquee() {
   );
 
   return (
-    <div className="relative overflow-hidden border-y border-line bg-surface0 py-4">
+    <div className="relative z-10 -mt-8 overflow-hidden py-4">
       {/* skew wrapper: HomeCinema tilts it with scroll velocity; the CSS
           marquee animation stays on the inner track (no transform clash) */}
       <div data-marquee-skew className="will-change-transform">

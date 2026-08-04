@@ -1,6 +1,7 @@
 import Link from "next/link";
-import { Mic, ShieldCheck, ArrowRight } from "lucide-react";
+import { ShieldCheck, ArrowRight } from "lucide-react";
 import Reveal from "@/components/motion/Reveal";
+import { ActLabel } from "@/components/ui";
 
 // EP-14 surface. Honest per-platform depth: Alexa = custom skill, Siri =
 // Apple Shortcut. Google Assistant is intentionally absent — Google retired
@@ -28,9 +29,7 @@ export default function Assistants() {
       <div className="blob blob-b right-[8%] top-[15%] h-72 w-72 bg-violet-500" aria-hidden />
       <div className="relative mx-auto max-w-6xl px-4 sm:px-6">
         <Reveal className="max-w-2xl">
-          <p className="mb-4 inline-flex items-center gap-1.5 rounded-full glass px-4 py-1.5 text-xs font-semibold text-primary">
-            <Mic className="h-3.5 w-3.5" aria-hidden /> Voice assistants
-          </p>
+          <ActLabel n="05">Voice assistants</ActLabel>
           <h2 className="section-display">
             Say it to your speaker. <span className="gradient-text">Approve it here.</span>
           </h2>

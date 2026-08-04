@@ -87,6 +87,19 @@ export const PERSONA_ACCENT_INK = [
   BRAND_INK.success,
 ] as const;
 
+/**
+ * Tier 2 — the dusk act's dark stage (the homepage's mid-page evening scene).
+ * `bg` is the section's CSS backdrop; every text token is AA-enforced on it
+ * by contrast.test.ts (measured 8.2–16.1:1).
+ */
+export const DUSK = {
+  bg: "#171310",
+  text: "#f4efe7",
+  textSoft: "#c9c0b2",
+  link: "#fb923c",
+  linkHover: "#fdba74",
+} as const;
+
 /** Tier 3 — confetti burst palette for the booking success screen. */
 export const CONFETTI_COLORS = [
   PALETTE.saffron,
