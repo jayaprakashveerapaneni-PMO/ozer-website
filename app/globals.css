@@ -166,6 +166,16 @@ button, a, select, [role="button"] {
   text-wrap: balance;
 }
 
+/* The closing act's larger register — same serif voice, full volume. */
+.section-display-xl {
+  font-family: var(--font-serif);
+  font-weight: 400;
+  font-size: clamp(2.75rem, 1.7rem + 4.4vw, 5.25rem);
+  line-height: 1.05;
+  letter-spacing: -0.015em;
+  text-wrap: balance;
+}
+
 .glow-primary {
   box-shadow:
     0 8px 24px rgba(234, 88, 12, 0.3),
@@ -361,20 +371,6 @@ button, a, select, [role="button"] {
 }
 .typing-dot:nth-child(2) { animation-delay: 0.15s; }
 .typing-dot:nth-child(3) { animation-delay: 0.3s; }
-
-/* Booking-highlights walkthrough: fills over one auto-advance cycle.
-   scaleX (not width) so the fill never causes layout shift. */
-@keyframes highlight-fill {
-  from { transform: scaleX(0); }
-  to { transform: scaleX(1); }
-}
-.highlight-progress {
-  transform-origin: left;
-  animation: highlight-fill 3.4s linear forwards;
-}
-@media (prefers-reduced-motion: reduce) {
-  .highlight-progress { animation: none; transform: scaleX(1); }
-}
 
 @keyframes shimmer {
   0% { background-position: -200% 0; }

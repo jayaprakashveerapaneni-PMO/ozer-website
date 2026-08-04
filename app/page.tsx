@@ -19,6 +19,7 @@ import Atmosphere from "@/components/layout/Atmosphere";
 import Sun from "@/components/layout/Sun";
 import HomeCinema from "@/features/home/HomeCinema";
 import LightDirector from "@/features/home/LightDirector";
+import PointerCinema from "@/features/home/PointerCinema";
 
 /** Ambient depth orb — parallax-driven by HomeCinema, invisible to layout. */
 function Orb({ className, tint }: { className: string; tint: string }) {
@@ -40,6 +41,7 @@ export default function Home() {
       <Atmosphere />
       <HomeCinema />
       <LightDirector />
+      <PointerCinema />
       <Navbar />
       <main id="main-content" className="relative flex-1 overflow-x-clip">
         <Sun />

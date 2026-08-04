@@ -21,7 +21,7 @@ export default function FinalCta() {
           <p className="mb-5 text-xs font-semibold uppercase tracking-[0.25em] text-muted">
             Verified helpers · Fixed price · Money-back promise
           </p>
-          <h2 className="section-display mx-auto max-w-3xl">
+          <h2 className="section-display-xl mx-auto max-w-3xl">
             Your evening back, <span className="gradient-text">in about two minutes.</span>
           </h2>
           <p className="mx-auto mt-6 max-w-xl text-base leading-relaxed text-muted sm:text-lg">

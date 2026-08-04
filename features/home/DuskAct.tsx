@@ -5,6 +5,7 @@ import Link from "next/link";
 import dynamic from "next/dynamic";
 import { ArrowRight } from "lucide-react";
 import { useGSAP } from "@gsap/react";
+import Reveal from "@/components/motion/Reveal";
 import { ensureGsap, gsap, ScrollTrigger, SplitText, cinemaEnabled } from "@/lib/motion/cinema";
 import { field } from "@/lib/motion/field";
 import { glSceneEnabled } from "@/lib/motion/webgl";
@@ -117,6 +118,7 @@ export default function DuskAct() {
       <div className="absolute inset-0 overflow-hidden">{gl && <DuskField />}</div>
 
       <div className="relative z-10 mx-auto w-full max-w-5xl px-4 text-center sm:px-6">
+        <Reveal>
         <div className="relative flex min-h-[40vh] flex-col justify-center">
           <p
             data-dusk-line="a"
@@ -148,6 +150,7 @@ export default function DuskAct() {
             <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" aria-hidden />
           </Link>
         </p>
+        </Reveal>
       </div>
     </section>
   );
