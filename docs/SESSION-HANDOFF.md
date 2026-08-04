@@ -5,6 +5,58 @@
 > "out of demo" sprint: voice/assistants/build-story removed, payment-first
 > booking cycle, and a sign-in helper app. See §0 for actions ONLY the user can do.
 
+## 0-NEWEST-2. STATE AS OF 2026-08-04 — "one continuous film" homepage rebuild
+
+SHIPPED (8d1cdeb + 2667149, both deployed to prod + pushed, CI green ×2):
+the homepage is now one scroll-choreographed film, not stacked sections.
+Architecture (all gated by cinemaEnabled(), static page stays complete):
+- **Three directors** (all render null, live in features/home/): HomeCinema
+  (actors: hero scrub, h2 word reveals, pinned How-It-Works, velocity
+  marquee, orbs, [data-drift] depth parallax), LightDirector (light: writes
+  lib/motion/field.ts shared state for shaders, cross-fades the fixed
+  Atmosphere washes, walks the traveling Sun between [data-sun-stop]
+  waypoints), PointerCinema (magnetic CTAs + hero cursor light). Split three
+  ways to honor the ≤200-line component cap.
+- **lib/motion/field.ts** — mutable non-React state {heroScroll, pageScroll,
+  pointer, energy, duskProgress}; directors write, R3F useFrame reads.
+- **WebGL ×2** (lib/motion/webgl.ts gate: cinema + ≥768px + GL): hero
+  LiquidGradient v2 (fbm silk, scroll raises light horizon, cursor halo,
+  velocity shimmer) and DuskField — the signature full-bleed pinned dark act
+  (features/home/DuskAct.tsx): shader sun rises over fbm dunes on the pin
+  scrub while two serif lines crossfade. DUSK tokens in lib/design (AA
+  ratios 8.2–16.1:1, enforced in contrast.test.ts). Dune-crest SVGs overlap
+  the neighbors (±~106px) so the dark act flows in/out.
+- **How-It-Works act absorbed the Highlights phone** (Highlights.tsx and
+  Testimonials.tsx DELETED): pinned scrub broadcasts HIW_STEP_EVENT
+  (lib/motion) → HiwPhone plays the matching app screen; <1024px the phone
+  self-plays. Proof.tsx = serif count-up numerals + pull-quote testimonials.
+  ActLabel (components/ui) numbers acts 01–08.
+- **cinemaEnabled() overrides**: `?cinema=1` forces the film on (also
+  exposes window.__cinema = {gsap, ScrollTrigger} for tooling);
+  `?nocinema=1` previews the static/reduced-motion design.
+
+GOTCHAS (hard-won this session, some CORRECT older sections):
+- **navigator.webdriver is FALSE in the app's browser pane** (CDP, not
+  webdriver) — the pane runs the full cinema by default; older notes saying
+  the webdriver gate catches pane sessions are WRONG. The pane also often
+  runs with visibilityState:hidden → rAF/R3F/IntersectionObserver frozen →
+  screenshots time out AND scrubbed states can't settle on their own.
+  Verification recipe that works: load `?cinema=1`, then per scroll target:
+  `scrollTo → __cinema.ScrollTrigger.update() → setInterval(()=>gsap.ticker
+  .tick(),16)` for ~1.4s (scrub smoothing + React renders need real elapsed
+  time; a synchronous tick loop advances almost nothing).
+- Deleting/renaming feature files while the dev server runs corrupts
+  Turbopack manifests ("module not found in React Client Manifest") — stop
+  server, rm -rf .next, restart.
+- StrictMode + document.fonts.ready.then(build) in useGSAP can fire a stale
+  mount's build after remount → duplicated pins. Guard with an element
+  dataset flag (see DuskAct duskBuilt).
+- dl>div>div>dt nesting fails axe's dlitem rule — stat grids that wrap items
+  in drift/Reveal divs must be ul/li, not dl.
+- Unlayered globals.css classes BEAT Tailwind arbitrary utilities (layer
+  order) — to resize .section-display, add a new class (.section-display-xl),
+  don't stack text-[clamp…] on it.
+
 ## 0-NEWEST. STATE AS OF 2026-07-29 (supersedes older §0 sections where they conflict)
 
 SHIPPED THIS SESSION (all deployed to prod + pushed, CI green after 2b2d744):
